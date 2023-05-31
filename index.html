@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Roshan Kc</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <style>
+        body{
+            /* margin: 0;
+            padding: 0; */
+            overflow-x: hidden;
+        }
+        #right-container{
+            height: 98vh;
+            width: 130px;
+            background-color: #FF9900;
+            position: fixed;
+            right: 10px;
+            /* background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
+            background-image: url("{{url_for('static', filename='images/320229489_3306657399549777_1621418504408542570_n.png')}}"); */
+        }
+        #nav-container ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+        }
+        #nav-container li{
+            width: auto;
+            height: 80px;
+        }
+        #nav-container li a{
+            font-size: 25px;
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        #nav-container li a span{
+            font-size: 40px;
+        }
+        #nav-container li:hover {
+            background-color: rgba(1,1,1,0.1);
+        }
+
+        #contact-container{
+            margin-top: 20px;
+        }
+        #contact-container ul{
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+        }
+        #contact-container ul li{
+            font-size: 25px;
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+            text-align: center;
+        }
+        #copyright{
+            position: relative;
+            text-align: center;
+            bottom: 10px;
+            margin-top: 10px;
+        }
+        #home, #about{
+            width: calc(98vw - 130px - 10px);
+        }
+       #home .home-image{
+            width: 400px;
+            height: auto;
+            display: block;
+            margin: auto;
+       }
+       #home-greeting{
+            text-align: center;
+            font-size: 50px;
+            font-style: italic;
+       }
+       #home #status{
+        font-size: 20px;
+       }
+       #about{
+        justify-content: center;
+        text-align: center;
+       }#about div{
+        display: block;
+        margin: auto;
+        width: calc(70vw - 130px - 10px);
+       }
+       #about h1{
+        font-size: 50px;
+       }
+       #about p{
+        font-family: sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 24px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        letter-spacing: 0.15em;
+       }
+       #about div{
+        text-align: center;
+       }
+    </style>
+    <style>
+
+        * {
+        transition: all 0.25s ease-out;
+        }
+        .gradient{
+            border-radius:50%;
+  mix-blend-mode: difference;
+  position:fixed;
+  z-index: -4;
+        }
+
+        .g1 {
+width: 200px;
+height:200px;
+background-color:rgba(1,1,1,0.1);  
+}
+
+.g2 {
+width: 140px;
+height:140px;
+background-color:rgba(1,1,1,0.1);
+}
+.g3 {
+width: 120px;
+height:120px;
+background-color:rgba(1,1,1,0.1);   
+}
+.g4 {
+width: 100px;
+height:100px;
+background-color:rgba(1,1,1,0.1);    
+}
+.g5 {
+width: 70px;
+height:70px;
+background-color:rgba(1,1,1,0.1);   
+}
+.g6 {
+width: 30px;
+height:30px;
+background-color:rgba(1,1,1,0); 
+box-shadow: 10px 10px rgba(1,1,1,0.2) ;   
+filter: blur(50);
+}
+    </style>
+</head>
+<body>
+    <div>
+        <div class="gradient g1"></div>
+        <div class="gradient g2"></div>
+        <div class="gradient g3"></div>
+        <div class="gradient g4"></div>
+        <div class="gradient g5"></div>
+        <div class="gradient g6"></div>
+    </div>
+    
+    <div id="right-container">
+        <div id="nav-container">
+            <ul>
+                <li><a href="#"><span>H</span>ome</a></li>
+                <hr>
+                <li><a href="#about"><span>A</span>bout</a></li>
+                <hr>
+                <li><a href="#projects"><span>P</span>rojects</a></li>
+                <hr>
+                <li><a href="#contact"><span>C</span>ontact</a></li>
+                <hr>
+            </ul>
+            
+        </div>
+        
+        <div id="contact-container">
+            <ul>
+                <li><i class="bi bi-facebook"></i></li>
+                <li><i class="bi bi-linkedin"></i></li>
+                <li><i class="bi bi-github"></i></li>
+                <li><i class="bi bi-envelope"></i></li>
+                <li><i class="bi bi-twitter"></i></li>
+            </ul> 
+        </div>
+        <div id="copyright">Copyright <span id="copyright-year">2023</span><br>Roshan Kc</div>
+    </div>
+    <div id="home">
+        <img src="images/320229489_3306657399549777_1621418504408542570_n.png" class="home-image" alt="Responsive image">
+        <div id="home-greeting">
+            Greetings<br>I am Roshan Kc
+        </div>
+        <div id="status">
+            <ul>
+                <li>status : self-empolyed</li>
+                <li>academic : bachleor of comupter engineering</li>
+                <li>martial sttatus : single</li>
+                <li>age :<span id="age-counter"></span></li>
+                <li>country : nepal</li>
+                <li>more : CV</li>
+            </ul>
+        </div>
+    </div>
+    <div id="about">
+        <div>
+            <h1>About me.</h1>
+            <p>As of June 2023, I am a fresh graduate of bachelor in computer engineering. Till this point of my life, i haven't achieved much in my professional field but i am confident that my academic and my in-college achievements have been well. I am a hard working student from my junior level. In +2 science, I have received an award “creative thinking and imagination’. At the bachelor level, I have been engaged in many clubs and projects. I have served as an executive committee member of robotics club for 2 years, built a cloud data management and CMS of website for robotics club, and worked with a team to build an electric vehicle to compete in Shell eco Marathon asia.i, along with a team, have participated in four hackathons in a 6 month period and won 2 awards. I have worked with many clients and also did a three month remote internship with a startup. I enjoy doing backend and networking related stuff. I find frontend and designing stuff hard to work with but in the end i achieve what i had planned to.
+                My interest is in entrepreneurship and technology startups, and I am thriving to gain essential skills and knowledge to move forward in that field. I will be more than happy to get connected with you if you share a common interest as me.
+                <br> Thankyou for reading.
+                <br>Roshan Kc
+            </p>
+        </div>
+        
+    </div>
+</body>
+<script>
+    date = new Date();
+    year = date.getFullYear();
+    window.onload(initials());
+
+    function initials() {
+        document.getElementById('age-counter').innerHTML=year - 1999 - 1 + (date.getMonth() >= 11 ? 1 : 0);  //check your birthmonth has passed, if yes you are on years old (mine is dec, so 11, jan is 0) just replace 11 with your birth month(ignore day for now)
+        document.getElementById('copyright-year').innerHTML=year;
+    }
+
+    $(document).ready(function(){
+    animateDiv('.g1');
+    animateDiv('.g2');
+    animateDiv('.g3');
+    animateDiv('.g4');
+    animateDiv('.g5');
+    animateDiv('.g6');
+});
+
+function makeNewPosition(){
+    
+    // Get viewport dimensions (remove the dimension of the div)
+    var h = $(window).height() - 50;
+    var w = $(window).width() - 50;
+    
+    var nh = Math.floor(Math.random() * h);
+    var nw = Math.floor(Math.random() * w);
+    
+    return [nh,nw];    
+    
+}
+
+function animateDiv(myclass){
+    var newq = makeNewPosition();
+    $(myclass).animate({ top: newq[0], left: newq[1] }, 1000,   function(){
+      animateDiv(myclass);        
+    });
+    
+};
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</html>
