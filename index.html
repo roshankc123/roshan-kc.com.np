@@ -123,7 +123,7 @@
             <div id="links">
                 <a href={'https://raw.githubusercontent.com/roshankc123/'+props.data.name+'/master/README.md'}>README.md</a>
                 <a href={'https://github.com/roshankc123/'+props.data.name}>github link</a>
-                <a href="demo link"></a>
+                {props.data.homepage ? <a href={props.data.homepage}>demo</a> : ''}
             </div>
         </div>
     }
@@ -132,7 +132,8 @@
         const [data, setdata] = React.useState([]);
         
         React.useEffect(() => {
-            fetch('https://kcroshan566.pythonanywhere.com/projects')
+            // fetch('https://kcroshan566.pythonanywhere.com/projects')
+            fetch('http://127.0.0.1:8000/projects')
                 .then(
                         response => response.json()
                     )
