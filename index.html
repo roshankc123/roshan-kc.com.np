@@ -6,186 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Roshan Kc</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <style>
-        body{
-            /* margin: 0;
-            padding: 0; */
-            overflow-x: hidden;
-        }
-        #right-container{
-            height: 98vh;
-            width: 130px;
-            background-color: #FF9900;
-            position: fixed;
-            right: 10px;
-            /* background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
-            background-image: url("{{url_for('static', filename='images/320229489_3306657399549777_1621418504408542570_n.png')}}"); */
-        }
-        #nav-container ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: auto;
-        }
-        #nav-container li{
-            width: auto;
-            height: 80px;
-        }
-        #nav-container li a{
-            font-size: 25px;
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        #nav-container li a span{
-            font-size: 40px;
-        }
-        #nav-container li:hover {
-            background-color: rgba(1,1,1,0.1);
-        }
-
-        #contact-container{
-            margin-top: 20px;
-        }
-        #contact-container ul{
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: auto;
-        }
-        #contact-container ul li{
-            font-size: 25px;
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-            text-align: center;
-        }
-        #copyright{
-            position: relative;
-            text-align: center;
-            bottom: 10px;
-            margin-top: 10px;
-        }
-        #home, #about{
-            width: calc(98vw - 130px - 10px);
-        }
-       #home .home-image{
-            width: 400px;
-            height: auto;
-            display: block;
-            margin: auto;
-       }
-       #home-greeting{
-            text-align: center;
-            font-size: 50px;
-            font-style: italic;
-       }
-       #home #status{
-        font-size: 20px;
-       }
-       #about{
-        justify-content: center;
-        text-align: center;
-       }#about div{
-        display: block;
-        margin: auto;
-        width: calc(70vw - 130px - 10px);
-       }
-       #about h1{
-        font-size: 50px;
-       }
-       #about p{
-        font-family: sans-serif;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 20px;
-        line-height: 24px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        letter-spacing: 0.15em;
-       }
-       #about div{
-        text-align: center;
-       }
-    </style>
-    <style>
-
-        * {
-        transition: all 0.25s ease-out;
-        }
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-                transform: translate(20px, 20px);
-            }
-            100% {
-                transform: rotate(360deg);
-                transform: translate(50px, 50px);
-            }
-        }
-
-        .gradient {
-            z-index: -4;
-            --size: 250px;
-            --speed: 25s;
-            --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
-            position: fixed;
-            /* width: var(--size);
-            height: var(--size); */
-            filter: blur(calc(var(--size) / 2));
-            background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
-            animation: rotate var(--speed) var(--easing) alternate infinite;
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        }
-
-        @media (min-width: 720px) {
-            .gradient {
-                --size: 500px;
-            }
-        }
-
-        .g1 {
-            width: 100vw;
-            height:100vh;
-            background-color:rgba(255,140,1,0.2);  
-        }
-
-        .g2 {
-            width: 140px;
-            height:140px;
-            background-color:rgba(1,1,1,0.1);
-        }
-        .g3 {
-            width: 120px;
-            height:120px;
-            background-color:rgba(1,1,1,0.1);   
-        }
-        .g4 {
-            width: 100px;
-            height:100px;
-            background-color:rgba(1,1,1,0.1);    
-        }
-        .g5 {
-            width: 70px;
-            height:70px;
-            background-color:rgba(1,1,1,0.1);   
-        }
-        .g6 {
-            width: 30px;
-            height:30px;
-            background-color:rgba(1,1,1,0); 
-            box-shadow: 10px 10px rgba(1,1,1,0.2) ;   
-            filter: blur(50);
-        }
-    </style>
+    <link rel="stylesheet" href="projects.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        
+    
 </head>
 <body>
     <div>
-        <div class="gradient g1"></div>
+        <!-- <div class="gradient g1"></div> -->
         <!-- <div class="gradient g2"></div>
         <div class="gradient g3"></div>
         <div class="gradient g4"></div>
@@ -213,8 +43,9 @@
                 <li><i class="bi bi-facebook"></i></li>
                 <li><i class="bi bi-linkedin"></i></li>
                 <li><i class="bi bi-github"></i></li>
-                <li><i class="bi bi-envelope"></i></li>
+                <li><a href="mailto:contact@roshan-kc.com.np"><i class="bi bi-envelope"></i></a></li>
                 <li><i class="bi bi-twitter"></i></li>
+                <li><i class="bi bi-medium"></i></li>
             </ul> 
         </div>
         <div id="copyright">Copyright <span id="copyright-year">2023</span><br>Roshan Kc</div>
@@ -246,47 +77,83 @@
         </div>
         
     </div>
+    <div id="projects">
+            <h1>Projects</h1>
+            <div id="projects-main"></div>
+    </div>
 </body>
-<script>
-    date = new Date();
-    year = date.getFullYear();
-    window.onload(initials());
+<script src="script.js"></script>
+<script type="text/babel">
 
-    function initials() {
-        document.getElementById('age-counter').innerHTML=year - 1999 - 1 + (date.getMonth() >= 11 ? 1 : 0);  //check your birthmonth has passed, if yes you are on years old (mine is dec, so 11, jan is 0) just replace 11 with your birth month(ignore day for now)
-        document.getElementById('copyright-year').innerHTML=year;
+    function Languages(props){
+        // console.log(props)
+        let lang = Object.keys(props.data)
+        return <div id="languages">
+        {lang.map(key=>{
+            return <span>
+            <strong>{key}</strong>:{props.data[key]}
+            </span>
+        })}
+        </div>
     }
+    function Card(props){
+        // console.log(props)
+        let lang = Object.keys(props.data.langs)
+        return <div id="card">
+            <div id="title">
+                    {props.data.name}
+            </div>
+            <div id="github-logo">
+                <i className="bi bi-github"></i>
+            </div>
+            <div id="date">
+                {props.data.date}
+            </div>
+            <div id="description">
+                {props.data.description}
+            </div>
+    
+            <div id="languages">
+        {lang.map(key=>{
+            return <span>
+            <strong>{key}</strong>:{props.data.langs[key]}<br></br>
+            </span>
+        })}
+        </div>
+            <div id="links">
+                <a href="">README.md</a>
+                <a href="">github link</a>
+                <a href="">demo link</a>
+            </div>
+        </div>
+    }
+    function Welcome() {
 
-//     $(document).ready(function(){
-//     animateDiv('.g1');
-//     animateDiv('.g2');
-//     animateDiv('.g3');
-//     animateDiv('.g4');
-//     animateDiv('.g5');
-//     animateDiv('.g6');
-// });
+        const [data, setdata] = React.useState([]);
+        
+        React.useEffect(() => {
+            fetch('http://127.0.0.1:8000/projects')
+                .then(
+                        response => response.json()
+                    )
+                    .then(
+                        responseData => {
+                            let temp = Object.values(responseData)
+                            setdata(temp)
+                        }
+                    )
+        }, []);
+        // console.log(data)
+        return (
+            <>
+            {data.map(eachData=><Card key={eachData.id} data={eachData}/>)}
+            </>
+        )
+    }
+        
+    const container = document.getElementById('projects-main');
+      const root = ReactDOM.createRoot(container);
+      root.render(<Welcome />)
+    </script>
 
-// function makeNewPosition(){
-    
-//     // Get viewport dimensions (remove the dimension of the div)
-//     var h = $(window).height() - 50;
-//     var w = $(window).width() - 50;
-    
-//     var nh = Math.floor(Math.random() * h);
-//     var nw = Math.floor(Math.random() * w);
-    
-//     return [nh,nw];    
-    
-// }
-
-// function animateDiv(myclass){
-//     var newq = makeNewPosition();
-//     $(myclass).animate({ top: newq[0], left: newq[1] }, 1000,   function(){
-//       animateDiv(myclass);        
-//     });
-    
-// };
-
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </html>

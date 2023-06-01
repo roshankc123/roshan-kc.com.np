@@ -1,0 +1,181 @@
+*{
+    font-family: monospace;
+}
+body{
+    /* margin: 0;
+    padding: 0; */
+    overflow-x: hidden;
+}
+#right-container{
+    height: 98vh;
+    width: 130px;
+    background-color: #FF9900;
+    position: fixed;
+    right: 10px;
+    /* background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
+    background-image: url("{{url_for('static', filename='images/320229489_3306657399549777_1621418504408542570_n.png')}}"); */
+}
+#nav-container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+#nav-container li{
+    width: auto;
+    height: 80px;
+}
+#nav-container li a{
+    font-size: 20px;
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+#nav-container li a span{
+    font-size: 40px;
+}
+#nav-container li:hover {
+    background-color: rgba(1,1,1,0.1);
+}
+
+#contact-container{
+    margin-top: 20px;
+}
+#contact-container ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+#contact-container ul li{
+    font-size: 25px;
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    text-align: center;
+}
+#copyright{
+    position: relative;
+    text-align: center;
+    bottom: 10px;
+    margin-top: 10px;
+}
+#home, #about, #projects{
+    width: calc(98vw - 130px - 10px);
+}
+#home .home-image{
+    width: 400px;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+#home-greeting{
+    text-align: center;
+    font-size: 50px;
+    font-style: italic;
+}
+#home #status{
+font-size: 20px;
+}
+#about, #projects{
+justify-content: center;
+text-align: center;
+}
+#about div, #projects h1{
+display: block;
+margin: auto;
+width: calc(70vw - 130px - 10px);
+}
+#about h1, #projects h1{
+font-size: 50px;
+}
+#about p{
+font-family: sans-serif;
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 24px;
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: 0.15em;
+}
+#about div{
+text-align: center;
+}
+#projects-main{
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    column-gap: 10px;
+    justify-content: space-around;
+}
+#card{
+    border: 2px solid red;
+    min-width: 340px;
+    max-width: 340px;
+    height: auto;
+    display: grid;
+}
+#card *{
+    margin: 5px;
+    font-size: 12px;
+}
+#card #title{
+    /* padding: 10px; */
+    font-size: 20px;
+    font-weight: 600;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 1;
+}
+#card #github-logo{
+    grid-column: 4 / span 1;
+    grid-row: 1 / span 1;
+    text-align: center;
+}
+#card #github-logo i{
+    font-size: 20px;
+}
+#card #date{
+    /* padding: 0px; */
+    /* margin-left: 10px; */
+    font-size: 10px;
+    grid-column: 1 / span 4;
+    grid-row: 2 / span 1;
+    /* font-weight: 600; */
+}
+#card #description{
+    /* padding: 10px; */
+    text-align: justify;
+    font-size: 16px;
+    grid-column: 1 / span 4;
+    grid-row: 3 / span 1;
+    word-wrap: break-word;
+    width: 330px;
+    /* font-weight: 400; */
+}
+#card #languages{
+    /* padding: 10px; */
+    text-align: left;
+    font-size: 14px;
+    grid-column: 1 / span 4;
+    grid-row: 4 / span 1;
+    text-transform: uppercase;
+    /* font-weight: 600; */
+}
+#card #languages strong{
+    /* padding: 10px; */
+    margin: 0px;
+    /* font-weight: 600; */
+}
+#card #links{
+    grid-column: 1 / span 4;
+    grid-row: 5 / span 1;
+}
+#card #links a{
+    text-align: center;
+    font-size: 16px;
+}
