@@ -100,7 +100,7 @@ font-size: 20px;
 line-height: 24px;
 display: flex;
 align-items: center;
-text-align: center;
+text-align: left;
 letter-spacing: 0.15em;
 }
 #about div{
@@ -109,12 +109,12 @@ text-align: center;
 #projects-main{
     display: flex;
     flex-wrap: wrap;
-    row-gap: 10px;
-    column-gap: 10px;
+    row-gap: 40px;
+    column-gap: 20px;
     justify-content: space-around;
 }
 #card{
-    border: 2px solid red;
+    box-shadow: 2px 2px 10px grey;
     min-width: 340px;
     max-width: 340px;
     height: auto;
@@ -127,6 +127,9 @@ text-align: center;
 #card #title{
     /* padding: 10px; */
     font-size: 20px;
+    text-align: left;
+    width: 300px;
+    word-break: break-word;
     font-weight: 600;
     grid-column: 1 / span 3;
     grid-row: 1 / span 1;
@@ -145,6 +148,7 @@ text-align: center;
     font-size: 10px;
     grid-column: 1 / span 4;
     grid-row: 2 / span 1;
+    text-align: left;
     /* font-weight: 600; */
 }
 #card #description{
@@ -174,6 +178,12 @@ text-align: center;
 #card #links{
     grid-column: 1 / span 4;
     grid-row: 5 / span 1;
+    text-align: justify;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
 }
 #card #links a{
     text-align: center;

@@ -107,7 +107,7 @@
                 <i className="bi bi-github"></i>
             </div>
             <div id="date">
-                {props.data.date}
+                {props.data.time}
             </div>
             <div id="description">
                 {props.data.description}
@@ -121,9 +121,9 @@
         })}
         </div>
             <div id="links">
-                <a href="">README.md</a>
-                <a href="">github link</a>
-                <a href="">demo link</a>
+                <a href={'https://raw.githubusercontent.com/roshankc123/'+props.data.name+'/master/README.md'}>README.md</a>
+                <a href={'https://github.com/roshankc123/'+props.data.name}>github link</a>
+                <a href="demo link"></a>
             </div>
         </div>
     }
@@ -132,7 +132,7 @@
         const [data, setdata] = React.useState([]);
         
         React.useEffect(() => {
-            fetch('http://127.0.0.1:8000/projects')
+            fetch('https://kcroshan566.pythonanywhere.com/projects')
                 .then(
                         response => response.json()
                     )
