@@ -192,10 +192,10 @@ text-align: center;
     font-size: 16px;
 }
 
-@media only screen and (max-width: 500px) {
-    body {
+@media only screen and (max-width: 700px) {
+    /* body {
       background-color: lightblue;
-    }
+    } */
     #right-container{
         visibility: hidden;
     }
