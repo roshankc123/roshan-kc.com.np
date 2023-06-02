@@ -67,7 +67,7 @@ body{
     width: calc(98vw - 130px - 10px);
 }
 #home .home-image{
-    width: 400px;
+    width: 340px;
     height: auto;
     display: block;
     margin: auto;
@@ -84,13 +84,15 @@ font-size: 20px;
 justify-content: center;
 text-align: center;
 }
-#about div, #projects h1{
+#about div{
 display: block;
 margin: auto;
 width: calc(70vw - 130px - 10px);
+
 }
 #about h1, #projects h1{
 font-size: 50px;
+padding: 20px;
 }
 #about p{
 font-family: sans-serif;
@@ -189,3 +191,25 @@ text-align: center;
     text-align: center;
     font-size: 16px;
 }
+
+@media only screen and (max-width: 500px) {
+    body {
+      background-color: lightblue;
+    }
+    #right-container{
+        visibility: hidden;
+    }
+    #home, #about div, #projects{
+        width: calc(98vw - 10px);
+    }
+    #home #status{
+        font-size: 16px;
+    }
+    h1{
+        font-size: 30px;
+    }
+    #about p{
+        font-size: 14px;
+        padding: 20px;;
+    }
+  }
