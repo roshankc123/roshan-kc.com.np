@@ -12,8 +12,21 @@ body{
     background-color: #FF9900;
     position: fixed;
     right: 10px;
+    display: block;
     /* background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
     background-image: url("{{url_for('static', filename='images/320229489_3306657399549777_1621418504408542570_n.png')}}"); */
+}
+#dropdown{
+    /* visibility: hidden; */ 
+    position: fixed;
+    display: none;
+    text-align: right;
+    width: 40px;
+    right: 10px;
+    padding: 10px;
+}
+#dropdown i{
+    font-size: 40px;
 }
 #nav-container ul {
     list-style-type: none;
@@ -78,35 +91,35 @@ body{
     font-style: italic;
 }
 #home #status{
-font-size: 20px;
+    font-size: 20px;
 }
 #about, #projects{
-justify-content: center;
-text-align: center;
+    justify-content: center;
+    text-align: center;
 }
 #about div{
-display: block;
-margin: auto;
-width: calc(70vw - 130px - 10px);
+    display: block;
+    margin: auto;
+    width: calc(70vw - 130px - 10px);
 
 }
 #about h1, #projects h1{
-font-size: 50px;
-padding: 20px;
+    font-size: 50px;
+    padding: 20px;
 }
 #about p{
-font-family: sans-serif;
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 24px;
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.15em;
+    font-family: sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.15em;
 }
 #about div{
-text-align: center;
+    text-align: center;
 }
 #projects-main{
     display: flex;
@@ -197,7 +210,16 @@ text-align: center;
       background-color: lightblue;
     } */
     #right-container{
-        visibility: hidden;
+        display: none;
+    }
+    #dropdown{
+        display: block;
+    }
+    #dropdown #dropdown-active{
+        display:block;
+    }
+    #dropdown #dropdown-inactive{
+        display: none;
     }
     #home, #about div, #projects{
         width: calc(98vw - 10px);

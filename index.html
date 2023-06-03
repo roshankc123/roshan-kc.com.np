@@ -22,8 +22,12 @@
         <div class="gradient g5"></div>
         <div class="gradient g6"></div> -->
     </div>
-    
+    <div id="dropdown">
+        <i class="bi bi-list" id="dropdown-active" onclick="dropdown_active()"></i>
+        <i class="bi bi-list" id="dropdown-inactive" onclick="dropdown_inactive()"></i>
+    </div>
     <div id="right-container">
+        
         <div id="nav-container">
             <ul>
                 <li><a href="#"><span>H</span>ome</a></li>
@@ -84,7 +88,19 @@
 </body>
 <script src="script.js"></script>
 <script type="text/babel">
+    function dropdown_active(){
+        document.getElementById('right-container').style.display='block';
+        document.getElementById('dropdown-inactive').style.display='block';
+        document.getElementById('dropdown-active').style.display='none';
+        document.getElementById('dropdown').style.right='130px';
+    }
+    function dropdown_inactive(){
+        document.getElementById('right-container').style.display='none';
+        document.getElementById('dropdown-inactive').style.display='none';
+        document.getElementById('dropdown-active').style.display='block';
+        document.getElementById('dropdown').style.right='10px';
 
+    }
     function Languages(props){
         // console.log(props)
         let lang = Object.keys(props.data)
