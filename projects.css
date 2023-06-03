@@ -15,9 +15,9 @@ body{
     position: fixed;
     z-index: -5;
     filter: blur(50px);
-    background-color: #fdfff5;
-    /* background-image: url('./images/background1.png');
-    background-position: center;
+    /* background-color: #fdfff5; */
+    /* background-image: url('./images/background.jpeg');
+    background-position: left;
     background-repeat: no-repeat; */
 }
 #right-container{
@@ -42,7 +42,7 @@ body{
 }
 #dropdown i{
     font-size: 40px;
-    /* -webkit-text-stroke: 3px; */
+    -webkit-text-stroke: 3px;
 }
 #nav-container ul {
     list-style-type: none;
