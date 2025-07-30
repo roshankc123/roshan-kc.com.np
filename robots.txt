@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+# Provide the location of the sitemap.
+Sitemap: https://roshan-kc.com.np/sitemap.xml
