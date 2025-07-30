@@ -1,177 +1,362 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Roshan Kc</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="projects.css">
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-        
-    
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Roshan Kc - A portfolio showcasing projects and skills in computer engineering, backend development, and networking." />
+  <meta name="author" content="Roshan Kc" />
+  <title>Roshan Kc | Computer Engineer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Source Sans 3', 'sans-serif'],
+            'serif': ['Lora', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      background-color: #f0f4f8;
+    }
+    .main-content-area {
+      /* This makes sure the main content takes up the available space beside the nav on desktop */
+      width: calc(100% - 24rem); /* 100% minus width of nav */
+    }
+    @media (max-width: 1023px) {
+      .main-content-area {
+        width: 100%;
+      }
+    }
+    /* Custom focus state for better accessibility */
+    :focus-visible {
+      outline: 3px solid #60a5fa;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    /* Active navigation link style */
+    nav a[aria-current="page"] {
+      color: #1d4ed8; /* text-blue-800 */
+      background-color: #eff6ff; /* bg-blue-50 */
+      font-weight: 600; /* font-semibold */
+    }
+    /* Background Gradient */
+    #background-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+      z-index: -1;
+    }
+  </style>
 </head>
-<body >
-    <div id="background">
-        <!-- <div class="background"></div> -->
-        <!-- <div class="gradient g2"></div>
-        <div class="gradient g3"></div>
-        <div class="gradient g4"></div>
-        <div class="gradient g5"></div>
-        <div class="gradient g6"></div> -->
-    </div>
-    <div id="dropdown">
-        <i class="bi bi-list" id="dropdown-active" onclick="dropdown_active()"></i>
-        <i class="bi bi-x" id="dropdown-inactive" onclick="dropdown_inactive()"></i>
-    </div>
-    <div id="right-container">
-        
-        <div id="nav-container">
-            <ul>
-                <li><a href="#"><span>H</span>ome</a></li>
-                <hr>
-                <li><a href="#about"><span>A</span>bout</a></li>
-                <hr>
-                <li><a href="#projects"><span>P</span>rojects</a></li>
-                <hr>
-                <li><a href="#contact"><span>C</span>ontact</a></li>
-                <hr>
-            </ul>
-            
-        </div>
-        
-        <div id="contact-container">
-            <ul>
-                <li><a href="https://www.facebook.com/roshan.kc.3557440"><i class="bi bi-facebook" style="color: #1a52cc;"></i></a></li>
-                <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a"><i class="bi bi-linkedin" style="color: #0077b5;"></i></a></i></li>
-                <li><a href="https://github.com/roshankc123" style="color: #171515;"><i class="bi bi-github"></i></a></i></li>
-                <li><a href="mailto:contact@roshan-kc.com.np" style="color: #ff4305;"><i class="bi bi-envelope"></i></a></li>
-                <!-- <li><a href=""><i class="bi bi-twitter" style="color: #1DA1F2;"></i></a></i></li> -->
-                <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1"><i class="bi bi-whatsapp" style="color: #075E54;"></i></a></li>
-                <li><a href="https://medium.com/@kcroshan566"><i class="bi bi-medium" style="color: #000000;"></i></a></li>
-            </ul> 
-        </div>
-        <div id="copyright">Copyright <span id="copyright-year">2023</span><br>Roshan Kc</div>
-    </div>
-    <div id="home">
-        <img src="images/320229489_3306657399549777_1621418504408542570_n.png" class="home-image" alt="Responsive image">
-        <div id="home-greeting">
-            Greetings<br>I am Roshan Kc
-        </div>
-        <div id="status">
-            <ul>
-                <li>status : Open for hiring</li>
-                <li>academic : Bachleor of computer engineering</li>
-                <li>martial status : unmarried</li>
-                <li>age :<span id="age-counter"></span></li>
-                <li>country : nepal</li>
-                <li>download CV : <a href="/pdf/RoshanKcResume.pdf">CV</a></li>
-            </ul>
-        </div>
-    </div>
-    <div id="about">
-        <div>
-            <h1>About me.</h1>
-            <p>
-                As of June 2023, I've graduated with a bachelor's degree in computer engineering. Although I haven't achieved much professionally yet, my academic and in-college accomplishments have been strong. I'm a dedicated and hardworking student, recognized for creative thinking in high school. During college, I actively participated in robotics clubs, hackathons, and internships. I enjoy backend and networking work, and my ultimate interest lies in entrepreneurship and technology startups. If you share these interests, I'd love to connect with you.
-                <br> Thankyou for reading.
-                <br>Roshan Kc
-            </p>
-        </div>
-        
-    </div>
-    <div id="projects">
-            <h1>Projects</h1>
-            <div id="projects-main"></div>
-    </div>
-</body>
-<script src="script.js"></script>
-<script type="text/babel">
-    function dropdown_active(){
-        document.getElementById('right-container').style.display='block';
-        document.getElementById('dropdown-inactive').style.display='block';
-        document.getElementById('dropdown-active').style.display='none';
-        document.getElementById('dropdown').style.right='130px';
-    }
-    function dropdown_inactive(){
-        document.getElementById('right-container').style.display='none';
-        document.getElementById('dropdown-inactive').style.display='none';
-        document.getElementById('dropdown-active').style.display='block';
-        document.getElementById('dropdown').style.right='10px';
+<body class="font-sans text-gray-700 bg-gray-50">
 
-    }
-    function Languages(props){
-        // console.log(props)
-        let lang = Object.keys(props.data)
-        return <div id="languages">
-        {lang.map(key=>{
-            return <span>
-            <strong>{key}</strong>:{props.data[key]}%
-            </span>
-        })}
+  <div id="background-gradient"></div>
+  
+  <div class="flex">
+    <nav
+      id="left-nav"
+      class="fixed top-0 left-0 h-full w-96 bg-white/80 backdrop-blur-sm border-r border-gray-200 p-10 flex-col justify-between hidden lg:flex"
+      aria-label="Primary navigation"
+    >
+      <div>
+        <div class="mb-12">
+            <h1 class="font-serif text-3xl font-bold text-gray-800">Roshan Kc</h1>
+            <p class="text-gray-500 mt-1">Computer Engineer</p>
         </div>
-    }
-    function Card(props){
-        // console.log(props)
-        let lang = Object.keys(props.data.langs)
-        return <div id="card">
-            <div id="title">
-                    {props.data.name}
-            </div>
-            <div id="github-logo">
-                <i className="bi bi-github"></i>
-            </div>
-            <div id="date">
-                {props.data.time}
-            </div>
-            <div id="description">
-                {props.data.description}
-            </div>
+        <ul id="desktop-nav-links" class="space-y-2">
+          <li><a href="#home" class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span class="w-8 h-px bg-gray-400"></span> Home</a></li>
+          <li><a href="#about" class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span class="w-8 h-px bg-gray-400"></span> About</a></li>
+          <li><a href="#projects" class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span class="w-8 h-px bg-gray-400"></span> Projects</a></li>
+          <li><a href="#contact" class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span class="w-8 h-px bg-gray-400"></span> Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+          <ul class="flex items-center space-x-5 mb-4">
+              <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener" aria-label="Facebook" class="text-gray-500 hover:text-blue-600 transition-colors"><i class="bi bi-facebook text-xl"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-gray-500 hover:text-blue-700 transition-colors"><i class="bi bi-linkedin text-xl"></i></a></li>
+              <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener" aria-label="GitHub" class="text-gray-500 hover:text-gray-900 transition-colors"><i class="bi bi-github text-xl"></i></a></li>
+              <li><a href="mailto:contact@roshan-kc.com.np" aria-label="Email" class="text-gray-500 hover:text-red-500 transition-colors"><i class="bi bi-envelope text-xl"></i></a></li>
+              <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener" aria-label="WhatsApp" class="text-gray-500 hover:text-green-500 transition-colors"><i class="bi bi-whatsapp text-xl"></i></a></li>
+              <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener" aria-label="Medium" class="text-gray-500 hover:text-gray-900 transition-colors"><i class="bi bi-medium text-xl"></i></a></li>
+          </ul>
+          <p class="text-xs text-gray-500">&copy; <span id="copyright-year"></span> Roshan Kc. All Rights Reserved.</p>
+      </div>
+    </nav>
     
-            <div id="languages">
-        {lang.map(key=>{
-            return <span>
-            <strong>{key}</strong>:{props.data.langs[key]}<br></br>
-            </span>
-        })}
+    <header class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="font-serif text-xl font-bold text-gray-800">Roshan Kc</a>
+            <button
+                id="mobile-menu-button"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                aria-label="Toggle navigation menu"
+                class="p-2 -mr-2 text-gray-700 hover:text-blue-600"
+            >
+                <i class="bi bi-list text-3xl"></i>
+            </button>
         </div>
-            <div id="links">
-                <a href={'https://raw.githubusercontent.com/roshankc123/'+props.data.name+'/master/README.md'}>README.md</a>
-                <a href={'https://github.com/roshankc123/'+props.data.name}>github link</a>
-                {props.data.homepage ? <a href={props.data.homepage}>demo</a> : ''}
-            </div>
+    </header>
+
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 z-50 hidden" aria-hidden="true"></div>
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-8">
+            <button id="mobile-menu-close-button" class="absolute top-4 right-4 p-2 text-gray-600 hover:text-blue-600" aria-label="Close navigation menu">
+                <i class="bi bi-x text-4xl"></i>
+            </button>
+            <h2 class="font-serif text-2xl font-bold mb-8">Menu</h2>
+            <ul id="mobile-nav-links" class="space-y-4 text-lg">
+                <li><a href="#home" class="block py-2 text-gray-700 hover:text-blue-700">Home</a></li>
+                <li><a href="#about" class="block py-2 text-gray-700 hover:text-blue-700">About</a></li>
+                <li><a href="#projects" class="block py-2 text-gray-700 hover:text-blue-700">Projects</a></li>
+                <li><a href="#contact" class="block py-2 text-gray-700 hover:text-blue-700">Contact</a></li>
+            </ul>
         </div>
-    }
-    function Welcome() {
+    </div>
 
-        const [data, setdata] = React.useState([]);
-        
-        React.useEffect(() => {
-            fetch('https://kcroshan566.pythonanywhere.com/projects')
-            // fetch('http://127.0.0.1:8000/projects')
-                .then(
-                        response => response.json()
-                    )
-                    .then(
-                        responseData => {
-                            let temp = Object.values(responseData)
-                            setdata(temp)
-                        }
-                    )
-        }, []);
-        // console.log(data)
-        return (
-            <>
-            {data.map(eachData=><Card key={eachData.id} data={eachData}/>)}
-            </>
-        )
-    }
-        
-    const container = document.getElementById('projects-main');
-      const root = ReactDOM.createRoot(container);
-      root.render(<Welcome />)
-    </script>
+    <main class="ml-auto lg:ml-96 p-6 md:p-12 lg:p-20 w-full main-content-area">
+      
+      <section id="home" class="min-h-screen flex flex-col justify-center lg:pt-0 pt-20" tabindex="-1" aria-labelledby="home-heading">
+          <div class="flex flex-col md:flex-row items-center gap-8">
+              <img
+                src="images/320229489_3306657399549777_1621418504408542570_n.png"
+                class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-lg object-cover ring-4 ring-white"
+                alt="Portrait of Roshan Kc"
+              />
+              <div>
+                <h1 id="home-heading" class="font-serif text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
+                    Hello, I'm Roshan Kc.
+                </h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-xl">
+                    A computer engineering graduate from Nepal with a passion for backend systems, networking, and technology entrepreneurship.
+                </p>
+                <a href="/pdf/RoshanKcResume.pdf" target="_blank" class="inline-block mt-6 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Download CV <i class="bi bi-download ml-2"></i>
+                </a>
+              </div>
+          </div>
+      </section>
 
+      <section id="about" class="py-24" tabindex="-1" aria-labelledby="about-heading">
+        <h2 id="about-heading" class="font-serif text-3xl font-bold text-gray-800 mb-8">About Me</h2>
+        <div class="space-y-4 text-lg text-gray-600 leading-relaxed max-w-2xl">
+            <p>
+                As a recent Computer Engineering graduate (June 2023), I am eager to apply my robust academic foundation and hands-on project experience to a professional role. My background is marked by strong academic performance and recognition for creative problem-solving since high school.
+            </p>
+            <p>
+                Throughout my college years, I was deeply involved in the tech community, participating in robotics clubs, competing in hackathons, and completing valuable internships. These experiences have solidified my skills and passion for backend development and network infrastructure. My ultimate ambition is to contribute to the tech startup ecosystem. If you are a founder, innovator, or tech enthusiast, I would be thrilled to connect and explore potential collaborations.
+            </p>
+            <p>Thank you for visiting my portfolio.</p>
+        </div>
+        <div class="mt-12 bg-white p-6 rounded-lg border border-gray-200">
+          <ul class="grid grid-cols-2 md:grid-cols-3 gap-6 text-gray-700">
+            <li><strong class="block text-sm text-gray-500">Status</strong>Open to new opportunities</li>
+            <li><strong class="block text-sm text-gray-500">Degree</strong>B.E. Computer Engineering</li>
+            <li><strong class="block text-sm text-gray-500">Age</strong> <span id="age-counter"></span></li>
+            <li><strong class="block text-sm text-gray-500">Nationality</strong>Nepali</li>
+            <li><strong class="block text-sm text-gray-500">Location</strong>Kathmandu, Nepal</li>
+            <li><strong class="block text-sm text-gray-500">Interests</strong>Startups, Backend, AI</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="projects" class="py-24" tabindex="-1" aria-labelledby="projects-heading">
+        <h2 id="projects-heading" class="font-serif text-3xl font-bold text-gray-800 mb-8">Projects</h2>
+        <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          </div>
+      </section>
+
+      <section id="contact" class="py-24 text-center" tabindex="-1" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" class="font-serif text-3xl font-bold text-gray-800 mb-4">Get In Touch</h2>
+        <p class="text-lg text-gray-600 max-w-xl mx-auto mb-8">
+          I'm currently seeking new opportunities and am open to collaborations. Feel free to reach out—my inbox is always open!
+        </p>
+        <a href="mailto:contact@roshan-kc.com.np" class="inline-block bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg shadow-md hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          Say Hello <i class="bi bi-send ml-2"></i>
+        </a>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // --- DYNAMIC CONTENT ---
+      const yearSpan = document.getElementById("copyright-year");
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+      const ageCounter = document.getElementById("age-counter");
+      if(ageCounter) {
+          const birthDate = new Date('1999-12-01'); // More specific date
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+              age--;
+          }
+          ageCounter.textContent = age;
+      }
+
+      // --- MOBILE MENU ---
+      const menuButton = document.getElementById('mobile-menu-button');
+      const closeButton = document.getElementById('mobile-menu-close-button');
+      const menu = document.getElementById('mobile-menu');
+      const overlay = document.getElementById('mobile-menu-overlay');
+      const mobileNavLinks = document.querySelectorAll('#mobile-nav-links a');
+
+      function openMenu() {
+        menu.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+        menuButton.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      }
+
+      function closeMenu() {
+        menu.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+        menuButton.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      menuButton.addEventListener('click', openMenu);
+      closeButton.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+      mobileNavLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+
+      // --- ACTIVE NAV LINK HIGHLIGHTING ---
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('#desktop-nav-links a');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.removeAttribute('aria-current');
+              if (link.getAttribute('href') === `#${id}`) {
+                link.setAttribute('aria-current', 'page');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-30% 0px -70% 0px' }); // Highlights when section is in the middle of the viewport
+
+      sections.forEach(section => observer.observe(section));
+    });
+  </script>
+
+  <script type="text/babel">
+    function ProjectCard({ data }) {
+      return (
+        <div className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+          <div className="flex justify-between items-start mb-3">
+            <h3 className="text-lg font-semibold text-gray-800 pr-4">{data.name}</h3>
+            <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" aria-label={`${data.name} on GitHub`}>
+              <i className="bi bi-github text-gray-500 hover:text-gray-900 text-xl"></i>
+            </a>
+          </div>
+          <p className="text-sm text-gray-500 mb-4">{data.time}</p>
+          <p className="text-gray-600 mb-6 flex-grow">{data.description}</p>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {Object.entries(data.langs).map(([lang, percentage]) => (
+              <span key={lang} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+                {lang}
+              </span>
+            ))}
+          </div>
+          <div className="flex space-x-3 text-sm font-semibold border-t border-gray-200 pt-4">
+            <a
+              href={`https://github.com/roshankc123/${data.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              View on GitHub
+            </a>
+            {data.homepage && (
+              <>
+                <span className="text-gray-300">|</span>
+                <a
+                  href={data.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Live Demo <i className="bi bi-box-arrow-up-right text-xs ml-1"></i>
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function ProjectsSection() {
+      const [projects, setProjects] = React.useState([]);
+      const [status, setStatus] = React.useState('loading'); // 'loading', 'success', 'error'
+
+      React.useEffect(() => {
+        // Fetch data from the API endpoint
+        fetch('https://kcroshan566.pythonanywhere.com/projects')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(responseData => {
+            // The API returns an object, so we convert it to an array
+            setProjects(Object.values(responseData));
+            setStatus('success');
+          })
+          .catch(error => {
+            console.error("Failed to load projects:", error);
+            setStatus('error');
+          });
+      }, []); // Empty dependency array ensures this runs only once
+
+      if (status === 'loading') {
+        return <p className="text-gray-500">Loading projects...</p>;
+      }
+
+      if (status === 'error') {
+        return <p className="text-red-500">Could not load projects. Please try again later.</p>;
+      }
+
+      return (
+        <>
+          {projects.map((project) => (
+            <ProjectCard key={project.id} data={project} />
+          ))}
+        </>
+      );
+    }
+
+    const container = document.getElementById("projects-container");
+    const root = ReactDOM.createRoot(container);
+    root.render(<ProjectsSection />);
+  </script>
+
+</body>
 </html>
