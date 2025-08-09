@@ -18,11 +18,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.28.2/babel.min.js"
         integrity="sha512-AEhA/tSQr2Jwvfb/CmMAIVkOmPdIB5EBZXiHs3TXmarNdhcwX7ufSddMMVh2dVD2/8M33nWExg2KK33MLen09Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 
 
     <style>
@@ -170,14 +170,14 @@
                             class="group flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span
                                 class="w-8 h-px bg-gray-300 group-hover:bg-blue-600 transition-all duration-200"></span>
                             Our Story</a></li>
-                    <li><a href="#projects"
+                    <!-- <li><a href="#projects"
                             class="group flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span
                                 class="w-8 h-px bg-gray-300 group-hover:bg-blue-600 transition-all duration-200"></span>
-                            Projects</a></li>
+                            Projects</a></li> -->
                     <li><a href="#contact"
                             class="group flex items-center gap-4 px-4 py-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"><span
                                 class="w-8 h-px bg-gray-300 group-hover:bg-blue-600 transition-all duration-200"></span>
-                            Contact</a></li>
+                            Get In Touch</a></li>
                 </ul>
             </div>
             <div>
@@ -258,8 +258,8 @@
                 <ul id="mobile-nav-links" class="space-y-4 text-lg">
                     <li><a href="#home" class="block py-2 text-gray-700 hover:text-blue-700">Home</a></li>
                     <li><a href="#about" class="block py-2 text-gray-700 hover:text-blue-700">Our Story</a></li>
-                    <li><a href="#projects" class="block py-2 text-gray-700 hover:text-blue-700">Projects</a></li>
-                    <li><a href="#contact" class="block py-2 text-gray-700 hover:text-blue-700">Contact</a></li>
+                    <!-- <li><a href="#projects" class="block py-2 text-gray-700 hover:text-blue-700">Projects</a></li> -->
+                    <li><a href="#contact" class="block py-2 text-gray-700 hover:text-blue-700">Get In Touch</a></li>
                 </ul>
 
                 <ul class="flex flex-wrap items-center space-x-5 mb-4">
@@ -401,7 +401,7 @@
                 </div>
             </section>
 
-            <section id="projects" class="fade-in-section sm:py-24" tabindex="-1" aria-labelledby="projects-heading">
+            <!-- <section id="projects" class="fade-in-section sm:py-24" tabindex="-1" aria-labelledby="projects-heading">
                 <h2 id="projects-heading" class="text-3xl font-bold text-gray-900 mb-8 tracking-tight">Some of my rookie
                     projects
                 </h2>
@@ -409,7 +409,7 @@
                     Feel free to explore the code and reuse any of it.
                 </p>
                 <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            </section>
+            </section> -->
 
             <section id="contact" class="fade-in-section py-16 sm:py-24 text-center" tabindex="-1"
                 aria-labelledby="contact-heading">
@@ -491,62 +491,62 @@
                     });
                 }
             }
-            const projectsContainer = document.getElementById('projects-container');
-            const observer = new MutationObserver((mutationsList, observer) => {
-                for (const mutation of mutationsList) { if (mutation.type === 'childList' && mutation.addedNodes.length > 0) { initializeTilt(); observer.disconnect(); return; } }
-            });
-            observer.observe(projectsContainer, { childList: true });
+            // const projectsContainer = document.getElementById('projects-container');
+            // const observer = new MutationObserver((mutationsList, observer) => {
+            //     for (const mutation of mutationsList) { if (mutation.type === 'childList' && mutation.addedNodes.length > 0) { initializeTilt(); observer.disconnect(); return; } }
+            // });
+            // observer.observe(projectsContainer, { childList: true });
         });
     </script>
 
     <script type="text/babel">
-        function ProjectCard({ data, index }) {
-            return (
-                <div className="tilt-card bg-white p-6 rounded-lg border border-gray-200 shadow-md hover:shadow-2xl opacity-0 translate-y-5 fade-in-section flex flex-col" style={{ transitionDelay: `${150 + index * 10}ms` }}>
-                    <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-xl font-semibold text-gray-800 pr-4">{data.name.replace(/-/g, ' ')}</h3>
-                        <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" aria-label={`${data.name} on GitHub`} className="text-gray-400 hover:text-gray-800 transition-colors"><i className="bi bi-github text-2xl"></i></a>
-                    </div>
-                    <p className="text-sm font-medium text-gray-500 mb-4">{data.time}</p>
-                    <p className="text-gray-600 mb-6 flex-grow">{data.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                        {Object.keys(data.langs).map((lang) => (<span key={lang} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">{lang}</span>))}
-                    </div>
-                    <div className="flex items-center space-x-4 text-sm font-semibold border-t border-gray-200 pt-4 mt-auto">
-                        <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Source Code</a>
-                        {data.homepage && (<>
-                            <span className="text-gray-300">|</span>
-                            <a href={data.homepage} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">Live Deployment <i className="bi bi-box-arrow-up-right text-xs ml-1.5"></i></a>
-                        </>)}
-                    </div>
-                </div>
-            );
-        }
-        function ProjectsSection() {
-            const [projects, setProjects] = React.useState([]);
-            const [status, setStatus] = React.useState('loading');
-            React.useEffect(() => {
-                fetch('https://kcroshan566.pythonanywhere.com/projects')
-                    .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.json(); })
-                    .then(responseData => { setProjects(Object.values(responseData)); setStatus('success'); })
-                    .catch(error => { console.error("Failed to load projects:", error); setStatus('error'); });
-            }, []);
-            React.useEffect(() => {
-                if (status === 'success') {
-                    const cards = document.querySelectorAll('#projects-container .fade-in-section');
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-                    }, { threshold: 0.1 });
-                    cards.forEach(card => observer.observe(card));
-                }
-            }, [status]);
-            if (status === 'loading') return <p className="text-gray-500">Loading projects...</p>;
-            if (status === 'error') return <p className="text-red-500">Could not load projects. Please try again later.</p>;
-            return (<> {projects.map((project, index) => (<ProjectCard key={project.id} data={project} index={index} />))} </>);
-        }
-        const container = document.getElementById("projects-container");
-        const root = ReactDOM.createRoot(container);
-        root.render(<ProjectsSection />);
+        // function ProjectCard({ data, index }) {
+        //     return (
+        //         <div className="tilt-card bg-white p-6 rounded-lg border border-gray-200 shadow-md hover:shadow-2xl opacity-0 translate-y-5 fade-in-section flex flex-col" style={{ transitionDelay: `${150 + index * 10}ms` }}>
+        //             <div className="flex justify-between items-start mb-3">
+        //                 <h3 className="text-xl font-semibold text-gray-800 pr-4">{data.name.replace(/-/g, ' ')}</h3>
+        //                 <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" aria-label={`${data.name} on GitHub`} className="text-gray-400 hover:text-gray-800 transition-colors"><i className="bi bi-github text-2xl"></i></a>
+        //             </div>
+        //             <p className="text-sm font-medium text-gray-500 mb-4">{data.time}</p>
+        //             <p className="text-gray-600 mb-6 flex-grow">{data.description}</p>
+        //             <div className="flex flex-wrap gap-2 mb-6">
+        //                 {Object.keys(data.langs).map((lang) => (<span key={lang} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">{lang}</span>))}
+        //             </div>
+        //             <div className="flex items-center space-x-4 text-sm font-semibold border-t border-gray-200 pt-4 mt-auto">
+        //                 <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Source Code</a>
+        //                 {data.homepage && (<>
+        //                     <span className="text-gray-300">|</span>
+        //                     <a href={data.homepage} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">Live Deployment <i className="bi bi-box-arrow-up-right text-xs ml-1.5"></i></a>
+        //                 </>)}
+        //             </div>
+        //         </div>
+        //     );
+        // }
+        // function ProjectsSection() {
+        //     const [projects, setProjects] = React.useState([]);
+        //     const [status, setStatus] = React.useState('loading');
+        //     React.useEffect(() => {
+        //         fetch('https://kcroshan566.pythonanywhere.com/projects')
+        //             .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.json(); })
+        //             .then(responseData => { setProjects(Object.values(responseData)); setStatus('success'); })
+        //             .catch(error => { console.error("Failed to load projects:", error); setStatus('error'); });
+        //     }, []);
+        //     React.useEffect(() => {
+        //         if (status === 'success') {
+        //             const cards = document.querySelectorAll('#projects-container .fade-in-section');
+        //             const observer = new IntersectionObserver((entries) => {
+        //                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
+        //             }, { threshold: 0.1 });
+        //             cards.forEach(card => observer.observe(card));
+        //         }
+        //     }, [status]);
+        //     if (status === 'loading') return <p className="text-gray-500">Loading projects...</p>;
+        //     if (status === 'error') return <p className="text-red-500">Could not load projects. Please try again later.</p>;
+        //     return (<> {projects.map((project, index) => (<ProjectCard key={project.id} data={project} index={index} />))} </>);
+        // }
+        // const container = document.getElementById("projects-container");
+        // const root = ReactDOM.createRoot(container);
+        // root.render(<ProjectsSection />);
     </script>
 
 </body>
