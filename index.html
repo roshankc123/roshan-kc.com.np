@@ -6,10 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-        content="Roshan Kc - Cofounder & CTO of MarginTop Solutions. A System Architect, Investor, and Engineer specializing in backend, DevOps, and scalable cloud infrastructure." />
+        content="Roshan Kc - Cofounder & CTO of MarginTop Solutions. System Architect, Investor, and Engineer in backend, DevOps, and scalable cloud infrastructure." />
     <meta name="author" content="Roshan Kc" />
     <title>Roshan Kc | Cofounder & CTO, MarginTop Solutions</title>
 
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,13 +34,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-
-    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.28.2/babel.min.js"
-        integrity="sha512-AEhA/tSQr2Jwvfb/CmMAIVkOmPdIB5EBZXiHs3TXmarNdhcwX7ufSddMMVh2dVD2/8M33nWExg2KK33MLen09Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-
 
     <style>
         body,
@@ -401,16 +411,6 @@
                 </div>
             </section>
 
-            <!-- <section id="projects" class="fade-in-section sm:py-24" tabindex="-1" aria-labelledby="projects-heading">
-                <h2 id="projects-heading" class="text-3xl font-bold text-gray-900 mb-8 tracking-tight">Some of my rookie
-                    projects
-                </h2>
-                <p class="text-lg text-gray-600 text-left mb-12">
-                    Feel free to explore the code and reuse any of it.
-                </p>
-                <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            </section> -->
-
             <section id="contact" class="fade-in-section py-16 sm:py-24 text-center" tabindex="-1"
                 aria-labelledby="contact-heading">
                 <h2 id="contact-heading" class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Let's Build
@@ -491,64 +491,8 @@
                     });
                 }
             }
-            // const projectsContainer = document.getElementById('projects-container');
-            // const observer = new MutationObserver((mutationsList, observer) => {
-            //     for (const mutation of mutationsList) { if (mutation.type === 'childList' && mutation.addedNodes.length > 0) { initializeTilt(); observer.disconnect(); return; } }
-            // });
-            // observer.observe(projectsContainer, { childList: true });
         });
     </script>
-
-    <script type="text/babel">
-        // function ProjectCard({ data, index }) {
-        //     return (
-        //         <div className="tilt-card bg-white p-6 rounded-lg border border-gray-200 shadow-md hover:shadow-2xl opacity-0 translate-y-5 fade-in-section flex flex-col" style={{ transitionDelay: `${150 + index * 10}ms` }}>
-        //             <div className="flex justify-between items-start mb-3">
-        //                 <h3 className="text-xl font-semibold text-gray-800 pr-4">{data.name.replace(/-/g, ' ')}</h3>
-        //                 <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" aria-label={`${data.name} on GitHub`} className="text-gray-400 hover:text-gray-800 transition-colors"><i className="bi bi-github text-2xl"></i></a>
-        //             </div>
-        //             <p className="text-sm font-medium text-gray-500 mb-4">{data.time}</p>
-        //             <p className="text-gray-600 mb-6 flex-grow">{data.description}</p>
-        //             <div className="flex flex-wrap gap-2 mb-6">
-        //                 {Object.keys(data.langs).map((lang) => (<span key={lang} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">{lang}</span>))}
-        //             </div>
-        //             <div className="flex items-center space-x-4 text-sm font-semibold border-t border-gray-200 pt-4 mt-auto">
-        //                 <a href={`https://github.com/roshankc123/${data.name}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Source Code</a>
-        //                 {data.homepage && (<>
-        //                     <span className="text-gray-300">|</span>
-        //                     <a href={data.homepage} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">Live Deployment <i className="bi bi-box-arrow-up-right text-xs ml-1.5"></i></a>
-        //                 </>)}
-        //             </div>
-        //         </div>
-        //     );
-        // }
-        // function ProjectsSection() {
-        //     const [projects, setProjects] = React.useState([]);
-        //     const [status, setStatus] = React.useState('loading');
-        //     React.useEffect(() => {
-        //         fetch('https://kcroshan566.pythonanywhere.com/projects')
-        //             .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.json(); })
-        //             .then(responseData => { setProjects(Object.values(responseData)); setStatus('success'); })
-        //             .catch(error => { console.error("Failed to load projects:", error); setStatus('error'); });
-        //     }, []);
-        //     React.useEffect(() => {
-        //         if (status === 'success') {
-        //             const cards = document.querySelectorAll('#projects-container .fade-in-section');
-        //             const observer = new IntersectionObserver((entries) => {
-        //                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-        //             }, { threshold: 0.1 });
-        //             cards.forEach(card => observer.observe(card));
-        //         }
-        //     }, [status]);
-        //     if (status === 'loading') return <p className="text-gray-500">Loading projects...</p>;
-        //     if (status === 'error') return <p className="text-red-500">Could not load projects. Please try again later.</p>;
-        //     return (<> {projects.map((project, index) => (<ProjectCard key={project.id} data={project} index={index} />))} </>);
-        // }
-        // const container = document.getElementById("projects-container");
-        // const root = ReactDOM.createRoot(container);
-        // root.render(<ProjectsSection />);
-    </script>
-
 </body>
 
 </html>
