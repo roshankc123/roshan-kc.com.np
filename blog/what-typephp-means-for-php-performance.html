@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-sidebar="expanded">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FE9X30EBMG"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
 
-    gtag('config', 'G-FE9X30EBMG');
-  </script>
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>What TypePHP Means for PHP Performance | Roshan Kc</title>
   <meta name="description" content="TypePHP is Swoole's open-source AOT compiler (PHP to C++ to native). What it means for PHP performance, early caveats, and why we still ship with Laravel." />
@@ -36,9 +30,8 @@
   <meta name="twitter:image" content="https://roshan-kc.com.np/images/profile.webp" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <meta name="theme-color" content="#FAFBFC" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/css/site.css" />
     <script type="application/ld+json">
 {
@@ -293,9 +286,6 @@
 <p>Running serious PHP workloads and thinking about performance? <a href="/#contact">Get in touch</a> — we've thought about this problem from multiple angles at MarginTop.</p>
 
 </article>
-
-
-
 
         <nav class="post-nav" aria-label="Post navigation">
           <a class="post-nav__link post-nav__prev" href="/blog/laravel-octane-swoole-concurrent-load.html">

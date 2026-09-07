@@ -2,16 +2,10 @@
 <html lang="en" class="scroll-smooth" data-sidebar="expanded">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FE9X30EBMG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+    <script src="/js/analytics.js" defer></script>
 
-      gtag('config', 'G-FE9X30EBMG');
-    </script>
-    <meta charset="UTF-8" />
+<meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Roshan Kc | Cofounder &amp; CTO, MarginTop Solutions</title>
@@ -66,13 +60,10 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FAFBFC">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/css/app.css" />
 
     <script type="application/ld+json">
     {
@@ -175,22 +166,6 @@
       ]
     }
     </script>
-
-    <style type="text/tailwindcss">
-        @theme {
-            --font-display: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
-            --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
-            --font-mono: "JetBrains Mono", ui-monospace, monospace;
-            --color-ink: #0b1220;
-            --color-ink-soft: #243044;
-            --color-paper: #fafbfc;
-            --color-paper-deep: #f0f2f5;
-            --color-sapphire: #1546e8;
-            --color-sapphire-deep: #0f35b5;
-            --color-mist: #5c6b7e;
-            --color-line: #e2e6ec;
-        }
-    </style>
 
     <style>
         :root {
@@ -776,7 +751,6 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="/css/site.css" />
 </head>
 
 <body class="antialiased text-[var(--ink-soft)]">
@@ -905,7 +879,10 @@
                 <div class="home-hero-layout relative z-10 grid xl:grid-cols-[1.15fr_0.85fr] gap-8 xl:gap-16 items-center">
                     <!-- Top portrait until side-by-side layout fits -->
                     <figure class="hero-portrait-stack xl:hidden fade-in-section justify-self-start w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden ring-4 ring-white shadow-lg">
-                        <img src="images/profile.webp" fetchpriority="high" width="144" height="144"
+                        <img src="images/profile-288.webp"
+                            srcset="images/profile-144.webp 144w, images/profile-288.webp 288w, images/profile-432.webp 432w"
+                            sizes="(min-width: 640px) 144px, 112px"
+                            fetchpriority="high" width="144" height="144"
                             class="w-full h-full object-cover object-[center_20%]"
                             alt="Portrait of Roshan Kc, Cofounder and CTO of MarginTop Solutions" />
                     </figure>
@@ -938,7 +915,11 @@
 
                     <!-- Side portrait only when there is room beside the copy -->
                     <figure class="hero-portrait fade-in-section hidden xl:block aspect-square w-full max-w-md xl:max-w-none justify-self-end rounded-[1.25rem] overflow-hidden shadow-[var(--shadow-soft)] ring-1 ring-[var(--line)]">
-                        <img src="images/profile.webp" width="1008" height="1024"
+                        <img src="images/profile.webp"
+                            srcset="images/profile-560.webp 560w, images/profile.webp 1008w"
+                            sizes="(min-width: 1280px) min(28rem, 40vw), 28rem"
+                            width="1008" height="1024"
+                            loading="lazy" decoding="async"
                             class="object-cover object-center"
                             alt="Portrait of Roshan Kc, Cofounder and CTO of MarginTop Solutions" />
                         <figcaption class="visually-hidden">Roshan Kc</figcaption>

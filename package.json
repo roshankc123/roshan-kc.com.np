@@ -1,0 +1,24 @@
+{
+  "name": "roshan-kc.com.np",
+  "version": "1.0.0",
+  "description": "**Personal site and blog of [Roshan Kc](https://roshan-kc.com.np/) — Cofounder & CTO of [MarginTop Solutions](https://www.margintopsolutions.com/), Kathmandu, Nepal.**",
+  "main": "script.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css > css/app.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roshankc123/roshan-kc.com.np.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/roshankc123/roshan-kc.com.np/issues"
+  },
+  "homepage": "https://github.com/roshankc123/roshan-kc.com.np#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
