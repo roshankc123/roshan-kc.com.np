@@ -38,6 +38,7 @@ Founder and CTO notes: https://roshan-kc.com.np/blog/
 - Business Logic First: Why We Don't Worry About the Perfect Tech Stack: https://roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack.html
 - Why We Chose Laravel Over Node.js for Our Stack: https://roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs.html
 - How to Run Your Startup Tech Stack for Free Until You're Funded: https://roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded.html
+- Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring (ARM64 Preferred): https://roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring.html
 - Ship Fast Without Losing Client Trust: A CTO’s Playbook: https://roshan-kc.com.np/blog/ship-fast-without-losing-client-trust.html
 - Building a Software Team in Kathmandu From Zero: https://roshan-kc.com.np/blog/building-a-software-team-in-kathmandu.html
 - What a First-Time CTO Actually Does (Beyond the Title): https://roshan-kc.com.np/blog/what-a-first-time-cto-actually-does.html
