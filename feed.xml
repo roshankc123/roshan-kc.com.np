@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Roshan Kc — Founder &amp; CTO Notes</title>
+    <link>https://roshan-kc.com.np/blog/</link>
+    <description>Essays from Roshan Kc on founding MarginTop Solutions, the CTO craft, building teams in Kathmandu, and shipping without losing trust.</description>
+    <language>en</language>
+    <lastBuildDate>2026-09-17</lastBuildDate>
+    <atom:link href="https://roshan-kc.com.np/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</title>
+      <link>https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</guid>
+      <pubDate>2026-09-17</pubDate>
+      <description>Security basics early-stage startups should fix before fundraising: auth, secrets, encryption, access, dependencies, backups, logging — and SOC 2 sequencing.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Our Engineering Principles: How We Decide What NOT to Build</title>
+      <link>https://roshan-kc.com.np/blog/engineering-principles-what-not-to-build.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/engineering-principles-what-not-to-build.html</guid>
+      <pubDate>2026-09-16</pubDate>
+      <description>MarginTop&#x27;s engineering principles for scope discipline — how we decide what not to build so teams ship trustworthy software.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>What I Look for When Hiring Engineers as a First-Time CTO</title>
+      <link>https://roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto.html</guid>
+      <pubDate>2026-09-15</pubDate>
+      <description>What Roshan Kc looks for when hiring engineers as a first-time CTO: ownership, communication, and trade-off judgment over résumé keywords.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</title>
+      <link>https://roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity.html</guid>
+      <pubDate>2026-09-14</pubDate>
+      <description>How Cursor and Claude changed MarginTop&#x27;s engineering velocity while review, tests, domain docs, and secret hygiene kept our standards intact.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</title>
+      <link>https://roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith.html</guid>
+      <pubDate>2026-09-13</pubDate>
+      <description>Why MarginTop still ships a modular Laravel monolith — the hidden costs of premature microservices and when splitting actually makes sense.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Build vs. Buy: The Framework We Use to Decide What to Build In-House</title>
+      <link>https://roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house.html</guid>
+      <pubDate>2026-09-12</pubDate>
+      <description>MarginTop&#x27;s build vs buy framework: differentiator vs commodity, Stripe/Cashier and Sanctum examples, and the maintenance tax of building in-house.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</title>
+      <link>https://roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load.html</guid>
+      <pubDate>2026-09-11</pubDate>
+      <description>How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>What TypePHP Means for the Future of PHP Performance</title>
+      <link>https://roshan-kc.com.np/blog/what-typephp-means-for-php-performance.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/what-typephp-means-for-php-performance.html</guid>
+      <pubDate>2026-09-10</pubDate>
+      <description>TypePHP is Swoole&#x27;s open-source AOT compiler (PHP to C++ to native). What it means for PHP performance, early caveats, and why we still ship with Laravel.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Business Logic First: Why We Don&#x27;t Worry About the Perfect Tech Stack</title>
+      <link>https://roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack.html</guid>
+      <pubDate>2026-09-09</pubDate>
+      <description>Why MarginTop prioritizes business logic over the perfect tech stack — AI lowers stack regret, while data and rules remain the real risk.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Why We Chose Laravel Over Node.js for Our Stack</title>
+      <link>https://roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs.html</guid>
+      <pubDate>2026-09-08</pubDate>
+      <description>Why MarginTop Solutions chose Laravel over Node.js: hiring pool, team velocity, Forge/Vapor/Cashier/Sanctum, and when we would reconsider.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>How to Run Your Startup Tech Stack for Free Until You&#x27;re Funded</title>
+      <link>https://roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded.html</guid>
+      <pubDate>2026-09-07</pubDate>
+      <description>Stack AWS Activate, Azure, and Google Cloud startup credits to keep infrastructure near $0 until you validate or raise.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Ship Fast Without Losing Client Trust: A CTO’s Playbook</title>
+      <link>https://roshan-kc.com.np/blog/ship-fast-without-losing-client-trust.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/ship-fast-without-losing-client-trust.html</guid>
+      <pubDate>2026-08-18</pubDate>
+      <description>A CTO playbook for speed without silent quality debt.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Building a Software Team in Kathmandu From Zero</title>
+      <link>https://roshan-kc.com.np/blog/building-a-software-team-in-kathmandu.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/building-a-software-team-in-kathmandu.html</guid>
+      <pubDate>2026-06-10</pubDate>
+      <description>How MarginTop grew from online freelancers to a Pulchwok crew.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>What a First-Time CTO Actually Does (Beyond the Title)</title>
+      <link>https://roshan-kc.com.np/blog/what-a-first-time-cto-actually-does.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/what-a-first-time-cto-actually-does.html</guid>
+      <pubDate>2026-04-28</pubDate>
+      <description>Beyond the title — architecture, trust, and unblocking the room.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>Why I Left Teaching to Build a Company in Kathmandu</title>
+      <link>https://roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company.html</guid>
+      <pubDate>2026-03-12</pubDate>
+      <description>The real tradeoffs of going full-time on MarginTop in Kathmandu.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+  </channel>
+</rss>
