@@ -5,13 +5,13 @@
     <link>https://roshan-kc.com.np/blog/</link>
     <description>Essays from Roshan Kc on founding MarginTop Solutions, the CTO craft, building teams in Kathmandu, and shipping without losing trust.</description>
     <language>en</language>
-    <lastBuildDate>2026-09-17</lastBuildDate>
+    <lastBuildDate>2026-09-05</lastBuildDate>
     <atom:link href="https://roshan-kc.com.np/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</title>
       <link>https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</guid>
-      <pubDate>2026-09-17</pubDate>
+      <pubDate>2026-09-05</pubDate>
       <description>Security basics early-stage startups should fix before fundraising: auth, secrets, encryption, access, dependencies, backups, logging — and SOC 2 sequencing.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -19,7 +19,7 @@
       <title>Our Engineering Principles: How We Decide What NOT to Build</title>
       <link>https://roshan-kc.com.np/blog/engineering-principles-what-not-to-build.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/engineering-principles-what-not-to-build.html</guid>
-      <pubDate>2026-09-16</pubDate>
+      <pubDate>2026-09-04</pubDate>
       <description>MarginTop&#x27;s engineering principles for scope discipline — how we decide what not to build so teams ship trustworthy software.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -27,7 +27,7 @@
       <title>What I Look for When Hiring Engineers as a First-Time CTO</title>
       <link>https://roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto.html</guid>
-      <pubDate>2026-09-15</pubDate>
+      <pubDate>2026-09-03</pubDate>
       <description>What Roshan Kc looks for when hiring engineers as a first-time CTO: ownership, communication, and trade-off judgment over résumé keywords.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -35,7 +35,7 @@
       <title>How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</title>
       <link>https://roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity.html</guid>
-      <pubDate>2026-09-14</pubDate>
+      <pubDate>2026-09-02</pubDate>
       <description>How Cursor and Claude changed MarginTop&#x27;s engineering velocity while review, tests, domain docs, and secret hygiene kept our standards intact.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -43,7 +43,7 @@
       <title>The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</title>
       <link>https://roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith.html</guid>
-      <pubDate>2026-09-13</pubDate>
+      <pubDate>2026-09-01</pubDate>
       <description>Why MarginTop still ships a modular Laravel monolith — the hidden costs of premature microservices and when splitting actually makes sense.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -51,7 +51,7 @@
       <title>Build vs. Buy: The Framework We Use to Decide What to Build In-House</title>
       <link>https://roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house.html</guid>
-      <pubDate>2026-09-12</pubDate>
+      <pubDate>2026-08-31</pubDate>
       <description>MarginTop&#x27;s build vs buy framework: differentiator vs commodity, Stripe/Cashier and Sanctum examples, and the maintenance tax of building in-house.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -59,7 +59,7 @@
       <title>How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</title>
       <link>https://roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load.html</guid>
-      <pubDate>2026-09-11</pubDate>
+      <pubDate>2026-08-30</pubDate>
       <description>How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -67,7 +67,7 @@
       <title>What TypePHP Means for the Future of PHP Performance</title>
       <link>https://roshan-kc.com.np/blog/what-typephp-means-for-php-performance.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/what-typephp-means-for-php-performance.html</guid>
-      <pubDate>2026-09-10</pubDate>
+      <pubDate>2026-08-29</pubDate>
       <description>TypePHP is Swoole&#x27;s open-source AOT compiler (PHP to C++ to native). What it means for PHP performance, early caveats, and why we still ship with Laravel.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -75,7 +75,7 @@
       <title>Business Logic First: Why We Don&#x27;t Worry About the Perfect Tech Stack</title>
       <link>https://roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack.html</guid>
-      <pubDate>2026-09-09</pubDate>
+      <pubDate>2026-08-28</pubDate>
       <description>Why MarginTop prioritizes business logic over the perfect tech stack — AI lowers stack regret, while data and rules remain the real risk.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -83,7 +83,7 @@
       <title>Why We Chose Laravel Over Node.js for Our Stack</title>
       <link>https://roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs.html</guid>
-      <pubDate>2026-09-08</pubDate>
+      <pubDate>2026-08-27</pubDate>
       <description>Why MarginTop Solutions chose Laravel over Node.js: hiring pool, team velocity, Forge/Vapor/Cashier/Sanctum, and when we would reconsider.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
@@ -91,7 +91,7 @@
       <title>How to Run Your Startup Tech Stack for Free Until You&#x27;re Funded</title>
       <link>https://roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded.html</guid>
-      <pubDate>2026-09-07</pubDate>
+      <pubDate>2026-08-26</pubDate>
       <description>Stack AWS Activate, Azure, and Google Cloud startup credits to keep infrastructure near $0 until you validate or raise.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
