@@ -185,78 +185,127 @@
             <div class="blog-meta">
               <span class="tag">Laravel · Stack</span>
               <time datetime="2026-08-27">August 27, 2026</time>
-              <span>9 min read</span>
+              <span>10 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">Why We Chose Laravel Over Node.js for Our Stack</h1>
           </header>
 
-<p><strong>Direct answer:</strong> We chose <strong>Laravel over Node.js</strong> because it maximized team velocity and hiring leverage for the products we ship at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> — not because Node is “bad.” Boring, batteries-included PHP with Forge, Vapor, Cashier, and Sanctum gets client work to production faster than assembling an equivalent Node stack from scratch.</p>
+<p><strong>Direct answer:</strong> We chose <strong>Laravel over Node.js</strong> because it maximized team velocity and hiring leverage for the products we ship at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> — not because Node is "bad." Batteries-included PHP with Forge, Vapor, Cashier, and Sanctum gets client work to production faster than assembling an equivalent Node stack from scratch, especially with a small team in Kathmandu.</p>
 
-<p>Stack debates usually start with benchmarks. Ours started with a different question: what helps a small engineering team in Kathmandu ship reliable SaaS and client systems without inventing glue for every concern?</p>
+<p>Stack debates usually start with benchmarks. Ours started with a different question: what helps a small engineering team ship reliable SaaS and client systems without inventing glue for every concern?</p>
 
-<p><em>Definition:</em> <strong>Laravel vs Node.js</strong> is less a runtime contest and more a product-delivery contest. Laravel is a full-stack PHP framework with conventions for auth, queues, mail, billing, and deployment. Node.js is a JavaScript runtime; you still choose Express/Nest/Fastify, ORMs, auth packages, and ops patterns yourself.</p>
+<h2 id="ecosystem-context">The ecosystem context most comparisons skip</h2>
 
-<h2 id="velocity">Why team velocity beat raw framework fashion</h2>
+<p>According to the <a href="https://survey.stackoverflow.co/2024/" target="_blank" rel="noopener noreferrer">Stack Overflow Developer Survey 2024</a>, Node.js is the most-used technology among professional developers (~42%), while PHP still powers over 20% of web-facing software worldwide — including WordPress, which alone runs ~43% of all websites. Laravel specifically has seen consistent growth; Packagist (PHP's package registry) serves over <strong>2 billion package downloads per month</strong>.</p>
+
+<p>That matters for hiring: there are a lot of PHP developers, and Laravel specifically has a well-defined mental model that transfers across projects. For a team in Nepal, where the local talent market skews toward PHP/Laravel (historically taught in computer science programs) alongside JavaScript, this isn't an abstract point — it's a hiring reality we navigate every quarter.</p>
+
+<h2 id="framework-comparison">Framework vs runtime: the real comparison</h2>
+
+<p>Most "Laravel vs Node" posts compare apples to oranges. Laravel is a <em>full-stack framework</em>. Node.js is a <em>runtime</em>. Here's what that actually means for a product team:</p>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Concern</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Laravel (out of the box)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Node.js (you assemble this)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">ORM &amp; migrations</td>
+      <td style="padding:0.6rem 0.9rem">Eloquent + artisan migrate</td>
+      <td style="padding:0.6rem 0.9rem">Prisma / TypeORM / Drizzle (you choose)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Auth primitives</td>
+      <td style="padding:0.6rem 0.9rem">Sanctum (API + SPA), Fortify, Passport</td>
+      <td style="padding:0.6rem 0.9rem">Passport.js / custom JWT / Auth.js</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Queue / jobs</td>
+      <td style="padding:0.6rem 0.9rem">Laravel Horizon + Redis out of box</td>
+      <td style="padding:0.6rem 0.9rem">BullMQ / custom worker setup</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Billing / Stripe</td>
+      <td style="padding:0.6rem 0.9rem">Laravel Cashier</td>
+      <td style="padding:0.6rem 0.9rem">stripe-node + custom state machine</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Search</td>
+      <td style="padding:0.6rem 0.9rem">Laravel Scout (Meilisearch / Algolia / Typesense)</td>
+      <td style="padding:0.6rem 0.9rem">Custom integration</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Deployment</td>
+      <td style="padding:0.6rem 0.9rem">Laravel Forge / Vapor</td>
+      <td style="padding:0.6rem 0.9rem">PM2 / custom Docker / fly.io setup</td>
+    </tr>
+    <tr style="background:var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Notifications (email, SMS, Slack)</td>
+      <td style="padding:0.6rem 0.9rem">Laravel Notifications system</td>
+      <td style="padding:0.6rem 0.9rem">Nodemailer + custom channels</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Every Node.js cell above represents a decision that a team has to make, vet, and maintain. That's not inherently bad — it's how the Node ecosystem works, and teams that have deep TypeScript experience can make those choices quickly and well. For our team and client profile, the decision fatigue and integration cost of assembling those pieces consistently costs more than the raw flexibility is worth.</p>
+
+<h2 id="velocity">Why team velocity won</h2>
 
 <ul>
-  <li><strong>Conventions reduce decision fatigue.</strong> Migrations, form requests, policies, jobs, and events are “how Laravel apps look.” Juniors onboard faster when the folder map is predictable.</li>
-  <li><strong>First-party packages close real product gaps.</strong> Cashier for Stripe, Sanctum for API tokens/SPA auth, Scout for search, Horizon for queues — we spend time on business rules, not reinventing billing plumbing.</li>
-  <li><strong>Ops path is clear.</strong> Forge and Vapor cover the “run this Laravel app safely” path we actually use. Fewer weekends spent wiring deploy scripts from blog posts.</li>
+  <li><strong>Conventions reduce decision fatigue.</strong> Migrations, form requests, policies, jobs, and events are "how Laravel apps look." When a new engineer joins, they already know where things live. This is underrated — shared mental models compound over time.</li>
+  <li><strong>First-party packages close real product gaps.</strong> Cashier for Stripe, Sanctum for API tokens and SPA auth, Scout for search, Horizon for queues — we spend time on business rules, not reinventing billing plumbing.</li>
+  <li><strong>Ops path is clear.</strong> Forge and Vapor cover the "run this Laravel app safely" path we actually use. Fewer weekends spent wiring deploy scripts from Stack Overflow.</li>
 </ul>
 
 <p>Related: <a href="/blog/business-logic-first-not-perfect-tech-stack.html">Business Logic First: Why We Don't Worry About the Perfect Tech Stack</a>.</p>
 
-<h2 id="hiring">Hiring pool and the Nepal/region reality</h2>
+<h2 id="hiring">Hiring pool and the Kathmandu reality</h2>
 
-<p>We hire for ownership and judgment (see <a href="/blog/hiring-engineers-as-first-time-cto.html">What I Look for When Hiring Engineers as a First-Time CTO</a>). Still, the local and remote market for solid Laravel/PHP developers is deep enough that we can train product sense on top of a shared baseline. A Node-only bet would force us to filter harder for framework experience or accept more greenfield architecture risk on every engagement.</p>
+<p>We hire for ownership and judgment (see <a href="/blog/hiring-engineers-as-first-time-cto.html">What I Look for When Hiring Engineers as a First-Time CTO</a>). Still, the local and remote market for solid Laravel/PHP developers is deep enough that we can train product sense on top of a shared baseline. A Node-only bet would force us to filter harder or accept more greenfield architecture risk on every engagement.</p>
 
 <ul>
-  <li>More candidates already know Eloquent, Blade/Inertia patterns, and artisan workflows.</li>
-  <li>Shared mental model across client projects reduces context-switching tax.</li>
-  <li>We can still use JS where it shines — frontends, realtime edges — without making Node the system of record for every domain rule.</li>
+  <li>More candidates arrive already knowing Eloquent, Blade/Inertia patterns, and artisan workflows.</li>
+  <li>Shared mental model across client projects reduces the context-switching tax as engineers move between engagements.</li>
+  <li>We use JavaScript where it shines — frontends, realtime edges — without making Node the system of record for every domain rule.</li>
 </ul>
 
-<h2 id="ecosystem">Forge, Vapor, Cashier, Sanctum: boring tech that ships</h2>
+<h2 id="tradeoffs">Real trade-offs: where Node genuinely wins</h2>
 
-<ol>
-  <li><strong>Forge</strong> — provision and deploy without building a private PaaS.</li>
-  <li><strong>Vapor</strong> — serverless Laravel when we want AWS scale characteristics without rewriting the app.</li>
-  <li><strong>Cashier</strong> — subscriptions and Stripe edge cases we should not hand-roll.</li>
-  <li><strong>Sanctum</strong> — API and SPA authentication that matches how we structure products.</li>
-</ol>
-
-<p>That ecosystem is why “boring tech” is a feature. For concurrent load without a rewrite, we lean on <a href="/blog/laravel-octane-swoole-concurrent-load.html">Laravel Octane + Swoole</a> rather than switching runtimes for fashion.</p>
-
-<h2 id="tradeoffs">Trade-offs: raw performance vs velocity</h2>
+<p>I want to be honest here, because "we chose X, therefore X is always better" is bad engineering writing.</p>
 
 <ul>
-  <li><strong>Node can win on certain IO-heavy or JS-monorepo setups</strong> — especially when the product is realtime-first and the team is already elite in TypeScript.</li>
-  <li><strong>Laravel can lose if you need extreme low-latency microservices everywhere on day one</strong> — though that is rarely the real constraint for early products (see <a href="/blog/hidden-cost-premature-microservices-monolith.html">premature microservices</a>).</li>
-  <li><strong>We accept PHP’s traditional request lifecycle model</strong> and add Octane when concurrency becomes a measured problem — not a Twitter argument.</li>
+  <li><strong>Node (with TypeScript) wins for realtime-first products</strong> — collaborative editors, live dashboards, websocket-heavy apps — where the async I/O model and JS-everywhere consistency is a genuine architectural advantage.</li>
+  <li><strong>Node wins for JS-monorepo shops</strong> where sharing types, validation schemas, and utilities between frontend and backend saves real engineering time.</li>
+  <li><strong>Node wins when your team is already elite-level TypeScript</strong> and the productivity premium from framework conventions is outweighed by the cost of context-switching to PHP.</li>
+  <li><strong>Laravel can lose on raw throughput for extreme low-latency microservices</strong> — though in our experience, early products are almost never bottlenecked there. The bottleneck is usually a missing index, an N+1 query, or unclear business logic. See <a href="/blog/hidden-cost-premature-microservices-monolith.html">premature microservices</a>.</li>
 </ul>
 
 <h2 id="reconsider">When we would reconsider Node.js</h2>
 
 <ul>
-  <li>The product’s core value is a realtime collaboration surface where a Node (or Go) service is clearly the system of record.</li>
+  <li>The product's core value is a realtime collaboration surface where Node or Go is clearly the right system of record.</li>
   <li>The hiring plan is intentionally Node-native and the team already owns a mature TypeScript platform.</li>
-  <li>We are integrating into a client’s existing Node monorepo where fighting the grain costs more than Laravel’s productivity.</li>
+  <li>We're integrating into a client's existing Node monorepo where fighting the grain costs more than Laravel's productivity edge.</li>
 </ul>
 
-<p>Until then, Laravel remains the default at MarginTop because it compounds with how we hire, how we buy vs build (<a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">build vs buy</a>), and how we keep scope honest (<a href="/blog/engineering-principles-what-not-to-build.html">what not to build</a>).</p>
+<p>Until then, Laravel remains the default at MarginTop because it compounds with how we hire, how we decide what to build vs. buy (<a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">build vs buy</a>), and how we keep scope honest (<a href="/blog/engineering-principles-what-not-to-build.html">what not to build</a>).</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
   <li>We picked Laravel for velocity, hiring leverage, and first-party product packages — not for winning synthetic benchmarks.</li>
-  <li>Forge, Vapor, Cashier, and Sanctum remove whole categories of custom work.</li>
-  <li>Node remains excellent; we adopt it where the product shape demands it, not as a default ideology.</li>
-  <li>Revisit the choice when realtime architecture, team composition, or client platforms make Laravel the expensive path.</li>
+  <li>Forge, Vapor, Cashier, and Sanctum remove whole categories of custom integration work that Node teams typically hand-roll.</li>
+  <li>Node is an excellent choice — we use it where the product shape or team composition demands it. Stack decisions should be honest, not tribal.</li>
+  <li>Revisit the choice when realtime architecture, team composition, or client platforms make Laravel the expensive path, not the productive one.</li>
 </ul>
 
 <p>Building a product and want a stack decision grounded in delivery, not hype? <a href="/#contact">Get in touch</a> — we do this trade-off work every week at MarginTop.</p>
 
-        </article>
+</article>
 
 
 

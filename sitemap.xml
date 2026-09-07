@@ -26,6 +26,12 @@
         <priority>0.4</priority>
     </url>
     <url>
+        <loc>https://roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring.html</loc>
+        <lastmod>2026-09-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</loc>
         <lastmod>2026-09-05</lastmod>
         <changefreq>monthly</changefreq>

@@ -189,129 +189,127 @@
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">How to Run Your Startup Tech Stack for Free Until You're Funded</h1>
           </header>
-          
+
 <p><strong>Direct answer:</strong> Early-stage startups can often run cloud infrastructure near <strong>$0 for the first 6–18 months</strong> by stacking free-tier and promotional <strong>cloud credits for startups</strong> from AWS Activate, Microsoft for Startups (Azure), and Google Cloud for Startups — but only after you have a real company identity: entity, domain website, and business email. Apply to the no-investor tiers first, set billing alerts, and treat credit amounts as temporary runway, not a permanent architecture plan.</p>
 
-<p>As CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, I see bootstrapped teams burn cash on cloud before they have product signal. Credits do not replace engineering discipline — they buy time to validate. Below is the practical stack we recommend founders prepare before they touch a production region.</p>
+<p>As CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, I've watched bootstrapped teams burn cash on cloud before they have product signal. Credits don't replace engineering discipline — they buy time to validate. Below is the practical stack we recommend founders prepare before they touch a production region.</p>
 
-<p class="font-mono-label" style="color:var(--mist)">Note: Credit ceilings and eligibility change by cohort. Figures below reflect official program pages as of September 2026. Always re-check the provider’s live startup page before you apply.</p>
+<p class="font-mono-label" style="color:var(--mist)">Note: Credit ceilings and eligibility change by cohort. Figures below reflect official program pages as of September 2026. Always re-check the provider's live startup page before you apply.</p>
 
-<h2 id="prerequisites">What do you need before applying for free cloud credits?</h2>
+<h2 id="prerequisites">What you actually need before applying</h2>
 
-<p><strong>Startup cloud credit programs</strong> are not “sign up with Gmail and hope.” Most rejections we see are identity failures, not product failures. Fix these before you open any application form:</p>
-
-<ul>
-  <li><strong>A registered business entity</strong> — LLC, Pvt. Ltd., Inc., or local equivalent. Some programs tolerate sole proprietors; most prefer an incorporated company.</li>
-  <li><strong>A live company website on your own domain</strong> — not a bare Notion page forever. Show a real product, MVP, or clear roadmap. “Coming soon” with no substance gets filtered.</li>
-  <li><strong>A business email on that domain</strong> — <code>you@yourstartup.com</code>, not Gmail/Yahoo/Outlook consumer. This is one of the most common silent rejection reasons.</li>
-  <li><strong>A one-line pitch</strong> — programs ask for a short company description. Write it once and reuse it.</li>
-</ul>
-
-<p><em>Definition:</em> Free cloud credits for startups are promotional balances issued by cloud providers to eligible early-stage companies. They offset usage of compute, storage, databases, and some AI services for a limited period (often about 12 months per grant), subject to program terms — they are not cash and usually exclude Marketplace purchases and premium support.</p>
-
-<!-- IMAGE SUGGESTION: Checklist graphic “Before you apply” (entity, website, domain email, pitch). Alt: Checklist of prerequisites for AWS Azure and Google startup cloud credit applications -->
-
-<h2 id="aws-activate">AWS Activate credits: Founders, Portfolio, and AI paths</h2>
-
-<p>According to the official <a href="https://aws.amazon.com/startups/credits/" target="_blank" rel="noopener noreferrer">AWS Activate Credits</a> page, eligibility generally includes pre-Series B status, founding within the last 10 years, an AWS account on a paid-tier plan, and either being new to Activate or requesting a larger package than you previously received.</p>
+<p><strong>Startup cloud credit programs</strong> are not "sign up with Gmail and hope." Most rejections come from identity failures, not product failures. Fix these before you open any application form:</p>
 
 <ul>
-  <li><strong>Activate Founders (self-funded):</strong> Start with <strong>$1,000</strong> in Activate credits. Select participants may qualify for additional credits up to <strong>$5,000</strong> total. No VC/accelerator Org ID required — apply directly if you are bootstrapped.</li>
-  <li><strong>Activate Portfolio (provider-backed):</strong> Up to <strong>$200,000</strong> with an Organization ID from an Activate Provider (accelerator, angel, VC). Older blog posts still say “$100K”; use the live AWS table.</li>
-  <li><strong>AWS Credits for AI Startups:</strong> Invite-only path for startups ready to scale after Portfolio, listed as <strong>$200,000+</strong> via account manager — not a self-serve “apply for $300K” form.</li>
+  <li><strong>A registered business entity</strong> — LLC, Pvt. Ltd., Inc., or local equivalent. Some programs tolerate sole proprietors; most prefer incorporated.</li>
+  <li><strong>A live company website on your own domain</strong> — not a bare Notion page. Show a real product, MVP, or clear roadmap.</li>
+  <li><strong>A business email on that domain</strong> — <code>you@yourstartup.com</code>, not Gmail. This is the most common rejection we see.</li>
+  <li><strong>A clear product description</strong> — what you're building, who it's for, what problem it solves. Programs review applications, not pitchdecks.</li>
 </ul>
 
-<p>Credits are typically usable across core services such as compute, serverless, object storage, and managed databases. Do not assume Marketplace SKUs or premium support are covered — check the promotional credit terms for your offer.</p>
+<h2 id="programs">The major credit programs compared</h2>
 
-<p>AWS says you usually hear back in <strong>5–10 business days</strong> after linking your Builder ID and account.</p>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Program</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Credits (no investor tier)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Credits (funded/accelerator tier)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Validity</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Key requirements</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>AWS Activate Founders</strong></td>
+      <td style="padding:0.6rem 0.9rem">$1,000</td>
+      <td style="padding:0.6rem 0.9rem">Up to $100,000 (via portfolio partners)</td>
+      <td style="padding:0.6rem 0.9rem">2 years</td>
+      <td style="padding:0.6rem 0.9rem">Business entity, company email, &lt;10 years old</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Microsoft for Startups Founders Hub</strong></td>
+      <td style="padding:0.6rem 0.9rem">Up to $150,000 Azure credits (staged)</td>
+      <td style="padding:0.6rem 0.9rem">Up to $350,000 (with VC backing)</td>
+      <td style="padding:0.6rem 0.9rem">1–2 years per grant</td>
+      <td style="padding:0.6rem 0.9rem">Company website, business email; no VC required for first tier</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Google Cloud for Startups</strong></td>
+      <td style="padding:0.6rem 0.9rem">$2,000 (Spark)</td>
+      <td style="padding:0.6rem 0.9rem">Up to $200,000 (with accelerator partner)</td>
+      <td style="padding:0.6rem 0.9rem">2 years</td>
+      <td style="padding:0.6rem 0.9rem">Registered company, &lt;Series A (for higher tiers)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Cloudflare for Startups</strong></td>
+      <td style="padding:0.6rem 0.9rem">$250 monthly usage + Workers/Pages free tier</td>
+      <td style="padding:0.6rem 0.9rem">Custom (via partners)</td>
+      <td style="padding:0.6rem 0.9rem">Ongoing</td>
+      <td style="padding:0.6rem 0.9rem">Early-stage company, direct application</td>
+    </tr>
+    <tr style="background:var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>DigitalOcean Hatch</strong></td>
+      <td style="padding:0.6rem 0.9rem">$500 credits + discounts</td>
+      <td style="padding:0.6rem 0.9rem">$10,000 (via incubator partners)</td>
+      <td style="padding:0.6rem 0.9rem">1 year</td>
+      <td style="padding:0.6rem 0.9rem">Registered company, early-stage product</td>
+    </tr>
+  </tbody>
+</table>
 
+<p><strong>The stacking strategy:</strong> You can often apply to multiple programs simultaneously. A common early-stage stack: AWS Founders ($1K) + Microsoft Founders Hub (up to $150K Azure) + Google Spark ($2K) + DigitalOcean Hatch ($500). Prioritize Microsoft for Startups for serious Azure credit amounts — their no-VC tier is genuinely generous and the application is straightforward.</p>
 
+<h2 id="permanent-free-tiers">Permanent free tiers worth knowing</h2>
 
-<h2 id="microsoft-azure">Microsoft for Startups: Azure credits without (and with) investors</h2>
-
-<p>Microsoft’s official Learn overview states that startups can unlock <strong>up to $150,000</strong> in Startup credits over time as they show verified progress and sustained Azure usage. Investor Network–backed startups may unlock higher-value benefits earlier with a partner referral code. Entry is a single application at startups.microsoft.com; reviews are often within about <strong>three business days</strong>.</p>
-
-<p>Eligibility highlights from Microsoft: software product you own, privately held for-profit, headquartered where Azure is available, under <strong>$350,000</strong> lifetime free Azure credits, and not Series C or later. Consultancies, agencies, and crypto mining are typically excluded.</p>
+<p>Beyond the startup programs, these services have always-on free tiers worth building into your default stack:</p>
 
 <ul>
-  <li><strong>No-investor path:</strong> Apply without a code, create/link Azure, and start with starter Startup credits while eligibility is verified, then unlock more through program progress.</li>
-  <li><strong>Investor Network path:</strong> Enter a partner referral code during apply to unlock richer benefits sooner (still capped by current program rules — treat <strong>$150K</strong> as the published ceiling, not a guarantee on day one).</li>
-  <li><strong>Tooling bundle:</strong> The real bonus for many teams is adjacent tooling access (historically including GitHub and productivity perks). Confirm the live benefits list in your dashboard — bundles change.</li>
+  <li><strong>Cloudflare</strong> — free CDN, DDoS protection, DNS, and SSL globally. No reason to pay for CDN until you're very large.</li>
+  <li><strong>Vercel / Netlify</strong> — generous free tiers for frontend deployments; useful for landing pages, docs, and staging environments.</li>
+  <li><strong>PlanetScale Hobby / Neon Free</strong> — managed MySQL/Postgres with free tiers for small apps (check current limits — these have changed).</li>
+  <li><strong>Upstash</strong> — serverless Redis with a free tier; useful for caching and queues in early stages.</li>
+  <li><strong>Resend</strong> — 3,000 emails/month free; better deliverability than trying to configure your own SMTP.</li>
+  <li><strong>Sentry</strong> — error tracking with a generous free tier for small teams.</li>
+  <li><strong>GitHub Actions</strong> — 2,000 minutes/month free for private repos on Team plan; often enough for an early CI pipeline.</li>
 </ul>
 
+<h2 id="billing-discipline">Billing discipline: the trap that eats credits</h2>
 
-
-<p>Related: <a href="/blog/what-a-first-time-cto-actually-does.html">What a First-Time CTO Actually Does</a> — useful when you decide who owns cloud spend and alerts.</p>
-
-<h2 id="google-cloud">Google Cloud for Startups: Start vs Scale vs AI</h2>
-
-<p>Google’s official <a href="https://cloud.google.com/startup/benefits" target="_blank" rel="noopener noreferrer">program benefits</a> page currently frames two primary tiers:</p>
-
-<ul>
-  <li><strong>Start tier:</strong> Up to <strong>$2,000</strong> in Google Cloud credits for one year. Aimed at digital-native startups with a working MVP and plans to seek venture funding. Founded within the <strong>last 24 months</strong>, and not yet received Google Cloud credits beyond the free trial.</li>
-  <li><strong>Scale tier:</strong> Up to <strong>$200,000</strong> (up to <strong>$350,000</strong> for AI-first startups) structured across two years (e.g., Year 1 coverage up to $100K / $250K for AI-first, Year 2 partial coverage up to an additional $100K). Designed for VC-funded Pre-Seed/Seed (within last 5 years) or Series A (within last 12 months), founded within the last five years.</li>
-</ul>
-
-<p>Domain hygiene matters here. Keep your company website domain, applicant email domain, and billing identity consistent. Mismatches are a frequent rejection pattern across providers — Google is especially picky about company identity signals.</p>
-
-<p>Friends-and-family or pure angel funding often does <em>not</em> unlock Scale; Google’s footnotes call out institutional / VC-style equity (SAFE included) for Scale qualification.</p>
-
-<!-- IMAGE SUGGESTION: Comparison table AWS / Azure / Google self-serve vs partner tiers. Alt: Comparison of free cloud credits for startups across AWS Activate Azure and Google Cloud -->
-
-<h2 id="how-to-apply">How to apply for AWS, Azure, and Google startup credits step by step</h2>
+<p>We've watched teams burn $20K in AWS credits in 60 days because they didn't set up guardrails. Every credit-funded account needs these on day one:</p>
 
 <ol>
-  <li><strong>Register the domain and business email first.</strong> This is the single highest-leverage step across all three programs.</li>
-  <li><strong>Incorporate</strong> if you have not (even a simple LLC / local company registration).</li>
-  <li><strong>Ship a credible website</strong> — product, waitlist with substance, or roadmap that proves you are a real software company.</li>
-  <li><strong>Apply to no-investor / self-serve tiers first:</strong> AWS Activate Founders, Microsoft for Startups without a code, Google Start tier.</li>
-  <li><strong>Stack all three.</strong> They are separate programs with separate accounts and terms. Applying to all is normal.</li>
-  <li><strong>If you later join an accelerator or VC</strong>, request their AWS Org ID / Microsoft Investor Network code / Google Scale eligibility path immediately — higher tiers often require that affiliation.</li>
-  <li><strong>Set billing alerts at 50%, 75%, and 90%</strong> of credit balance (and calendar reminders near expiry). Credits usually expire on a clock; Azure terms can vary by offer.</li>
+  <li><strong>Billing alerts at 25%, 50%, and 75% of credit amount.</strong> Not 90%. By 90% you have no time to react. On AWS, configure in Cost Explorer &rarr; Budgets. On Azure, it's Cost Management + Billing.</li>
+  <li><strong>Reserved Instances or Committed Use Discounts for anything running 24/7.</strong> A t3.medium on-demand costs ~$30/month. The 1-year Reserved Instance price is ~$19/month — a 37% savings for workloads that will clearly run continuously.</li>
+  <li><strong>Auto-shutdown for development environments.</strong> Dev servers running nights and weekends are a common credit burn. A simple Lambda or GitHub Action that stops non-production instances after hours pays for itself immediately.</li>
+  <li><strong>Cost allocation tags from day one.</strong> Tag every resource by environment (dev/staging/prod) and product. When you hit a surprise bill, you need to know which resource caused it.</li>
 </ol>
 
-<p>Related: <a href="/blog/ship-fast-without-losing-client-trust.html">Ship Fast Without Losing Client Trust</a> — pair credit runway with delivery discipline.</p>
+<h2 id="architecture">Architecture choices that match a zero-cost budget</h2>
 
-<h2 id="stack-the-rest">What other free startup tools should you stack?</h2>
-
-<p>Cloud is only part of the $0 runway story. After credits, tighten the rest of the toolkit:</p>
+<p>The free-tier architecture is not the right architecture forever. Design for the current stage:</p>
 
 <ul>
-  <li><strong>GitHub</strong> — often improved via Microsoft for Startups benefits; confirm current Enterprise/team offers in your portal.</li>
-  <li><strong>Stripe Atlas</strong> — incorporation and banking perks for eligible founders (geo-dependent).</li>
-  <li><strong>HubSpot for Startups</strong> — CRM discounts when you are still pre-revenue.</li>
-  <li><strong>Notion for Startups</strong> — workspace credits/discounts for early teams.</li>
-  <li><strong>Cloudflare / domain registrar startup programs</strong> — DNS, CDN, and security free tiers that pair well with a lean stack.</li>
+  <li><strong>One server for everything early on.</strong> A $20/month DigitalOcean droplet (or t3.small on AWS credits) running your Laravel app, database, and Redis is fine for the first few hundred users. The architectural cost of separating these prematurely is higher than the scaling benefit.</li>
+  <li><strong>Managed database sooner than you think.</strong> Self-managed Postgres on the same instance as your app is fine until it isn't. Migrating to RDS or Neon when you're also dealing with product fires is painful. The managed service cost (often within free tier ranges early on) is worth it.</li>
+  <li><strong>Object storage for anything that grows.</strong> S3 or equivalent for uploads, backups, and static assets. Never put these on the app server's disk.</li>
 </ul>
 
-<p>Related: <a href="/blog/building-a-software-team-in-kathmandu.html">Building a Software Team in Kathmandu</a> — when credits run out, process beats logos.</p>
-
-<h2 id="tradeoffs">What are the trade-offs of building on free cloud credits?</h2>
-
-<p>Credits are real money in disguise — with strings.</p>
-
-<ul>
-  <li><strong>Expiry forces migration anxiety.</strong> Architect for portability (containers, IaC, managed DBs you can re-home) before you are emotionally married to one vendor.</li>
-  <li><strong>Not everything is covered.</strong> Marketplace, some third-party models, and support tiers may bill cash while “credits” look healthy.</li>
-  <li><strong>Eligibility is discretionary.</strong> Google explicitly notes acceptance is at their discretion; Microsoft and AWS can decline incomplete profiles.</li>
-  <li><strong>Multi-cloud stacking adds ops overhead.</strong> Three accounts means three IAM models, three bill dashboards, three ways to misconfigure egress.</li>
-</ul>
-
-<p>We would reconsider multi-cloud stacking for a solo founder still pre-MVP — pick one provider, win the Founders/Start tier, and add the second only when you have a concrete second workload (e.g., GPU experiments).</p>
+<p>See also: <a href="/blog/business-logic-first-not-perfect-tech-stack.html">why stack decisions shouldn't dominate early product thinking</a> and <a href="/blog/how-to-run-startup-tech-stack-free-until-funded.html">build vs buy for early-stage infrastructure choices</a>.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Get domain + business email + company website + entity in place before applying — most rejections are identity problems.</li>
-  <li>Start with self-serve tiers: AWS Activate Founders ($1K, up to $5K), Microsoft for Startups (unlock toward $150K), Google Start (up to $2K).</li>
-  <li>Partner paths unlock larger pools: AWS Portfolio up to $200K with Org ID; Google Scale up to $200K / $350K AI-first for VC-backed stages.</li>
-  <li>Stack programs carefully, set 50/75/90% billing alerts, and verify live terms — blog numbers go stale.</li>
-  <li>Credits buy validation time; they do not replace architecture judgment or cost discipline.</li>
+  <li>Microsoft for Startups Founders Hub offers up to $150K Azure credits with no VC requirement — the highest no-investor ceiling we've seen. Apply early.</li>
+  <li>Stack multiple programs: AWS Activate + Microsoft + Google Cloud + DigitalOcean Hatch can give you $3,500–$20,000+ in credits without investor backing.</li>
+  <li>Set billing alerts at 25%/50%/75% of credit amounts on day one. Credits burn fast without guardrails.</li>
+  <li>Permanent free tiers (Cloudflare, Vercel, Resend, Sentry) compound with credit programs — use both.</li>
+  <li>Build for current stage; don't over-engineer the architecture before you have signal on what actually needs to scale.</li>
 </ul>
 
-<p>If you are building from Nepal or outsourcing product engineering while you validate, we do this work every week at MarginTop — <a href="/#contact">get in touch</a> if you want a second set of eyes on a lean stack before credits expire.</p>
+<p>Want help thinking through your pre-funded cloud architecture? <a href="/#contact">Get in touch</a> — we've helped multiple early-stage teams extend runway through smart infrastructure choices.</p>
 
-        </article>
+</article>
 
 
 

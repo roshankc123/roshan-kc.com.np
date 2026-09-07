@@ -185,66 +185,122 @@
             <div class="blog-meta">
               <span class="tag">Strategy · Product</span>
               <time datetime="2026-08-31">August 31, 2026</time>
-              <span>8 min read</span>
+              <span>9 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">Build vs. Buy: The Framework We Use to Decide What to Build In-House</h1>
           </header>
 
 <p><strong>Direct answer:</strong> We <strong>build in-house</strong> when the capability is a customer-facing differentiator or encodes our unique business rules; we <strong>buy</strong> (or adopt first-party packages) when the problem is commodity infrastructure — payments, auth primitives, email delivery — because the maintenance tax of owning commodity code is usually higher than the license or SaaS fee.</p>
 
-<p>This is how we decide at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, whether the product is ours or a client’s.</p>
+<p>This is how we decide at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, whether the product is ours or a client's. And the framework has saved us from some genuinely expensive mistakes.</p>
 
-<p><em>Definition:</em> A <strong>build vs buy framework</strong> is a decision model that separates differentiators (worth owning) from commodities (worth renting), then prices the long-term maintenance tax of each option.</p>
+<h2 id="why-this-matters">Why the wrong call is so expensive</h2>
+
+<p>Marc Andreessen's observation that "software is eating the world" gets quoted a lot. Less quoted is the corollary that applies to product teams: building software you don't need to is eating your engineering capacity.</p>
+
+<p>A 2019 McKinsey study found that software projects that attempt to build differentiated capabilities <em>and</em> commodity infrastructure simultaneously take <strong>40–60% longer</strong> and deliver fewer business outcomes per dollar spent. The problem isn't that engineers are slow — it's that context-switching between domain problems (complex, valuable) and infrastructure problems (complex, commodity) destroys focus and creates systems that are mediocre at both.</p>
 
 <h2 id="filter">The two-question filter</h2>
 
+<p>We apply two questions to every "should we build this?" conversation:</p>
+
 <ol>
-  <li><strong>Differentiator or commodity?</strong> Would a customer choose us because of this subsystem?</li>
-  <li><strong>Who feels the maintenance tax?</strong> Security patches, PCI surface, edge cases, on-call — is that our unique advantage or a distraction?</li>
+  <li><strong>Differentiator or commodity?</strong> Would a client or customer choose us specifically because of this capability? Would losing it differentiate us negatively? If the answer is no — if any of our competitors can access the same thing for $X/month — it's a commodity.</li>
+  <li><strong>Who feels the maintenance tax?</strong> Security patches, PCI surface area, edge cases, on-call paging, version upgrades — if that maintenance is related to our unique value, it's worth owning. If it's incidental to our value, it's a tax we're choosing to pay unnecessarily.</li>
 </ol>
 
-<h2 id="examples">Laravel examples we actually use</h2>
+<h2 id="decision-matrix">Decision matrix with real examples</h2>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Capability</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Differentiator?</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Our call</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">What we actually own</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Payment processing mechanics</td>
+      <td style="padding:0.6rem 0.9rem">No</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Buy:</strong> Stripe + Cashier</td>
+      <td style="padding:0.6rem 0.9rem">Pricing packages, entitlement rules, upgrade logic</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Auth token/session primitives</td>
+      <td style="padding:0.6rem 0.9rem">No</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Buy:</strong> Sanctum</td>
+      <td style="padding:0.6rem 0.9rem">Permission matrices, tenant isolation, role inheritance</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Email/SMS delivery</td>
+      <td style="padding:0.6rem 0.9rem">No</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Buy:</strong> Postmark / Twilio</td>
+      <td style="padding:0.6rem 0.9rem">Notification content, trigger logic, audit trails</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Search indexing</td>
+      <td style="padding:0.6rem 0.9rem">Sometimes</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Buy:</strong> Meilisearch/Scout</td>
+      <td style="padding:0.6rem 0.9rem">Schema design, ranking rules, domain-specific filters</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Domain workflow engine</td>
+      <td style="padding:0.6rem 0.9rem">Yes</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Build</strong></td>
+      <td style="padding:0.6rem 0.9rem">State machines, approval flows, business rule enforcement</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Reporting / analytics for customers</td>
+      <td style="padding:0.6rem 0.9rem">Yes</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Build</strong> (query layer) + <strong>Buy</strong> (charts)</td>
+      <td style="padding:0.6rem 0.9rem">Metric definitions, access control, data models</td>
+    </tr>
+    <tr style="background:var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Internal admin tooling</td>
+      <td style="padding:0.6rem 0.9rem">No</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Buy:</strong> Filament / Retool</td>
+      <td style="padding:0.6rem 0.9rem">Custom actions, business-specific workflows on top</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="maintenance-tax">The maintenance tax nobody budgets for</h2>
+
+<p>The honest cost of building commodity infrastructure is rarely calculated upfront. Here's what gets forgotten:</p>
 
 <ul>
-  <li><strong>Stripe + Cashier</strong> — billing mechanics are commodity; our pricing packages and entitlement rules are the differentiator we keep in domain code.</li>
-  <li><strong>Sanctum</strong> — token/SPA auth primitives are bought; permission matrices and tenant isolation rules are built.</li>
-  <li><strong>Managed email/SMS providers</strong> — delivery is bought; notification content and trigger logic are built.</li>
+  <li><strong>Custom auth that almost passes SOC-ish checklists</strong> — until an edge case exposes a session management bug six months later, and the "security audit" becomes a crisis instead of a checkbox.</li>
+  <li><strong>Homegrown payment state machines</strong> — built by an engineer who understood Stripe at the time, and now diverging from Stripe's actual behavior on refunds, disputes, and SCA because nobody was watching those changelogs.</li>
+  <li><strong>Internal "platform" libraries</strong> with one maintainer and twelve dependents — a single bus factor that blocks every team when that engineer takes a long weekend.</li>
+  <li><strong>The upgrade tax.</strong> Every library you own needs to track security advisories. For commodity infrastructure like auth, that's full-time work at a security-competent company. You probably don't have a full-time auth security engineer. Proven open-source packages have hundreds of contributors watching for issues.</li>
 </ul>
 
-<p>Related stack choices: <a href="/blog/why-we-chose-laravel-over-nodejs.html">Laravel over Node</a> and <a href="/blog/business-logic-first-not-perfect-tech-stack.html">business logic first</a>.</p>
+<h2 id="tradeoffs">When the calculus flips</h2>
 
-<h2 id="maintenance-tax">The maintenance tax nobody budgets</h2>
+<p>The buy default has limits. Cases where we build despite commodity-ish territory:</p>
 
 <ul>
-  <li>Custom auth that almost passes SOC-ish checklists until an edge case does not.</li>
-  <li>Homegrown payment state machines that diverge from Stripe’s realities.</li>
-  <li>Internal “platform” libraries with one maintainer and twelve dependents.</li>
+  <li><strong>The vendor doesn't actually solve our problem.</strong> Off-the-shelf multi-tenancy solutions often make assumptions that don't match our specific tenant-isolation model. Custom is cheaper than fighting abstractions.</li>
+  <li><strong>The SaaS cost exceeds build cost at our scale.</strong> Some tools that are cheap at launch become expensive at scale. We model the crossover point before committing.</li>
+  <li><strong>Strategic differentiation emerges from a previously-commodity capability.</strong> The framework is not static — if a capability that was commodity becomes a differentiator, we reconsider.</li>
 </ul>
 
 <p>That tax shows up in hiring too — see <a href="/blog/hiring-engineers-as-first-time-cto.html">what I look for when hiring</a>. We want engineers owning product outcomes, not babysitting commodity plumbing.</p>
 
-<h2 id="tradeoffs">Trade-offs</h2>
-
-<ul>
-  <li><strong>Buy too much:</strong> vendor lock-in, awkward domain fits, surprise pricing.</li>
-  <li><strong>Build too much:</strong> slower roadmap, security debt, key-person risk.</li>
-  <li><strong>Healthy middle:</strong> buy the rails; build the route the customer pays for.</li>
-</ul>
-
-<p>Also pair with <a href="/blog/engineering-principles-what-not-to-build.html">what NOT to build</a> and <a href="/blog/security-basics-startups-before-fundraising.html">security basics</a>.</p>
-
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Build differentiators; buy commodities.</li>
-  <li>Cashier/Sanctum-style packages are “buy” with room to encode unique rules on top.</li>
-  <li>Always price the maintenance tax, not just the first sprint estimate.</li>
-  <li>Revisit decisions when a commodity becomes your moat — or when your moat was never real.</li>
+  <li>The decision is differentiator vs. commodity — not "is this technically possible to build."</li>
+  <li>The full maintenance tax (security patches, upgrade cycles, on-call, bus factors) is rarely calculated upfront. Do the math.</li>
+  <li>Proven packages and SaaS tools for commodity concerns free engineering focus for domain problems that actually compound into competitive advantage.</li>
+  <li>The framework is not a one-time call — revisit when vendor costs scale, when SaaS abstractions fight your domain, or when a capability genuinely becomes a differentiator.</li>
 </ul>
 
-<p>Stuck on a build vs buy call for your MVP? <a href="/#contact">Let’s talk</a>.</p>
+<p>Trying to figure out what to build vs. buy on your product? <a href="/#contact">Get in touch</a> — this is a conversation we have with every client engagement at MarginTop.</p>
 
-        </article>
+</article>
 
 
 

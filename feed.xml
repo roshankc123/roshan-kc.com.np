@@ -8,6 +8,15 @@
     <lastBuildDate>2026-09-05</lastBuildDate>
     <atom:link href="https://roshan-kc.com.np/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring</title>
+      <link>https://roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring.html</link>
+      <guid isPermaLink="true">https://roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring.html</guid>
+      <pubDate>2026-09-07</pubDate>
+      <description>A free public Docker image: PHP 8.5 + Swoole 6.2.2 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64) — ARM64/Graviton recommended for best io_uring throughput per dollar. Includes Nginx and Supervisor. Drop it into your Laravel app in 15 minutes.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
       <title>Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</title>
       <link>https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</link>
       <guid isPermaLink="true">https://roshan-kc.com.np/blog/security-basics-startups-before-fundraising.html</guid>

@@ -185,32 +185,98 @@
             <div class="blog-meta">
               <span class="tag">CTO · Leadership</span>
               <time datetime="2026-04-28">April 28, 2026</time>
-              <span>8 min read</span>
+              <span>9 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">What a First-Time CTO Actually Does (Beyond the Title)</h1>
           </header>
-          <p><strong>Direct answer:</strong> As a first-time CTO, most of my week is architecture decisions, unblocking engineers, protecting delivery quality, and translating business pressure into systems the team can actually build.</p>
-<p>People hear “CTO” and imagine keynotes and futuristic roadmaps. The job is more concrete. At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, the title means I am accountable for how we engineer — and for whether clients still trust us after the third hard deadline.</p>
-<h2>The real calendar of a hands-on CTO</h2>
+
+<p><strong>Direct answer:</strong> As a first-time CTO, most of my week is architecture decisions, unblocking engineers, protecting delivery quality, and translating business pressure into systems the team can actually build. The keynotes and roadmap presentations come later &mdash; if ever. First, there's just the work.</p>
+
+<p>People hear "CTO" and imagine a visionary figure on a stage. The job at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> is more concrete: I'm accountable for how we engineer &mdash; and for whether clients still trust us after the third hard deadline in a row.</p>
+
+<h2 id="how-the-week-actually-looks">How the week actually looks</h2>
+
+<p>I've tracked where my time goes across several months. The breakdown isn't what LinkedIn would suggest a CTO's calendar should look like. It's messier and more operational:</p>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Activity</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Approx. time (weekly)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Why it's high</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Architecture decisions and code review</td>
+      <td style="padding:0.6rem 0.9rem">8&ndash;10 hrs</td>
+      <td style="padding:0.6rem 0.9rem">Bad decisions compound; catching them early is cheaper than fixing them in production</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Unblocking engineers (async and sync)</td>
+      <td style="padding:0.6rem 0.9rem">5&ndash;7 hrs</td>
+      <td style="padding:0.6rem 0.9rem">A blocked senior engineer costs more per hour than a CTO conversation</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Client-facing technical communication</td>
+      <td style="padding:0.6rem 0.9rem">4&ndash;6 hrs</td>
+      <td style="padding:0.6rem 0.9rem">Trust is built in conversations, not deliverables alone</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Hiring, onboarding, and mentoring</td>
+      <td style="padding:0.6rem 0.9rem">3&ndash;5 hrs</td>
+      <td style="padding:0.6rem 0.9rem">Team quality compounds; neglecting this creates problems in 6 months</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Delivery triage and sprint management</td>
+      <td style="padding:0.6rem 0.9rem">3&ndash;4 hrs</td>
+      <td style="padding:0.6rem 0.9rem">Someone has to make scope calls when pressure hits; it should be me, not accident</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Personal coding (actual implementation)</td>
+      <td style="padding:0.6rem 0.9rem">2&ndash;5 hrs</td>
+      <td style="padding:0.6rem 0.9rem">Low because it scales poorly; high because staying close to the code matters</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>That last row surprises people. "But you're a CTO &mdash; don't you code?" Yes, but less than I used to. The leverage on architecture decisions and unblocking engineers is much higher than on personal implementation. A CTO who only codes becomes a bottleneck wearing a fancy title. A CTO who never codes loses the plot &mdash; they can't smell risk in systems they don't understand from the inside. The balance: deep enough to recognize when something is wrong, distant enough that others own the outcomes.</p>
+
+<h2 id="what-the-title-actually-means">What the title actually means in a small company</h2>
+
+<p>At a startup or growth-stage company, CTO is less a title and more a scope description. It means:</p>
+
 <ul>
-  <li><strong>Architecture that survives contact with reality</strong> — choosing stacks, boundaries, and cloud patterns that juniors can extend without creating a museum of exceptions.</li>
-  <li><strong>Delivery triage</strong> — when a sprint slips, deciding what to cut without lying to the client or burning the team.</li>
-  <li><strong>Hiring and mentoring</strong> — growing engineers who can own modules, not just tickets.</li>
-  <li><strong>Client-facing technical truth</strong> — saying no early is cheaper than apologizing late.</li>
+  <li><strong>Architecture that survives contact with reality</strong> &mdash; stacks, service boundaries, and cloud patterns that junior engineers can extend without building a museum of exceptions.</li>
+  <li><strong>Delivery triage under pressure</strong> &mdash; when a sprint slips, deciding what to cut honestly without burning the team or lying to the client. See <a href="/blog/ship-fast-without-losing-client-trust.html">shipping fast without losing trust</a>.</li>
+  <li><strong>Hiring and growing engineers</strong> &mdash; building a team that can own modules, not just tickets. See <a href="/blog/hiring-engineers-as-first-time-cto.html">what I look for when hiring</a>.</li>
+  <li><strong>Client-facing technical truth</strong> &mdash; saying no early is cheaper than apologizing late. And the client respects it more.</li>
 </ul>
-<h2>What I stopped doing</h2>
-<p>Early on I tried to be the hero who fixed every production fire personally. That scales until it does not. A CTO who only codes becomes a bottleneck wearing a fancy title. A CTO who never codes loses the plot. The balance: deep enough in the system to smell risk, distant enough that others own outcomes.</p>
-<h2>CTO habits that compound</h2>
+
+<h2 id="what-i-stopped-doing">What I stopped doing</h2>
+
+<p>Early on I tried to be the hero who fixed every production fire personally. That scales until it doesn't. When you're three people, being the hero is appropriate &mdash; the alternative is the company failing. When you're twelve, the hero model means nobody else develops the instinct to own problems, and every incident has a single point of failure: you.</p>
+
+<p>I stopped personally fixing everything when I realized I was creating learned helplessness. Engineers who always had the CTO as a safety net stopped developing their own incident response instincts. Stepping back &mdash; with visibility and backup, not abandonment &mdash; was one of the harder things I had to do, and it made the team better.</p>
+
+<h2 id="habits-that-compound">CTO habits that compound</h2>
+
 <ol>
-  <li>Write the decision, not just the Slack message. Future you (and the next hire) needs the “why.”</li>
-  <li>Measure reliability like a product feature. Uptime and clear incidents are marketing you do not pay for.</li>
-  <li>Protect focus time for the team. Context switching is a silent tax on velocity.</li>
-  <li>Keep learning the boring layers — networking, observability, security basics — because glamorous features sit on top of them.</li>
+  <li><strong>Write the decision, not just the Slack message.</strong> Future you (and the next hire) needs the "why" documented, not just the outcome. I keep an architecture decision log &mdash; not a formal ADR process, just a doc where I write a paragraph when we make a non-obvious technical choice. It's paid for itself many times over during onboarding and revisit conversations.</li>
+  <li><strong>Measure reliability like a product feature.</strong> Uptime and clean incident handling are marketing you don't pay for. Clients notice both when they're absent.</li>
+  <li><strong>Protect focus time for the team &mdash; including for yourself.</strong> Context switching is a tax on velocity that's invisible in individual weeks and devastating across quarters. Interruption-heavy engineering time doesn't produce the same quality as focused blocks.</li>
+  <li><strong>Keep learning the boring layers.</strong> Networking, observability, security fundamentals &mdash; the unglamorous substrate that glamorous features sit on top of. When something goes wrong at that layer, you need to understand it enough to triage and direct, even if you're not implementing the fix.</li>
 </ol>
-<h2>If you just got the title</h2>
-<p>Congratulations — and condolences. Your job is no longer only to be the best engineer in the room. Your job is to make the room better than you. That shift is uncomfortable for hustlers who built the first version alone. It is also the only way a company outgrows a founder’s personal bandwidth.</p>
-<p>More from the founder seat in the <a href="/blog/">blog</a>, or <a href="/#contact">connect with me</a> if you want to talk systems, teams, or outsourcing partnerships from Nepal.</p>
-        </article>
+
+<h2 id="if-youre-early">If you're just stepping into the role</h2>
+
+<p>The transition from lead engineer to CTO involves a mental model shift that nobody warns you about: your job stops being "build the right thing" and becomes "create an environment where the right things get built." That's a different skill. Some engineers make it naturally; most struggle with the reduced personal coding and increased indirect contribution.</p>
+
+<p>Give yourself six months to adjust. Track where your time goes &mdash; if it's mostly on personal implementation, you're still operating as an IC with a new title. If it's mostly on unblocking, architecture, and people, you're doing the CTO job.</p>
+
+<p>Questions about the CTO role at an early-stage company? <a href="/#contact">Get in touch</a> &mdash; I'm happy to talk through what the transition actually looked like.</p>
+
+</article>
 
 
         <nav class="post-nav" aria-label="Post navigation">

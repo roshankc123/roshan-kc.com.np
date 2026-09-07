@@ -185,68 +185,122 @@
             <div class="blog-meta">
               <span class="tag">Security · Startups</span>
               <time datetime="2026-09-05">September 5, 2026</time>
-              <span>9 min read</span>
+              <span>10 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</h1>
           </header>
 
 <p><strong>Direct answer:</strong> Before fundraising conversations get serious, early-stage startups should get <strong>security basics</strong> right — authentication, secrets handling, encryption in transit/at rest where it matters, access control, dependency hygiene, backups, and logging — and treat SOC 2 as a sequenced program after foundations, not a sticker you buy overnight.</p>
 
-<p>Investors and enterprise pilots increasingly ask uncomfortable questions. At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, we would rather you look boringly competent than scramble mid-diligence.</p>
+<p>Investors and enterprise pilots increasingly ask uncomfortable questions. At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, we would rather you look boringly competent in a security call than scramble mid-diligence to explain why you've been storing secrets in a .env file committed to a public GitHub repo.</p>
 
-<p><em>Definition:</em> <strong>Security basics for startups</strong> are the minimum controls that reduce foreseeable breach and data-loss risk without pretending you already operate like a public company.</p>
+<h2 id="why-it-matters-now">Why this matters earlier than founders think</h2>
 
-<h2 id="checklist">The pre-fundraise checklist</h2>
+<p>The numbers here are not hypothetical. According to IBM's <a href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">Cost of a Data Breach Report 2024</a>:</p>
+
+<ul>
+  <li>The global average cost of a data breach reached <strong>$4.88 million</strong> in 2024 — the highest on record.</li>
+  <li>The average time to identify and contain a breach was <strong>258 days</strong>.</li>
+  <li>Breaches involving stolen or compromised credentials were the most common initial attack vector, accounting for ~16% of incidents.</li>
+</ul>
+
+<p>For early-stage companies, a breach rarely costs $4.88M in direct losses — it costs you the enterprise deal you were about to close, the fundraising round that was two weeks away, and the engineering trust you'd spent 18 months building. The reputational damage is often worse than the technical one.</p>
+
+<h2 id="checklist">The pre-fundraise security checklist</h2>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Control</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Minimum viable implementation</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Common failure mode</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Authentication</strong></td>
+      <td style="padding:0.6rem 0.9rem">MFA for all privileged users; proven primitives (Sanctum, Auth0) not homebrew</td>
+      <td style="padding:0.6rem 0.9rem">Shared admin password in Notion; no MFA on production access</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Secrets management</strong></td>
+      <td style="padding:0.6rem 0.9rem">Env/vault-backed secrets, never committed; rotated keys with documented cadence</td>
+      <td style="padding:0.6rem 0.9rem">API keys in git history; secrets pasted into AI prompts</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Encryption in transit</strong></td>
+      <td style="padding:0.6rem 0.9rem">TLS everywhere, no HTTP fallback, HSTS enabled</td>
+      <td style="padding:0.6rem 0.9rem">Internal microservices on HTTP; staging not behind HTTPS</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Encryption at rest</strong></td>
+      <td style="padding:0.6rem 0.9rem">Sensitive fields (PII, health, financial data) encrypted; backups encrypted</td>
+      <td style="padding:0.6rem 0.9rem">Plain-text PII in database; unencrypted S3 bucket for uploads</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Access control</strong></td>
+      <td style="padding:0.6rem 0.9rem">Least privilege in cloud IAM; separate prod/staging credentials; offboarding checklist</td>
+      <td style="padding:0.6rem 0.9rem">Former contractor still has production DB access six months later</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Dependency hygiene</strong></td>
+      <td style="padding:0.6rem 0.9rem">Lockfiles committed; Dependabot or equivalent; critical CVEs patched within defined SLA</td>
+      <td style="padding:0.6rem 0.9rem">No dependency scanning; outdated packages with known exploits in production</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Backups</strong></td>
+      <td style="padding:0.6rem 0.9rem">Automated daily backups; restore actually tested quarterly</td>
+      <td style="padding:0.6rem 0.9rem">Backups configured but never tested; restore takes hours under pressure</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Audit logging</strong></td>
+      <td style="padding:0.6rem 0.9rem">Auth events, admin actions, deploy trails; retained for 90+ days; searchable</td>
+      <td style="padding:0.6rem 0.9rem">No logging; or logs that only exist in a terminal session that's long gone</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>On the secrets point: in 2023, GitGuardian detected <strong>12.8 million secrets</strong> in public GitHub commits alone. Private repos are not immune — leaked tokens from developer machines, CI logs, and AI prompt histories are real vectors. We have a hard rule at MarginTop: no keys, no customer data, no production dumps go into AI prompts. Ever. See <a href="/blog/how-ai-coding-tools-changed-engineering-velocity.html">AI guardrails we use</a>.</p>
+
+<h2 id="soc2">SOC 2 sequencing: do not skip the middle</h2>
+
+<p>SOC 2 has become a checkbox for enterprise sales, but most early-stage startups approach it backwards — they find an auditor first, then try to reverse-engineer what controls they need. That's how you end up with a 200-page policy PDF that doesn't reflect what your engineers actually do.</p>
+
+<p>The correct sequence:</p>
 
 <ol>
-  <li><strong>Auth</strong> — MFA for privileged users, solid session/token practices, no shared admin passwords. Prefer proven primitives (e.g. Sanctum patterns) over homebrew (<a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">build vs buy</a>).</li>
-  <li><strong>Secrets</strong> — env/vault-backed secrets, rotated keys, never commit credentials; never paste them into AI prompts (<a href="/blog/how-ai-coding-tools-changed-engineering-velocity.html">AI guardrails</a>).</li>
-  <li><strong>Encryption</strong> — TLS everywhere; encrypt sensitive fields/backups appropriately for your data class.</li>
-  <li><strong>Access</strong> — least privilege in cloud IAM, separate prod/staging, offboarding checklist that actually runs.</li>
-  <li><strong>Dependencies</strong> — lockfiles, dependabot/equivalent, patch critical CVEs on a defined cadence.</li>
-  <li><strong>Backups</strong> — automated, restore-tested backups; a backup you never restore is a story, not a control.</li>
-  <li><strong>Logging</strong> — auth events, admin actions, and deploy trails you can audit under pressure.</li>
+  <li><strong>Inventory systems, owners, and data flows.</strong> What data do you hold? Where does it live? Who can access it? You can't write accurate policies about a system you haven't mapped.</li>
+  <li><strong>Write lightweight policies that match reality.</strong> Access control, incident response, change management, vendor risk — written to describe what you actually do, with enough structure to make it auditable. A two-page policy that engineers follow beats a 20-page policy that lives in Confluence untouched.</li>
+  <li><strong>Operate those controls and collect evidence.</strong> Screenshots, tickets, access review records, deploy logs. Auditors verify evidence, not intent. "We planned to do that" fails every audit.</li>
+  <li><strong>Engage an auditor when evidence exists for 6+ months.</strong> SOC 2 Type II requires demonstrating controls over a period of time, not just at a point in time. Rushing this wastes money and produces a weaker report.</li>
 </ol>
 
-<h2 id="soc2">SOC 2 sequencing (do not skip the middle)</h2>
+<h2 id="investor-questions">What investors and enterprise pilots actually ask</h2>
+
+<p>Based on the technical due diligence calls we've been part of or prepared clients for, here are the questions you need to be ready to answer without hesitating:</p>
 
 <ul>
-  <li><strong>First:</strong> inventory systems, owners, and data flows.</li>
-  <li><strong>Then:</strong> write lightweight policies that match reality (access, incident response, change management).</li>
-  <li><strong>Then:</strong> operate those controls for evidence — screenshots and tickets beat aspirational PDFs.</li>
-  <li><strong>Then:</strong> engage auditors when the story is consistent.</li>
+  <li>How do you handle secret rotation and who has production database access right now?</li>
+  <li>What's your incident response process — walk me through the last time something went wrong.</li>
+  <li>Do you have SOC 2? If not, what's your timeline, and what controls are already in place?</li>
+  <li>How do you manage third-party dependencies and how quickly do you patch critical CVEs?</li>
+  <li>Where is customer data stored and is it encrypted at rest?</li>
 </ul>
 
-<p>SOC 2 before basics produces theater. Basics without a path to enterprise asks can stall sales later — sequence deliberately.</p>
-
-<h2 id="architecture">Architecture choices that help</h2>
-
-<ul>
-  <li>A modular monolith is easier to secure early than a sprawl of half-owned services (<a href="/blog/hidden-cost-premature-microservices-monolith.html">microservices costs</a>).</li>
-  <li>Scope discipline reduces attack surface (<a href="/blog/engineering-principles-what-not-to-build.html">what not to build</a>).</li>
-  <li>Cloud credit runway still needs billing alerts and IAM hygiene (<a href="/blog/how-to-run-startup-tech-stack-free-until-funded.html">free cloud credits guide</a>).</li>
-</ul>
-
-<h2 id="tradeoffs">Trade-offs</h2>
-
-<ul>
-  <li><strong>Over-securing too early</strong> can freeze product learning — focus on high-impact controls first.</li>
-  <li><strong>Under-securing</strong> turns the first enterprise deal into an emergency project.</li>
-  <li><strong>Buying compliance software alone</strong> does not create evidence of operational habit.</li>
-</ul>
+<p>None of these questions require SOC 2 certification to answer well. They require that you've actually thought about them and have evidence. "We use Sanctum and have MFA enforced for all admin accounts. Here's our access log from last week" is better than a 40-slide deck about your security roadmap.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Nail auth, secrets, encryption, access, deps, backups, and logging before the fundraise spotlight.</li>
-  <li>Sequence SOC 2 after real controls and evidence, not before.</li>
-  <li>Prefer boring, owned controls over slideware.</li>
-  <li>Security is part of client trust — same muscle as shipping reliably.</li>
+  <li>Security basics are not optional — they're a fundraising and enterprise sales prerequisite in 2026. Investors have seen too many portfolio companies get hit to skip security diligence.</li>
+  <li>The IBM 2024 data breach report put the average cost at $4.88M. For a startup, the cost is usually a lost deal and a damaged reputation — arguably harder to recover from.</li>
+  <li>Use the checklist above as a baseline. None of those controls require a dedicated security team to implement — they require discipline and existing tools used correctly.</li>
+  <li>SOC 2 comes after you have real controls operating, not before. Build the actual practices first; audit the evidence second.</li>
 </ul>
 
-<p>Need a pragmatic security pass before investor or enterprise diligence? <a href="/#contact">Contact us</a>.</p>
+<p>Security review before a fundraise or enterprise pilot? <a href="/#contact">Get in touch</a> — we've walked this path with multiple clients and can help you get to "boringly secure" faster.</p>
 
-        </article>
+</article>
 
 
 

@@ -185,57 +185,105 @@
             <div class="blog-meta">
               <span class="tag">Principles · Engineering</span>
               <time datetime="2026-09-04">September 4, 2026</time>
-              <span>7 min read</span>
+              <span>8 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">Our Engineering Principles: How We Decide What NOT to Build</h1>
           </header>
 
-<p><strong>Direct answer:</strong> Our engineering principles start with <strong>what NOT to build</strong>: we refuse features, platforms, and abstractions that do not reduce customer risk or create measurable leverage — because scope discipline is how small teams stay trustworthy.</p>
+<p><strong>Direct answer:</strong> Our engineering principles start with <strong>what NOT to build</strong> &mdash; because the projects that nearly killed teams we've worked with weren't killed by bad code; they were killed by building things that shouldn't have been built at all, or built now.</p>
 
-<p>This is the working manifesto at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>.</p>
+<p>At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, saying no is one of the highest-leverage decisions an engineering team makes. Here's the operating system we use to make it.</p>
 
-<p><em>Definition:</em> <strong>Scope discipline</strong> is the practice of cutting work that adds surface area without adding decision quality, revenue clarity, or operational safety.</p>
+<h2 id="why-not-what">Why "what not to build" matters more than "what to build"</h2>
 
-<h2 id="rules">Rules for saying no</h2>
+<p>Fred Brooks' <em>The Mythical Man-Month</em> (1975) identified a pattern that's still true fifty years later: software projects fail less often from building the wrong thing the wrong way, and more often from building the right thing at the wrong time or scope. The classic software project failure mode isn't "we made a technical mistake." It's "we built 18 months of features before discovering the core value proposition was wrong" or "we built a scalable platform for 1,000 concurrent users when we had 20."</p>
 
-<ol>
-  <li><strong>No platform before product proof</strong> — internal frameworks need two real consumers, not a vision deck.</li>
-  <li><strong>No second system for ego</strong> — rewrites require a failure mode the current system cannot cheaply fix.</li>
-  <li><strong>No commodity rebuilds</strong> — if Stripe/Cashier/Sanctum covers it, we buy (<a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">build vs buy</a>).</li>
-  <li><strong>No microservices for fashion</strong> — modules first (<a href="/blog/hidden-cost-premature-microservices-monolith.html">monolith rationale</a>).</li>
-  <li><strong>No AI-generated merges without review</strong> — velocity keeps standards (<a href="/blog/how-ai-coding-tools-changed-engineering-velocity.html">AI velocity</a>).</li>
-</ol>
+<p>The same principle in modern form: a 2021 McKinsey analysis of software project outcomes found that <strong>17% of large IT projects go so badly that they threaten the company's existence</strong> &mdash; not because of poor execution, but because scope was never controlled. The projects that succeed are the ones where someone with authority said "not this, not now" repeatedly.</p>
 
-<h2 id="yes">What we do build</h2>
+<h2 id="principles">The principles we actually use</h2>
 
-<ul>
-  <li>Clear domain rules around money, permissions, and workflows.</li>
-  <li>Observability and recovery paths that protect client trust.</li>
-  <li>Thin glue that makes bought tools fit the differentiator.</li>
-</ul>
+<h3>1. Build for the problem you have, not the problem you imagine</h3>
 
-<p>Logic over stack theater: <a href="/blog/business-logic-first-not-perfect-tech-stack.html">business logic first</a>. Laravel as default vehicle: <a href="/blog/why-we-chose-laravel-over-nodejs.html">Laravel over Node</a>.</p>
+<p>The most expensive software we've seen was built to "scale to 10 million users" when the company had 200 active ones and no acquisition plan. Premature scale infrastructure costs 3&ndash;5&times; what infrastructure-for-now costs, delivers zero additional value until the scale arrives, and introduces complexity that slows down the feature work that would actually attract those users.</p>
 
-<h2 id="tradeoffs">Trade-offs of a no-first culture</h2>
+<p>Our test: "If we had 10&times; the users tomorrow, which specific bottleneck would break first, and is that the problem we're solving today?" Usually the answer is "the database query on the dashboard" not "our inability to shard across five regions."</p>
 
-<ul>
-  <li>Stakeholders may hear “no” as lack of ambition — we counter with sequenced yeses.</li>
-  <li>Engineers hungry for novelty need growth paths inside real product problems.</li>
-  <li>Saying no wrong can delay necessary investment — we revisit with evidence, not vibes.</li>
-</ul>
+<h3>2. Commodity problems get commodity solutions</h3>
+
+<p>We've written about this in depth in the <a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">build vs buy framework</a>, but the short version: if the problem is solved well by an existing SaaS or open-source package, the decision to build it custom is a tax on your engineering budget that rarely delivers unique value.</p>
+
+<p>Examples of things we see teams build that they should buy: authentication systems, payment state machines, email delivery infrastructure, admin dashboards, feature flag systems, and internal analytics tooling. Each of these is genuinely hard to build correctly. None of them is a competitive differentiator for a product company.</p>
+
+<h3>3. Premature abstraction is the enemy of clear code</h3>
+
+<p>The YAGNI principle (&ldquo;You Aren't Gonna Need It&rdquo;) is nearly 30 years old and still regularly violated. We see it most often in the form of "generalized plugin architectures" built before there are two concrete use cases to generalize from, or "event-sourcing infrastructure" added before the team understands which events they care about.</p>
+
+<p>Our rule: abstract when the third concrete case arrives and the pattern is obvious. Not before. The first two cases teach you what the abstraction should look like. Building the abstraction on the first case usually means rewriting it after the second.</p>
+
+<h3>4. Every new dependency is a long-term commitment</h3>
+
+<p>Adding a package or service to a production system means implicitly committing to: tracking its security advisories, keeping it updated, understanding its failure modes, and migrating away from it if it's abandoned. We evaluate dependencies by asking: "Are we prepared to own this relationship for three years?"</p>
+
+<p>This doesn't mean avoiding dependencies &mdash; it means being honest about the ongoing cost. A well-maintained package with 10,000 GitHub stars and active releases is a different commitment from a two-year-old package with one maintainer who hasn't merged a PR in six months.</p>
+
+<h3>5. The feature nobody asked for twice isn't a priority</h3>
+
+<p>One request is a data point. Two independent requests is a pattern. Zero repeat asks after shipping a feature is a signal to stop investing in it. We track feature request recurrence explicitly &mdash; not just volume &mdash; because a loud minority can drive engineering priority in directions that don't serve the majority of users.</p>
+
+<h2 id="what-not-to-build-examples">Concrete examples of what we said no to</h2>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">What was proposed</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Why we said no</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">What we did instead</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Custom auth system with "more flexibility than Sanctum"</td>
+      <td style="padding:0.6rem 0.9rem">Flexibility not needed; maintenance tax high; security surface unjustifiable</td>
+      <td style="padding:0.6rem 0.9rem">Sanctum + custom permission logic in domain code</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Microservices architecture for a 3-person team's product</td>
+      <td style="padding:0.6rem 0.9rem">Distributed ops overhead would consume 1 FTE before product had signal</td>
+      <td style="padding:0.6rem 0.9rem">Modular monolith with explicit domain boundaries</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Real-time analytics dashboard in month 2 of MVP</td>
+      <td style="padding:0.6rem 0.9rem">No users to analyze yet; would distract from acquisition features</td>
+      <td style="padding:0.6rem 0.9rem">Plausible &mdash; deferred until 500 active users</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Internal "developer platform" with its own API gateway</td>
+      <td style="padding:0.6rem 0.9rem">1 developer using it; platform complexity exceeded product complexity</td>
+      <td style="padding:0.6rem 0.9rem">Deleted it. Used the time on product features.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="how-to-say-no">How to actually say no (without becoming a blocker)</h2>
+
+<p>The skill isn't just deciding what not to build &mdash; it's communicating that decision without shutting down the conversation. A "no" that kills the discussion creates workarounds. A "no with clarity" creates better proposals.</p>
+
+<p>Our format: "Not this, because [specific reason]. Here's what we'd need to see before reconsidering [clear criteria]. Here's what we <em>can</em> do instead that addresses the underlying need [alternative]."</p>
+
+<p>That structure keeps engineers and stakeholders oriented toward outcomes rather than arguments about specific implementations. Related: <a href="/blog/ship-fast-without-losing-client-trust.html">cutting scope in the open</a>.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Principles are mostly constraints on what we refuse.</li>
-  <li>Buy commodities; build differentiators; delay platforms.</li>
-  <li>Scope discipline is a trust strategy, not austerity cosplay.</li>
-  <li>Revisit nos when metrics, incidents, or customer promises change.</li>
+  <li>The highest-leverage engineering decisions are often "don't build this" &mdash; McKinsey data suggests scope control is the primary differentiator between successful and failed large software projects.</li>
+  <li>Build for the problem you have; abstract after the third concrete case; every dependency is a 3-year commitment.</li>
+  <li>Commodity problems get commodity solutions. Build custom only where the capability is a genuine differentiator.</li>
+  <li>Say no with specificity: reason, criteria for reconsideration, and an alternative that addresses the underlying need.</li>
 </ul>
 
-<p>Want a scope review before your next sprint commits the quarter? <a href="/#contact">Talk to us</a>.</p>
+<p>Want help thinking through what your engineering team should and shouldn't be building? <a href="/#contact">Get in touch</a> &mdash; this is one of the most valuable conversations we have in early engagements.</p>
 
-        </article>
+</article>
 
 
 

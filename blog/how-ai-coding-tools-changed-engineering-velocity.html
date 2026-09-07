@@ -185,59 +185,117 @@
             <div class="blog-meta">
               <span class="tag">AI · Engineering</span>
               <time datetime="2026-09-02">September 2, 2026</time>
-              <span>8 min read</span>
+              <span>10 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</h1>
           </header>
 
 <p><strong>Direct answer:</strong> AI coding tools like <strong>Cursor and Claude</strong> increased our engineering velocity by compressing boilerplate, exploration, and first-draft implementation — without lowering standards, because we kept human review, tests, domain documentation, and a hard rule against secrets in prompts.</p>
 
-<p>At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, AI is an accelerator for disciplined teams, not a substitute for judgment.</p>
+<p>At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, AI is an accelerator for disciplined teams, not a substitute for judgment. The honest version of this story includes both the gains and the guardrails that made them sustainable.</p>
 
-<p><em>Definition:</em> <strong>Engineering velocity with AI</strong> means shorter time from intent to reviewed, tested change — not more unreviewed lines merged per day.</p>
+<h2 id="what-the-research-says">What the research actually says</h2>
 
-<h2 id="what-got-faster">What actually got faster</h2>
+<p>Before talking about our experience, it's worth grounding this in published data. The claims about AI coding productivity range from wildly optimistic to soberly skeptical, and both extremes miss the nuance.</p>
 
 <ul>
-  <li>Scaffolding CRUD, tests, and migrations in Laravel.</li>
-  <li>Explaining unfamiliar codepaths during onboarding.</li>
-  <li>Drafting refactors once module boundaries are clear (<a href="/blog/hidden-cost-premature-microservices-monolith.html">modular monolith</a>).</li>
-  <li>Comparing implementation options before we commit (ties to <a href="/blog/business-logic-first-not-perfect-tech-stack.html">logic first</a>).</li>
+  <li>A <strong>Microsoft/GitHub Research study (2022)</strong> found that developers using GitHub Copilot completed tasks <strong>55.8% faster</strong> on average — but the task was a well-defined HTTP server exercise with a clear spec. Real product tasks are messier.</li>
+  <li>A <strong>McKinsey study (2023)</strong> found software developers using generative AI tools completed certain coding tasks <strong>35–45% faster</strong> in controlled conditions, with the largest gains on documentation, code explanation, and refactoring.</li>
+  <li>A <strong>METR study (2025)</strong> testing AI agents on real-world open-source tasks found that AI-assisted developers were actually <strong>slower</strong> on complex long-horizon tasks — suggesting AI helps most on contained, well-specified problems, not ambiguous multi-day engineering work.</li>
 </ul>
 
-<h2 id="guardrails">Guardrails that protect standards</h2>
+<p>Our experience matches the nuance: the gains are real, but concentrated in specific task types. AI is not uniformly faster — it's selectively faster on the right problems.</p>
+
+<h2 id="what-got-faster">What actually got faster for us</h2>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Task type</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">AI impact</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Our experience</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Scaffolding CRUD, migrations, tests</td>
+      <td style="padding:0.6rem 0.9rem">High</td>
+      <td style="padding:0.6rem 0.9rem">2–4 hours of boilerplate becomes 20–30 minutes of review</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Explaining unfamiliar codepaths</td>
+      <td style="padding:0.6rem 0.9rem">High</td>
+      <td style="padding:0.6rem 0.9rem">Onboarding new engineers into existing modules significantly faster</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Drafting refactors with clear module boundaries</td>
+      <td style="padding:0.6rem 0.9rem">Medium-High</td>
+      <td style="padding:0.6rem 0.9rem">Good first draft, needs domain correction; still saves 40–60% of effort</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Writing tests for known behavior</td>
+      <td style="padding:0.6rem 0.9rem">Medium-High</td>
+      <td style="padding:0.6rem 0.9rem">Coverage gaps still need human judgment; AI good at the skeleton</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Comparing implementation options</td>
+      <td style="padding:0.6rem 0.9rem">Medium</td>
+      <td style="padding:0.6rem 0.9rem">Useful for surfacing tradeoffs before committing; not a replacement for architecture review</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Ambiguous multi-day feature work</td>
+      <td style="padding:0.6rem 0.9rem">Low-Medium</td>
+      <td style="padding:0.6rem 0.9rem">AI output needs heavy domain correction; gains shrink as complexity grows</td>
+    </tr>
+    <tr>
+      <td style="padding:0.6rem 0.9rem">Business logic with implicit rules</td>
+      <td style="padding:0.6rem 0.9rem">Low</td>
+      <td style="padding:0.6rem 0.9rem">AI doesn't know your invoicing edge cases. Write them down first — then AI helps implement them.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="guardrails">The guardrails that protect standards</h2>
+
+<p>Speed without guardrails is just bugs shipped faster. Here's what we don't compromise on:</p>
 
 <ol>
-  <li><strong>Review is non-negotiable</strong> — AI output is a pull request, not production.</li>
-  <li><strong>Tests still gate merges</strong> — especially around money, auth, and tenancy.</li>
-  <li><strong>Domain docs beat vibes</strong> — agents perform better when invariants are written down.</li>
-  <li><strong>No secrets in prompts</strong> — keys, customer data, and production dumps stay out of model context.</li>
+  <li><strong>Review is non-negotiable.</strong> AI output is a pull request, never production. We review AI-generated code more critically than hand-written code, because it tends to be confidently wrong in subtle ways.</li>
+  <li><strong>Tests still gate merges.</strong> Especially around money, authentication, and tenancy boundaries. A test suite that AI generated needs to be read like code you're reviewing — not trusted because it passes green.</li>
+  <li><strong>Domain docs beat vibes.</strong> AI tools perform dramatically better when invariants are written down. A well-maintained <code>DOMAIN.md</code> that explains your permission model, pricing rules, and multi-tenancy approach is worth more than a 100K-token context window.</li>
+  <li><strong>No secrets in prompts. Ever.</strong> API keys, customer data, production dumps, PII — none of it goes into model context. This is a hard rule, not a guideline. See <a href="/blog/security-basics-startups-before-fundraising.html">security basics</a> for why.</li>
 </ol>
 
-<p>Security sequencing still matters: <a href="/blog/security-basics-startups-before-fundraising.html">basics before fundraising</a>. Hiring still filters for ownership: <a href="/blog/hiring-engineers-as-first-time-cto.html">hiring as a first-time CTO</a>.</p>
+<h2 id="what-didnt-change">What didn't change</h2>
 
-<h2 id="tradeoffs">Trade-offs</h2>
+<p>The things AI didn't fix, and never will:</p>
 
 <ul>
-  <li><strong>Speed without taste</strong> produces elegant wrongness — especially in business rules.</li>
-  <li><strong>Over-reliance</strong> can atrophy debugging skills if seniors stop reading diffs carefully.</li>
-  <li><strong>Under-use</strong> leaves competitors shipping iterations while you hand-type boilerplate.</li>
+  <li><strong>Unclear requirements.</strong> A well-prompted AI produces confident code for unclear specs. The output is usually wrong in ways that take longer to debug than building it correctly from a clear spec.</li>
+  <li><strong>Architectural judgment.</strong> Whether to extract a service, how to model a multi-tenant billing system, when a domain boundary is real versus premature — these remain human decisions. AI can surface options; it can't make the call.</li>
+  <li><strong>Client trust.</strong> Our clients hire us because they trust our judgment. Shipping AI-generated code without review and calling it "AI-accelerated delivery" is a different business from what we run.</li>
 </ul>
 
-<p>Our principles for saying no still apply: <a href="/blog/engineering-principles-what-not-to-build.html">what not to build</a>.</p>
+<h2 id="net-assessment">Our honest net assessment</h2>
+
+<p>We're faster on contained, well-specified work. We're about the same speed on genuinely ambiguous architectural problems. We're occasionally slower when we have to debug AI-generated code that was subtly wrong about our domain.</p>
+
+<p>The net is positive — meaningfully so on the types of client work we do. But it's not the 10× productivity claim you see in AI product marketing. It's a real, compound acceleration on the right tasks, with a real operational overhead of maintaining quality guardrails that make it sustainable.</p>
+
+<p>Security sequencing still matters: <a href="/blog/security-basics-startups-before-fundraising.html">basics before fundraising</a>. Hiring still filters for ownership: <a href="/blog/hiring-engineers-as-first-time-cto.html">hiring as a first-time CTO</a>.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Cursor/Claude boost draft speed; standards live in review, tests, and docs.</li>
-  <li>Never paste secrets or sensitive customer data into prompts.</li>
-  <li>AI amplifies clear domain models and punishes fuzzy ones.</li>
-  <li>Measure velocity as shipped trusted change, not token spend.</li>
+  <li>Published research (GitHub/Microsoft, McKinsey) shows 35–55% speed gains on well-defined tasks. Real product work gains are smaller and more varied.</li>
+  <li>AI accelerates boilerplate, scaffolding, exploration, and refactoring. It doesn't replace domain knowledge, architectural judgment, or code review.</li>
+  <li>The guardrails matter as much as the tools: human review, test gating, domain documentation, and no secrets in prompts.</li>
+  <li>Write down your business rules before prompting AI to implement them. That investment pays off regardless of which AI tools you use.</li>
 </ul>
 
-<p>Want help installing AI workflows that respect client trust? <a href="/#contact">Get in touch</a>.</p>
+<p>Thinking about how to adopt AI tools without compromising engineering standards? <a href="/#contact">Get in touch</a> — this is something we think about every week.</p>
 
-        </article>
+</article>
 
 
 

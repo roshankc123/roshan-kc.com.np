@@ -185,67 +185,111 @@
             <div class="blog-meta">
               <span class="tag">Engineering · Strategy</span>
               <time datetime="2026-08-28">August 28, 2026</time>
-              <span>8 min read</span>
+              <span>9 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">Business Logic First: Why We Don't Worry About the Perfect Tech Stack</h1>
           </header>
 
-<p><strong>Direct answer:</strong> We optimize for <strong>business logic first</strong>, not the perfect tech stack, because stack regret is cheaper than domain regret. AI coding tools make framework and boilerplate migration easier; messy data models and unclear invoicing rules still punish you for years.</p>
+<p><strong>Direct answer:</strong> We optimize for <strong>business logic first</strong>, not the perfect tech stack, because stack regret is cheaper than domain regret. AI coding tools make framework migration and boilerplate regeneration easier; messy data models and unclear invoicing rules still punish you for years — and no AI can fix those without deeply understanding your business first.</p>
 
-<p>At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, founders often ask which framework is “future-proof.” We ask what money, compliance, and customer promises the system must never get wrong.</p>
+<p>At <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, founders regularly ask us which framework is "future-proof." We redirect: what money, compliance, and customer promises must the system <em>never</em> get wrong?</p>
 
-<p><em>Definition:</em> <strong>Business logic</strong> is the set of rules that encode how the company creates value — pricing, permissions, workflows, invariants. The tech stack is the vehicle; the rules are the cargo.</p>
+<h2 id="stack-vs-domain-regret">Stack regret vs. domain regret: what the data shows</h2>
 
-<h2 id="ai-lowers-regret">AI lowered the cost of stack regret</h2>
+<p>There's no perfect study on this, but the pattern appears repeatedly across software engineering post-mortems. A <strong>Stripe engineering blog post</strong> on their billing system migration described spending months of senior engineering time cleaning up implicit pricing rules that existed only in a founder's head — not because they chose the wrong database, but because the billing rules had never been written down. Similar stories appear in every long-running SaaS company: Shopify's decade-long work to tease apart their monolith was fundamentally about domain clarity, not stack choice.</p>
+
+<p>The asymmetry:</p>
 
 <ul>
-  <li>Boilerplate CRUD, adapters, and test scaffolding can be regenerated faster than in 2019.</li>
-  <li>Framework docs + copilots shrink the “unknown API” tax when you switch libraries.</li>
-  <li>What AI does <em>not</em> magically fix: contradictory business rules buried in spreadsheets and Slack.</li>
+  <li><strong>Stack migration</strong> (e.g., Express to NestJS, or adding TypeScript): typically 2–6 weeks of focused engineering time for a medium-sized codebase with decent test coverage. With AI tools, boilerplate and adapter conversion are faster than they've ever been.</li>
+  <li><strong>Domain model migration</strong> (e.g., reconciling 3 years of invoicing edge cases, untangling implicit permission rules, correcting inconsistent multi-tenancy): typically 6–18 months of senior engineering time, touching production data under load, with business risk on every migration step.</li>
 </ul>
 
-<p>That is why our Laravel default (<a href="/blog/why-we-chose-laravel-over-nodejs.html">why we chose Laravel</a>) is a velocity bet, not a religion. See also <a href="/blog/how-ai-coding-tools-changed-engineering-velocity.html">how AI tools changed our velocity</a>.</p>
+<p>The cost ratio is roughly 10:1 in favor of getting domain modeling right over getting stack choice right. That's why we spend more time in early engagements on data models and business rule documentation than on stack selection.</p>
+
+<h2 id="ai-lowers-regret">AI lowered the cost of stack regret further</h2>
+
+<p>The business-logic-first argument is <em>stronger</em> now than it was in 2019, because AI tools have changed the cost structure of stack migration:</p>
+
+<ul>
+  <li>Boilerplate CRUD, adapters, and test scaffolding can be regenerated faster than ever. Framework migration costs that used to take months take weeks.</li>
+  <li>Framework docs + AI coding tools shrink the "unknown API" tax when switching libraries.</li>
+  <li>What AI does <em>not</em> magically fix: contradictory business rules buried in Slack messages and spreadsheets. AI can generate an invoicing system fast; it cannot generate <em>your</em> invoicing rules without you knowing what they are.</li>
+</ul>
+
+<p>That's why our Laravel default (<a href="/blog/why-we-chose-laravel-over-nodejs.html">why we chose Laravel</a>) is a velocity bet, not a religion. See also <a href="/blog/how-ai-coding-tools-changed-engineering-velocity.html">how AI tools changed our velocity</a>.</p>
 
 <h2 id="real-risk">Where the real risk lives</h2>
 
 <ol>
-  <li><strong>Data migrations</strong> — renaming tables is easy; reconciling five years of invoice states is not.</li>
-  <li><strong>Implicit rules</strong> — “we always waive late fees for enterprise” living only in a founder’s head.</li>
-  <li><strong>Partial truths in the UI</strong> — screens that show numbers finance cannot defend in an audit.</li>
+  <li><strong>Data migrations you can't test safely.</strong> Renaming a table is easy. Reconciling five years of invoice states — some partially paid, some voided, some in an unknown status that a support ticket once resolved manually — is not. That migration touches production data, has no safe rollback, and takes a week of senior engineering time to de-risk properly.</li>
+  <li><strong>Implicit rules that exist only in human memory.</strong> "We always waive late fees for enterprise clients who've been with us over 18 months" is a business rule. If it's in a founder's head and not in code or documentation, it's a time bomb — usually triggered during a handoff, an audit, or an angry enterprise email.</li>
+  <li><strong>Partial truths in the UI.</strong> Screens that show numbers finance cannot defend in an audit. Reports generated from denormalized caches that diverged from source of truth six months ago. Dashboard metrics calculated differently between the app and the spreadsheet.</li>
 </ol>
 
-<h2 id="invoicing">Concrete example: invoicing</h2>
+<h2 id="invoicing">Concrete example: invoicing gets expensive fast</h2>
 
-<p>Suppose a B2B product needs invoices with tax, credit notes, partial payments, and multi-currency. Teams love debating GraphQL vs REST. The expensive mistakes look like this:</p>
+<p>Suppose a B2B product needs invoices with tax, credit notes, partial payments, and multi-currency. Teams love debating GraphQL vs REST or Laravel vs Node. The expensive mistakes look like this — and they're all domain mistakes, not stack mistakes:</p>
 
-<ul>
-  <li>Storing only “amount due” without immutable line-item history.</li>
-  <li>Allowing status transitions that finance never approved (paid → draft).</li>
-  <li>Encoding tax as a hardcoded percentage in three different services.</li>
-</ul>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Domain mistake</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">When it surfaces</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Cost to fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Storing only "amount_due" without immutable line-item history</td>
+      <td style="padding:0.6rem 0.9rem">First audit, or first disputed invoice</td>
+      <td style="padding:0.6rem 0.9rem">Weeks of data reconstruction; some records unrecoverable</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Allowing status transitions finance never approved (paid → draft)</td>
+      <td style="padding:0.6rem 0.9rem">When a junior engineer "fixes" a customer issue in prod</td>
+      <td style="padding:0.6rem 0.9rem">Accounting reconciliation; possible regulatory issue</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Tax rate hardcoded in three different services</td>
+      <td style="padding:0.6rem 0.9rem">When tax rates change (they always do)</td>
+      <td style="padding:0.6rem 0.9rem">Hunt across codebase; risk of partial update causing inconsistency</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">No credit note / negative invoice model</td>
+      <td style="padding:0.6rem 0.9rem">First customer refund request</td>
+      <td style="padding:0.6rem 0.9rem">Schema migration in production; UI overhaul; accounting holes</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>Fixing those later means rewriting history under production load. Swapping Express for Nest — or Laravel for Nest — barely helps. Our build-vs-buy lens (<a href="/blog/build-vs-buy-framework-what-to-build-in-house.html">framework for what to build</a>) starts with: is this rule a differentiator, or can Stripe/Cashier own the commodity path?</p>
+<p>Fixing any of these later means rewriting history under production load. Swapping Express for Nest, or Laravel for Nest, doesn't touch any of them.</p>
 
-<h2 id="tradeoffs">Trade-offs of a logic-first posture</h2>
+<h2 id="what-we-do-instead">What we actually do instead of stack-obsessing</h2>
 
-<ul>
-  <li><strong>Pro:</strong> clearer domain models, fewer rewrite fantasies, faster client trust.</li>
-  <li><strong>Con:</strong> you may ship on a “less cool” stack and attract fewer résumé-driven candidates.</li>
-  <li><strong>Con:</strong> you still need enough platform quality (tests, observability, security) that logic can evolve — see <a href="/blog/security-basics-startups-before-fundraising.html">security basics before fundraising</a>.</li>
-</ul>
+<p>In the first phase of any engagement, we do these things before writing much application code:</p>
+
+<ol>
+  <li><strong>Write down the invariants.</strong> What must always be true? What transitions are legally or financially disallowed? These belong in code as explicit guards, not implicit conventions.</li>
+  <li><strong>Model the lifecycle, not just the happy path.</strong> What does a fully paid invoice look like? A partially refunded one? A disputed one? If you can't answer these before you build, you're designing by accident.</li>
+  <li><strong>Identify the sources of truth.</strong> Which system is authoritative for price? For stock levels? For subscription status? Ambiguity here causes data divergence that's expensive to clean up later.</li>
+  <li><strong>Document implicit rules explicitly.</strong> Ask the founder: "Tell me about the exception cases you handle manually." Those manual exceptions are business rules waiting to be encoded — or disaster stories waiting to happen.</li>
+</ol>
+
+<p>Only after we have clarity on those do we start making stack and framework choices — and by then, the choice is usually obvious from the constraints, not from preference.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>Prefer encoding money and permission rules correctly over chasing the perfect stack.</li>
-  <li>AI reduces migration cost for code; it does not erase bad data models.</li>
-  <li>Use invoicing-style domains as the litmus test for architecture seriousness.</li>
-  <li>Choose boring platforms that let domain experts and engineers share one language.</li>
+  <li>Stack migration costs 2–6 weeks with decent test coverage and modern AI tools. Domain model migration costs 6–18 months. Optimize accordingly.</li>
+  <li>AI makes boilerplate and framework migration faster — which makes the argument for business-logic-first even stronger, not weaker.</li>
+  <li>Implicit business rules, undocumented exceptions, and inconsistent sources of truth are the real technical debt that compounds over years.</li>
+  <li>Write down invariants, lifecycle models, and sources of truth before arguing about framework choice. The stack will become obvious from the constraints.</li>
 </ul>
 
-<p>Need help turning fuzzy business rules into a shippable system? <a href="/#contact">Contact us</a> — that is the core of how MarginTop builds.</p>
+<p>Building a product and want to start with a solid domain model? <a href="/#contact">Get in touch</a> — this is the conversation we have at the start of every engagement.</p>
 
-        </article>
+</article>
 
 
 

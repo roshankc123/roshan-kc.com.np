@@ -185,67 +185,114 @@
             <div class="blog-meta">
               <span class="tag">PHP · Performance</span>
               <time datetime="2026-08-29">August 29, 2026</time>
-              <span>8 min read</span>
+              <span>9 min read</span>
             </div>
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">What TypePHP Means for the Future of PHP Performance</h1>
           </header>
 
-<p><strong>Direct answer:</strong> <strong>TypePHP</strong> is Swoole’s open-source ahead-of-time (AOT) compiler that aims to turn typed PHP into C++ and then native code — a promising path for PHP performance, still early, and not a reason to delay shipping products on proven stacks like Laravel + Octane.</p>
+<p><strong>Direct answer:</strong> <strong>TypePHP</strong> is Swoole's open-source ahead-of-time (AOT) compiler that aims to turn typed PHP into C++ and then native code — a promising path for PHP performance, still early, and not a reason to delay shipping products on proven stacks like Laravel + Octane.</p>
 
-<p>We watch this space closely at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> because we run serious PHP workloads. Curiosity is free; roadmap hostage-taking is not.</p>
+<p>We watch this space closely at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> because we run serious PHP workloads. Curiosity is free; holding your product roadmap hostage to an experimental compiler is not.</p>
 
-<p><em>Definition:</em> <strong>TypePHP</strong> is an AOT compilation project from the Swoole ecosystem that compiles PHP toward native performance via a C++ intermediate step. Track it at <a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">github.com/swoole/typephp</a> and Swoole’s AOT overview at <a href="https://www.swoole.com/aot" target="_blank" rel="noopener noreferrer">swoole.com/aot</a>.</p>
+<h2 id="php-performance-history">PHP performance: a brief, honest history</h2>
 
-<h2 id="what-it-is">What TypePHP is trying to solve</h2>
+<p>To understand what TypePHP is attempting, it helps to know where PHP has been. PHP's performance story over the last decade is actually one of the better ones in interpreted language ecosystems:</p>
+
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Era / milestone</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Key change</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Performance impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">PHP 5 (pre-2015)</td>
+      <td style="padding:0.6rem 0.9rem">Pure interpreter, no opcache</td>
+      <td style="padding:0.6rem 0.9rem">Baseline</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">PHP 7.0 (2015)</td>
+      <td style="padding:0.6rem 0.9rem">PHPNG engine rewrite; new AST representation</td>
+      <td style="padding:0.6rem 0.9rem">~2× faster than PHP 5.6 on most workloads</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">PHP 8.0 (2020)</td>
+      <td style="padding:0.6rem 0.9rem">JIT compiler introduced (tracing + function JIT modes)</td>
+      <td style="padding:0.6rem 0.9rem">Significant for compute-heavy code; modest for typical I/O-bound web apps</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">PHP 8.1–8.4 (2021–2024)</td>
+      <td style="padding:0.6rem 0.9rem">Fibers, enums, property hooks, JIT improvements</td>
+      <td style="padding:0.6rem 0.9rem">Incremental gains; better type system for AOT potential</td>
+    </tr>
+    <tr style="background:var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Swoole / Octane (ongoing)</td>
+      <td style="padding:0.6rem 0.9rem">Long-running process model eliminating per-request bootstrap</td>
+      <td style="padding:0.6rem 0.9rem">3–10× throughput improvement on framework-heavy endpoints vs FPM</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The JIT in PHP 8 disappointed some expectations because PHP web apps are largely I/O-bound, not CPU-bound. The JIT helps if you're doing heavy computation (image manipulation, ML inference in PHP, number-crunching). For a typical Laravel app spending 80% of its time waiting on database queries, the JIT delivers marginal gains. AOT compilation is trying to address a different layer.</p>
+
+<h2 id="what-it-is">What TypePHP is actually doing</h2>
+
+<p>TypePHP is Swoole's project to compile constrained, fully-typed PHP to C++ and then to native machine code via an AOT pipeline. Track it at <a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">github.com/swoole/typephp</a> and <a href="https://www.swoole.com/aot" target="_blank" rel="noopener noreferrer">swoole.com/aot</a>.</p>
+
+<p>The key constraints:</p>
 
 <ul>
-  <li>Traditional PHP pays interpretation/JIT costs per request model (even with opcache/JIT improvements).</li>
-  <li>AOT compilation seeks lower runtime overhead for hot paths by producing native binaries from constrained, typed PHP.</li>
-  <li>It sits in the same broad story as long-running workers (Swoole) and in-memory app boots (Laravel Octane).</li>
+  <li>It requires <strong>fully typed PHP</strong> — no dynamic types, no <code>mixed</code> ambiguity. This is the "constrained surface" that makes AOT compilation tractable.</li>
+  <li>It targets <strong>hot paths</strong> — not your entire codebase, but the performance-critical sections that justify the compilation overhead.</li>
+  <li>It sits at the intersection of Swoole's long-running worker model and native execution — conceptually similar to what HHVM attempted, but with different architecture choices.</li>
+</ul>
+
+<h2 id="hhvm-precedent">The HHVM precedent: optimism with scars</h2>
+
+<p>PHP has seen this movie before. Meta built HHVM (Hip Hop Virtual Machine), which compiled PHP to C++ to native code, and in 2013 it was producing genuinely impressive performance numbers — some benchmarks showed <strong>5–9× speedup</strong> over PHP 5.4 on their workloads. This was real. PHP.net was still on 5.x. The speed gap was enormous.</p>
+
+<p>Then PHP 7 shipped in 2015 with the PHPNG engine and closed most of the gap. HHVM kept evolving; Meta pivoted it toward Hack (their typed superset). Today HHVM runs Hack, not PHP. The wider PHP ecosystem never really followed.</p>
+
+<p>The lesson isn't that performance moonshots fail — HHVM genuinely worked at Meta's scale and on their codebase. The lesson is that <strong>ecosystem gravity, tooling compatibility, and migration cost decide adoption</strong> more than benchmark results. Laravel runs on TypePHP today the way it ran on HHVM in 2014: experimentally, with caveats.</p>
+
+<h2 id="realistic-outlook">Realistic outlook for TypePHP</h2>
+
+<p>Our current read:</p>
+
+<ul>
+  <li><strong>Promising research direction.</strong> AOT compilation with a typed PHP subset is architecturally sound. The question is whether the constraint (fully typed code) is compatible with real-world Laravel application codebases, which mix typed and untyped code extensively.</li>
+  <li><strong>Long ecosystem adoption road.</strong> For TypePHP to matter to most Laravel shops, it would need support from the major packages (Eloquent, Livewire, Filament, etc.) — all of which contain substantial untyped PHP. That's a multi-year migration even if TypePHP reaches production stability tomorrow.</li>
+  <li><strong>Not a reason to delay shipping.</strong> If your product needs better performance today, the path is: profile first, fix queries and N+1s, then evaluate Laravel Octane + Swoole. TypePHP is not in that toolkit yet.</li>
 </ul>
 
 <p>Related production path we use today: <a href="/blog/laravel-octane-swoole-concurrent-load.html">Laravel Octane + Swoole for concurrent load</a>.</p>
 
-<h2 id="precedent">Hack/HHVM precedent — optimism with scars</h2>
+<h2 id="what-to-watch">What to actually watch for</h2>
 
-<p>PHP has seen performance moonshots before. Hack and HHVM showed that a more constrained language surface can unlock serious speed — and that ecosystem gravity, tooling, and migration cost decide adoption more than blog-post benchmarks.</p>
-
-<ul>
-  <li>Promising runtimes die when libraries, hiring, and deploy stories lag.</li>
-  <li>“Rewrite everything typed tomorrow” is how products miss markets.</li>
-  <li>Incremental wins (Octane, careful queries, caching) still move needles for most SaaS apps.</li>
-</ul>
-
-<h2 id="early">Promising, but early</h2>
+<p>If you want to track whether TypePHP becomes production-relevant, these are the signals that matter:</p>
 
 <ol>
-  <li>Treat TypePHP as R&amp;D signal, not a production default for client deadlines.</li>
-  <li>Expect constraints on which PHP features compile cleanly — AOT loves narrower language subsets.</li>
-  <li>Validate with your own hot paths before promising clients native miracles.</li>
+  <li>Laravel or a major ecosystem package shipping TypePHP-compatible typed versions.</li>
+  <li>A production case study from a company with a comparable codebase (not a benchmark script) showing real-world gains.</li>
+  <li>The Swoole team defining a stable AOT compilation API that frameworks can target.</li>
 </ol>
 
-<p>This fits our broader stance in <a href="/blog/business-logic-first-not-perfect-tech-stack.html">business logic first</a> and <a href="/blog/why-we-chose-laravel-over-nodejs.html">Laravel over Node</a>: pick leverage you can operate.</p>
-
-<h2 id="tradeoffs">Trade-offs if you bet early</h2>
-
-<ul>
-  <li><strong>Upside:</strong> potential step-change on CPU-bound PHP without leaving the language family.</li>
-  <li><strong>Downside:</strong> immature tooling, unclear framework compatibility, debugging complexity.</li>
-  <li><strong>Opportunity cost:</strong> weeks on experimental compilers instead of shipping the invoicing rules that pay rent.</li>
-</ul>
+<p>Until any of those happen, TypePHP is interesting research to follow — not an architecture decision to make.</p>
 
 <h2 id="takeaways">Key takeaways</h2>
 
 <ul>
-  <li>TypePHP = Swoole’s open-source PHP→C++→native AOT direction — watch <code>swoole/typephp</code> and swoole.com/aot.</li>
-  <li>Hack/HHVM history says ecosystem maturity matters as much as speed.</li>
-  <li>Do not delay shipping; use Octane/Swoole and solid domain design first.</li>
-  <li>Revisit AOT when it is boring enough to operate under client SLAs.</li>
+  <li>PHP performance has improved dramatically: PHP 7 was ~2× faster than PHP 5; Octane + Swoole delivers 3–10× throughput gains on framework-heavy workloads. The runtime is not your bottleneck in most apps.</li>
+  <li>TypePHP attempts AOT compilation via a C++ intermediate step, targeting fully-typed PHP hot paths. The approach is architecturally sound but early.</li>
+  <li>HHVM showed that PHP performance moonshots work — at scale, with the right codebase — and that ecosystem adoption is the harder problem than the technical one.</li>
+  <li>Don't hold product decisions waiting for TypePHP. Profile your actual app; fix queries and architecture first; reach for Octane when boot time is the measured bottleneck.</li>
 </ul>
 
-<p>Want a performance plan rooted in measurement, not buzzwords? <a href="/#contact">Talk to us</a>.</p>
+<p>Running serious PHP workloads and thinking about performance? <a href="/#contact">Get in touch</a> — we've thought about this problem from multiple angles at MarginTop.</p>
 
-        </article>
+</article>
 
 
 
