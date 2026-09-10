@@ -101,21 +101,21 @@
   });
 
   const BLOG_POSTS = [
-    "/blog/security-basics-startups-before-fundraising.html",
-    "/blog/engineering-principles-what-not-to-build.html",
-    "/blog/hiring-engineers-as-first-time-cto.html",
-    "/blog/how-ai-coding-tools-changed-engineering-velocity.html",
-    "/blog/hidden-cost-premature-microservices-monolith.html",
-    "/blog/build-vs-buy-framework-what-to-build-in-house.html",
-    "/blog/laravel-octane-swoole-concurrent-load.html",
-    "/blog/what-typephp-means-for-php-performance.html",
-    "/blog/business-logic-first-not-perfect-tech-stack.html",
-    "/blog/why-we-chose-laravel-over-nodejs.html",
-    "/blog/how-to-run-startup-tech-stack-free-until-funded.html",
-    "/blog/ship-fast-without-losing-client-trust.html",
-    "/blog/building-a-software-team-in-kathmandu.html",
-    "/blog/what-a-first-time-cto-actually-does.html",
-    "/blog/why-i-left-teaching-to-build-a-company.html"
+    "/blog/security-basics-startups-before-fundraising",
+    "/blog/engineering-principles-what-not-to-build",
+    "/blog/hiring-engineers-as-first-time-cto",
+    "/blog/how-ai-coding-tools-changed-engineering-velocity",
+    "/blog/hidden-cost-premature-microservices-monolith",
+    "/blog/build-vs-buy-framework-what-to-build-in-house",
+    "/blog/laravel-octane-swoole-concurrent-load",
+    "/blog/what-typephp-means-for-php-performance",
+    "/blog/business-logic-first-not-perfect-tech-stack",
+    "/blog/why-we-chose-laravel-over-nodejs",
+    "/blog/how-to-run-startup-tech-stack-free-until-funded",
+    "/blog/ship-fast-without-losing-client-trust",
+    "/blog/building-a-software-team-in-kathmandu",
+    "/blog/what-a-first-time-cto-actually-does",
+    "/blog/why-i-left-teaching-to-build-a-company"
   ];
 
   const deckRoot = document.querySelector("[data-deck]");
@@ -153,7 +153,7 @@
       if (prevBtn) {
         prevBtn.setAttribute("aria-label", i <= 0 ? "Back to blog listing" : "Previous article");
         prevBtn.addEventListener("click", () => {
-          location.href = i <= 0 ? "/blog/" : BLOG_POSTS[i - 1];
+          location.href = i <= 0 ? "/blog" : BLOG_POSTS[i - 1];
         });
       }
       if (nextBtn) {
@@ -171,7 +171,7 @@
           if (i < BLOG_POSTS.length - 1) location.href = BLOG_POSTS[i + 1];
         } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
           e.preventDefault();
-          location.href = i <= 0 ? "/blog/" : BLOG_POSTS[i - 1];
+          location.href = i <= 0 ? "/blog" : BLOG_POSTS[i - 1];
         }
       });
     }

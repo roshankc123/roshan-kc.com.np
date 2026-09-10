@@ -4,7 +4,7 @@
   "description": "**Personal site and blog of [Roshan Kc](https://www.roshan-kc.com.np/) — Cofounder & CTO of [MarginTop Solutions](https://www.margintopsolutions.com/), Kathmandu, Nepal.**",
   "main": "script.js",
   "scripts": {
-    "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css > css/app.css",
+    "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css css/home.css > css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
