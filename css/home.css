@@ -325,3 +325,12 @@ html[data-sidebar="collapsed"] main#main-content {
 .mobile-topbar a {
   min-height: 48px;
 }
+
+.story-rail .font-mono-label {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.story-rail .font-mono-label + p {
+  margin-top: 0;
+}
