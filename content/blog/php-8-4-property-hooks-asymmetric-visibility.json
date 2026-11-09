@@ -1,0 +1,30 @@
+{
+ "slug": "php-8-4-property-hooks-asymmetric-visibility",
+ "date": "2026-11-01",
+ "read": 8,
+ "tag": "PHP · Language",
+ "title": "PHP Property Hooks & Asymmetric Visibility (PHP 8.4) | Roshan Kc",
+ "h1": "Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes",
+ "social": "PHP 8.4 Property Hooks and Asymmetric Visibility, Explained with Examples",
+ "short": "Property Hooks and Asymmetric Visibility in PHP 8.4",
+ "desc": "PHP 8.4 property hooks and asymmetric visibility explained: replace getters and setters, virtual properties, private(set), and when not to use hooks.",
+ "keywords": "php property hooks, php asymmetric visibility, php 8.4 features, private(set) php, php getters setters, array_find php",
+ "prev": [
+  "/blog/php-type-system-evolution/",
+  "How PHP's Type System Grew Up"
+ ],
+ "next": [
+  "/blog/php-8-5-features-production/",
+  "PHP 8.5 Features That Actually Matter in Production"
+ ],
+ "citations": [
+  [
+   "RFC: Property hooks",
+   "https://wiki.php.net/rfc/property-hooks"
+  ],
+  [
+   "RFC: Asymmetric visibility v2",
+   "https://wiki.php.net/rfc/asymmetric-visibility-v2"
+  ]
+ ]
+}

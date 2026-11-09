@@ -1,0 +1,147 @@
+<p><strong>Direct answer:</strong> PHP 8.4 (November 2024) added <strong>property hooks</strong>, which put <code>get</code> and <code>set</code> logic directly on a property, and <strong>asymmetric visibility</strong>, such as <code>public private(set)</code>, which makes a property readable everywhere but writable only inside the class. Together they replace most getter/setter boilerplate. 8.4 also brought lazy objects, a standards-compliant HTML5 parser, <code>array_find()</code> and friends, and <code>new</code> without extra parentheses.</p>
+
+<p>Property hooks are the biggest change to how PHP classes are written since constructor promotion in PHP 8.0. This post shows the before and after, and where hooks do and don't belong. It's part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="the-problem">The problem: getters and setters everywhere</h2>
+
+<p>For years the "correct" PHP class looked like this. Private properties, plus a method pair for each one, just in case validation was needed someday:</p>
+
+<pre><code>class User
+{
+    private string $email;
+
+    public function getEmail(): string
+    {
+        return $this-&gt;email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this-&gt;email = strtolower(trim($email));
+    }
+}
+
+$user-&gt;setEmail(' Roshan@Example.com ');
+echo $user-&gt;getEmail();</code></pre>
+
+<h2 id="hooks">Property hooks</h2>
+
+<p>With 8.4, the logic lives on the property itself, and callers just use the property:</p>
+
+<pre><code>class User
+{
+    public string $email {
+        set =&gt; strtolower(trim($value));
+    }
+}
+
+$user-&gt;email = ' Roshan@Example.com ';
+echo $user-&gt;email; // "roshan@example.com"</code></pre>
+
+<p>The short <code>set =&gt;</code> form assigns the result of the expression to the property. A full block lets you validate:</p>
+
+<pre><code>class Product
+{
+    public int $priceInCents {
+        set {
+            if ($value &lt; 0) {
+                throw new InvalidArgumentException('Price cannot be negative');
+            }
+            $this-&gt;priceInCents = $value;
+        }
+    }
+}</code></pre>
+
+<h3>Virtual (computed) properties</h3>
+
+<p>A property with only a <code>get</code> hook that never touches its own value is <em>virtual</em>. It takes no storage and is computed on every read:</p>
+
+<pre><code>class Person
+{
+    public function __construct(
+        public string $firstName,
+        public string $lastName,
+    ) {}
+
+    public string $fullName {
+        get =&gt; "{$this-&gt;firstName} {$this-&gt;lastName}";
+    }
+}</code></pre>
+
+<h3>Hooks in interfaces</h3>
+
+<p>Interfaces can now require properties, not just methods:</p>
+
+<pre><code>interface HasSlug
+{
+    public string $slug { get; }
+}</code></pre>
+
+<p>Any class can satisfy that with a plain public property, a readonly property, or a <code>get</code> hook. Your public API stops depending on how the value is stored.</p>
+
+<h2 id="asymmetric-visibility">Asymmetric visibility</h2>
+
+<p>Often you don't need logic, you just need "anyone can read, only I can write". Before 8.4 that meant a private property plus a getter. Now it's one declaration:</p>
+
+<pre><code>class Order
+{
+    public private(set) string $status = 'pending';
+
+    public function markPaid(): void
+    {
+        $this-&gt;status = 'paid';
+    }
+}
+
+echo $order-&gt;status;      // fine
+$order-&gt;status = 'paid';  // Error: cannot modify private(set) property</code></pre>
+
+<p><code>protected(set)</code> works the same way for subclasses, and it combines with constructor promotion:</p>
+
+<pre><code>public function __construct(
+    public private(set) int $id,
+) {}</code></pre>
+
+<p><strong>readonly vs <code>private(set)</code>:</strong> readonly means "written once, never again". <code>private(set)</code> means "only this class may write, as often as it needs". Use readonly for value objects and <code>private(set)</code> for entities whose state changes through methods. <a href="/blog/php-8-5-features-production/">PHP 8.5</a> extended asymmetric visibility to static properties too.</p>
+
+<h2 id="when-not">When not to use hooks</h2>
+
+<ul>
+  <li><strong>Heavy logic.</strong> A <code>set</code> hook that calls the database or sends emails is a method in disguise. Make it a method so the cost is visible at the call site.</li>
+  <li><strong>Eloquent models.</strong> Laravel model attributes are magic (<code>__get</code>/<code>__set</code>), not real properties, so keep using Eloquent's accessors, mutators and casts there. Hooks shine on DTOs, value objects, service classes and plain domain models.</li>
+  <li><strong>Surprising side effects.</strong> If reading a property can throw or change state, callers will be surprised. Keep hooks small and predictable.</li>
+</ul>
+
+<h2 id="other-84">The rest of PHP 8.4 worth knowing</h2>
+
+<table>
+  <thead><tr><th>Feature</th><th>Example / why it matters</th></tr></thead>
+  <tbody>
+    <tr><td><code>array_find()</code>, <code>array_find_key()</code>, <code>array_any()</code>, <code>array_all()</code></td><td><code>array_find($users, fn($u) =&gt; $u-&gt;isAdmin())</code> replaces many loops with an early <code>break</code></td></tr>
+    <tr><td><code>new</code> without parentheses</td><td><code>new Request()-&gt;withHeader(...)</code> instead of <code>(new Request())-&gt;withHeader(...)</code></td></tr>
+    <tr><td>Lazy objects</td><td><code>ReflectionClass::newLazyGhost()</code> / <code>newLazyProxy()</code> defer expensive construction until first use. Built for DI containers and ORMs.</td></tr>
+    <tr><td>HTML5 DOM parser</td><td><code>Dom\HTMLDocument::createFromString($html)</code> parses HTML the way browsers do, with <code>querySelector()</code> support</td></tr>
+    <tr><td><code>#[\Deprecated]</code></td><td>Mark your own functions and methods as deprecated and PHP emits proper deprecation notices</td></tr>
+    <tr><td><code>BcMath\Number</code></td><td>Arbitrary-precision numbers as objects with normal operators. Good for money calculations.</td></tr>
+    <tr><td><code>mb_trim()</code>, <code>mb_ucfirst()</code>, <code>mb_lcfirst()</code></td><td>Multibyte-safe versions of long-missing string functions</td></tr>
+  </tbody>
+</table>
+
+<p>One deprecation to fix: <strong>implicitly nullable parameters</strong>. <code>function find(User $user = null)</code> now triggers a notice. Write <code>?User $user = null</code> instead. Rector fixes this automatically across a codebase; see the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>Property hooks put <code>get</code>/<code>set</code> logic on the property itself, replacing most getter/setter methods.</li>
+  <li>Get-only hooks create virtual computed properties, and interfaces can now declare properties.</li>
+  <li>Asymmetric visibility (<code>public private(set)</code>) gives read-public, write-private properties without a getter.</li>
+  <li>Keep hooks small. Don't use them on Eloquent models or for logic with heavy side effects.</li>
+  <li>PHP 8.4 gets active support until December 31, 2026 and security fixes until December 31, 2028.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.php.net/releases/8.4/en.php" target="_blank" rel="noopener noreferrer">php.net: PHP 8.4 release announcement</a></li>
+  <li><a href="https://wiki.php.net/rfc/property-hooks" target="_blank" rel="noopener noreferrer">RFC: Property hooks</a></li>
+  <li><a href="https://wiki.php.net/rfc/asymmetric-visibility-v2" target="_blank" rel="noopener noreferrer">RFC: Asymmetric visibility v2</a></li>
+  <li><a href="https://www.php.net/manual/en/language.oop5.property-hooks.php" target="_blank" rel="noopener noreferrer">PHP manual: Property hooks</a></li>
+</ul>

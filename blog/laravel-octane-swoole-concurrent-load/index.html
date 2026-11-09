@@ -6,18 +6,18 @@
 
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Laravel Octane + Swoole for Concurrent Load | Roshan Kc</title>
-  <meta name="description" content="How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.">
+  <title>Laravel Octane with Swoole: Handling Concurrent Load | Roshan Kc</title>
+  <meta name="description" content="Laravel Octane + Swoole vs PHP-FPM in production: 3–10× throughput, Octane::concurrently, memory leaks, state resets and graceful reloads, no rewrite needed.">
   <meta name="author" content="Roshan Kc">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
   <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
-  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Roshan Kc">
-  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load">
-  <meta property="og:title" content="How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App">
-  <meta property="og:description" content="How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/">
+  <meta property="og:title" content="Laravel Octane with Swoole: How We Handle Concurrent Load">
+  <meta property="og:description" content="Laravel Octane + Swoole vs PHP-FPM in production: 3–10× throughput, Octane::concurrently, memory leaks, state resets and graceful reloads, no rewrite needed.">
   <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
   <meta property="article:published_time" content="2026-08-30">
   <meta property="article:modified_time" content="2026-08-30">
@@ -25,8 +25,8 @@
   <meta property="og:image:alt" content="Portrait of Roshan Kc">
   <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Laravel Octane + Swoole for Concurrent Load">
-  <meta name="twitter:description" content="How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.">
+  <meta name="twitter:title" content="Laravel Octane with Swoole: How We Handle Concurrent Load">
+  <meta name="twitter:description" content="Laravel Octane + Swoole vs PHP-FPM in production: 3–10× throughput, Octane::concurrently, memory leaks, state resets and graceful reloads, no rewrite needed.">
   <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <meta name="theme-color" content="#FAFBFC">
@@ -38,7 +38,7 @@
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App",
-  "description": "How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.",
+  "description": "Laravel Octane + Swoole vs PHP-FPM in production: 3–10× throughput, Octane::concurrently, memory leaks, state resets and graceful reloads, no rewrite needed.",
   "image": "https://www.roshan-kc.com.np/images/profile.webp",
   "datePublished": "2026-08-30",
   "dateModified": "2026-08-30",
@@ -46,27 +46,31 @@
     "@type": "Person",
     "name": "Roshan Kc",
     "url": "https://www.roshan-kc.com.np/",
-    "jobTitle": "Cofounder & CTO"
+    "jobTitle": "Cofounder & CTO",
+    "@id": "https://www.roshan-kc.com.np/#person"
   },
   "publisher": {
     "@type": "Person",
     "name": "Roshan Kc",
-    "url": "https://www.roshan-kc.com.np/"
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load"
+    "@id": "https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/"
   },
   "keywords": "Laravel Octane, Swoole, concurrent load, Octane concurrently",
   "inLanguage": "en",
   "speakable": {
     "@type": "SpeakableSpecification",
-    "cssSelector": [".prose p:first-of-type"]
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
   },
   "isPartOf": {
     "@type": "Blog",
     "name": "Notes by Roshan Kc",
-    "url": "https://www.roshan-kc.com.np/blog"
+    "url": "https://www.roshan-kc.com.np/blog/"
   }
 }
   </script>
@@ -85,13 +89,13 @@
       "@type": "ListItem",
       "position": 2,
       "name": "Blog",
-      "item": "https://www.roshan-kc.com.np/blog"
+      "item": "https://www.roshan-kc.com.np/blog/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App",
-      "item": "https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load"
+      "item": "https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/"
     }
   ]
 }
@@ -109,7 +113,7 @@
         <div class="left-nav-brand">
           <a href="/" class="font-display name">Roshan Kc</a>
           <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
-            Cofounder &amp; CTO, MarginTop Solutions
+            Co-Founder and CTO, MarginTop Solutions
             <span class="visually-hidden">(opens in a new tab)</span>
           </a>
         </div>
@@ -117,7 +121,10 @@
                     <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Presence</a></li>
                     <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>The Story</a></li>
                     <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Focus</a></li>
-                    <li><a href="/blog" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
                     <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Connect</a></li>
         </ul>
       </div>
@@ -155,7 +162,10 @@
                     <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Presence</a></li>
                     <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>The Story</a></li>
                     <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Focus</a></li>
-                    <li><a href="/blog"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
                     <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Connect</a></li>
         </ul>
 
@@ -176,8 +186,8 @@
 
     <main id="main-content" class="main-pane">
       <div class="main-inner">
-        <p style="margin:0 0 1.25rem"><a href="/blog" style="color:var(--sapphire);font-weight:700">← All notes</a></p>
-        <article class="prose">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All notes</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
           <header style="margin-bottom:2rem">
             <div class="blog-meta">
               <span class="tag">Laravel · Performance</span>
@@ -193,13 +203,13 @@
 
 <p>I want to be upfront about something before we go further: I'm not going to give you fabricated RPS numbers. Concurrent throughput depends on query complexity, payload size, worker count, database connection pool limits, and your specific hardware. Anyone publishing a single RPS claim without those variables is selling marketing, not engineering. What I will share is the reasoning, the architecture shift, and the real ops caveats we learned the uncomfortable way.</p>
 
-<h2 id="the-problem-octane-solves">The actual problem Octane solves</h2>
+<h2 id="the-problem-octane-solves">The actual problem Octane solves<a class="h-anchor" href="#the-problem-octane-solves" aria-label="Link to this section">#</a></h2>
 
 <p>In classic PHP-FPM, every single HTTP request triggers a full Laravel bootstrap cycle. That means loading the container, resolving service providers, parsing routes, and binding dependencies — from scratch — on every request. For simple apps this is invisible. Under concurrent load, it adds up fast.</p>
 
 <p>Community benchmarks (see <a href="https://github.com/the-benchmarker/web-frameworks" target="_blank" rel="noopener noreferrer">web-frameworks benchmarks</a> and the Swoole team's own published results) consistently show Octane + Swoole handling <strong>3–10× more requests per second</strong> compared to PHP-FPM on equivalent hardware for framework-heavy endpoints. The variance is enormous — a simple JSON endpoint might see 8× gain; a heavy Eloquent-relational endpoint with multiple joins might see 2×. The gain comes from one thing: eliminating framework boot time from the hot path.</p>
 
-<h2 id="how-it-works">How the request model changes</h2>
+<h2 id="how-it-works">How the request model changes<a class="h-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
 
 <div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
   <thead>
@@ -245,19 +255,19 @@
 
 <p>The <code>Octane::concurrently</code> feature deserves a specific mention. When a request needs three independent data lookups — say, a user's subscription status, notification count, and a live configuration value — you can run all three as parallel coroutines instead of chaining them sequentially. On a typical endpoint making 3 independent DB or cache calls at ~20ms each, concurrent execution can save 30–40ms of latency. That's meaningful for dashboards and client-facing APIs where p95 latency matters.</p>
 
-<h2 id="why-not-rewrite">Why Octane beats a premature rewrite</h2>
+<h2 id="why-not-rewrite">Why Octane beats a premature rewrite<a class="h-anchor" href="#why-not-rewrite" aria-label="Link to this section">#</a></h2>
 
 <p>The alternative we're always tempted to propose is "just rewrite it in Go or Node." I've seen that conversation go badly more than once. Here's the practical math:</p>
 
 <ol>
   <li><strong>Domain code doesn't migrate for free.</strong> A medium-sized Laravel app with 80+ models, custom validation rules, permission matrices, and queue handlers takes 6–18 months to rewrite faithfully in another stack — and during that migration window, business logic keeps changing.</li>
   <li><strong>Dual-stack maintenance is expensive.</strong> Running both stacks during transition means double the infra cost, double the on-call surface, and engineers split between shipping new features and porting old ones.</li>
-  <li><strong>You can still extract hot services later.</strong> A modular monolith with clear domain boundaries can have a high-throughput edge service peeled off when the evidence demands it — see <a href="/blog/hidden-cost-premature-microservices-monolith">why we stay a monolith</a>. You don't need to blow up the whole thing on day one.</li>
+  <li><strong>You can still extract hot services later.</strong> A modular monolith with clear domain boundaries can have a high-throughput edge service peeled off when the evidence demands it — see <a href="/blog/hidden-cost-premature-microservices-monolith/">why we stay a monolith</a>. You don't need to blow up the whole thing on day one.</li>
 </ol>
 
 <p>Octane buys you time. You get meaningfully better concurrency characteristics without abandoning years of accumulated domain knowledge baked into Laravel code.</p>
 
-<h2 id="ops-caveats">The ops caveats nobody puts in the tutorial</h2>
+<h2 id="ops-caveats">The ops caveats nobody puts in the tutorial<a class="h-anchor" href="#ops-caveats" aria-label="Link to this section">#</a></h2>
 
 <p>Octane's power comes with real operational complexity. We learned some of these the hard way:</p>
 
@@ -268,7 +278,7 @@
   <li><strong>Not every package is Octane-compatible.</strong> Some packages assume a stateless per-request lifecycle. Run <code>php artisan octane:check</code> and audit packages manually — particularly anything that caches to static properties or hooks into Laravel's request lifecycle in non-standard ways.</li>
 </ul>
 
-<h2 id="when-to-reach-for-it">When to actually reach for Octane</h2>
+<h2 id="when-to-reach-for-it">When to actually reach for Octane<a class="h-anchor" href="#when-to-reach-for-it" aria-label="Link to this section">#</a></h2>
 
 <p>We don't recommend Octane as a default starting point. The operational overhead is real and not worth paying before you have a measured problem. Our heuristic:</p>
 
@@ -278,9 +288,9 @@
   <li><strong>Consider horizontal FPM scaling first</strong> if ops simplicity matters more than squeezing concurrency. More FPM workers behind a load balancer is boring and it works.</li>
 </ul>
 
-<p>For where PHP performance may go next with AOT compilation, see <a href="/blog/what-typephp-means-for-php-performance">What TypePHP Means for PHP Performance</a>.</p>
+<p>For where PHP performance may go next with AOT compilation, see <a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for PHP Performance</a>.</p>
 
-<h2 id="takeaways">Key takeaways</h2>
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
 
 <ul>
   <li>Octane boots Laravel once and keeps it in memory; the main gain is eliminating per-request framework boot cost.</li>
@@ -290,27 +300,79 @@
   <li>Profile first. A missing database index does more damage than PHP-FPM boot time.</li>
 </ul>
 
-<p>Stack context: <a href="/blog/why-we-chose-laravel-over-nodejs">why we chose Laravel</a>. Scope discipline: <a href="/blog/engineering-principles-what-not-to-build">what not to build</a>.</p>
+<p>Stack context: <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel</a>. Scope discipline: <a href="/blog/engineering-principles-what-not-to-build/">what not to build</a>.</p>
 
 <p>Evaluating Octane for a production Laravel product? <a href="/#contact">Reach out</a> — we've done this migration and have the scars to prove it.</p>
 
-</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a><time datetime="2026-11-04">November 4, 2026</time></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a><time datetime="2026-08-29">August 29, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#the-problem-octane-solves">The actual problem Octane solves</a></li>
+          <li><a href="#how-it-works">How the request model changes</a></li>
+          <li><a href="#why-not-rewrite">Why Octane beats a premature rewrite</a></li>
+          <li><a href="#ops-caveats">The ops caveats nobody puts in the tutorial</a></li>
+          <li><a href="#when-to-reach-for-it">When to actually reach for Octane</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
 
         <nav class="post-nav" aria-label="Post navigation">
           <div class="post-nav__link post-nav__prev">
             <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
-            <a class="post-nav__title" href="/blog/build-vs-buy-framework-what-to-build-in-house">Build vs. Buy: The Framework We Use to Decide What to Build In-House</a>
+            <a class="post-nav__title" href="/blog/build-vs-buy-framework-what-to-build-in-house/">Build vs. Buy: The Framework We Use to Decide What to Build In-House</a>
           </div>
           <div class="post-nav__link post-nav__next">
             <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
-            <a class="post-nav__title" href="/blog/what-typephp-means-for-php-performance">What TypePHP Means for the Future of PHP Performance</a>
+            <a class="post-nav__title" href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a>
           </div>
         </nav>
 
         <footer class="page-footer">
           <p>&copy; <span data-copyright-year></span> Roshan Kc · Kathmandu, Nepal</p>
           <p>
-            <a href="/blog">Writing archive</a>
+            <a href="/blog/">Writing archive</a>
             ·
             <a href="/sitemap">Sitemap</a>
             ·

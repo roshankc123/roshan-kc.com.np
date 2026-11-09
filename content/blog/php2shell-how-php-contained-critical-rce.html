@@ -1,0 +1,218 @@
+<p><strong>Direct answer:</strong> <strong>PHP2Shell</strong> is the nickname for two critical (CVSS 9.2) flaws in PHP's core runtime, <strong>CVE-2026-109618</strong> and <strong>CVE-2026-109619</strong>, that could let an unauthenticated attacker run code on servers handling web requests. PHP shipped fixes on October 21, 2026 in <strong>8.5.12, 8.4.27, 8.3.36 and 8.2.35</strong>. Upgrade, then restart every PHP process. Upgrading the package on disk is not enough on its own.</p>
+
+<p>For us at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, the fixed releases landed at 7:45 PM Nepal time on October 21: the main Tika day of Bada Dashain, the busiest day of Nepal's biggest festival, when most of the country is at home with family. We still had every project patched within 24 hours.</p>
+
+<p>This post covers what PHP2Shell was, how the PHP project and the wider ecosystem contained it so quickly, how a PHP fix actually travels from a commit to your server, and what we did on Tika night. I'm not publishing exploit details. Everything here is about understanding the bug and defending against it.</p>
+
+<h2 id="what-it-was">What PHP2Shell actually was</h2>
+
+<p>Both bugs live in PHP's C engine, not in frameworks or application code. That's why they were so serious: Laravel, WordPress, Symfony and plain PHP sites were all in scope, no matter how carefully the application itself was written.</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">CVE</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Official name</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">What went wrong, in plain English</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w" target="_blank" rel="noopener noreferrer">CVE-2026-109618</a></td>
+      <td style="padding:0.6rem 0.9rem">RCE via OOM corruption</td>
+      <td style="padding:0.6rem 0.9rem">When PHP runs out of memory, it aborts the request by jumping straight out of the code it was running. In a few places, request memory was already reachable before it had been fully set up. If the out-of-memory jump happened at exactly that moment, the shutdown code later trusted half-built data.</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp" target="_blank" rel="noopener noreferrer">CVE-2026-109619</a></td>
+      <td style="padding:0.6rem 0.9rem">RCE via stale global state</td>
+      <td style="padding:0.6rem 0.9rem">PHP keeps some global state (errors, sessions, extensions) that points at memory owned by a request. A fatal error or a late warning could leave that state un-reset. A few operations run <em>before</em> the next request initialises, so the same worker could read the stale pointer (a use-after-free).</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>One detail is worth sitting with. According to the advisory, the strongest confirmed trigger for the second bug was PHP 8.5's new <code>fatal_error_backtraces</code> feature, which could leave backtrace state un-reset. A feature added to make debugging easier became part of the attack chain. New features are new attack surface, even in a mature runtime.</p>
+
+<h3 id="who-was-exposed">Who was exposed</h3>
+
+<ul>
+  <li><strong>Versions:</strong> PHP 5.4 through 8.5.11, in other words practically every PHP install in production.</li>
+  <li><strong>Server setups:</strong> anything serving web requests: Apache <code>mod_php</code>, PHP-FPM, <code>php-cgi</code>, FrankenPHP and LiteSpeed.</li>
+  <li><strong>Worst case:</strong> Apache <code>mod_php</code>, where remote code execution was validated over HTTP with default limits, before your application code even runs.</li>
+  <li><strong>End-of-life versions:</strong> no official releases for PHP 8.1 and older. The project published minimal source backports for 7.4, 8.0 and 8.1 for people who build from source, and nothing at all for 7.3 and earlier.</li>
+</ul>
+
+<h2 id="timeline">Timeline: from private report to patched servers</h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">When (2026)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">What happened</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Before October</td>
+      <td style="padding:0.6rem 0.9rem">Researchers report the bugs privately to the PHP security team. Fixes are developed under embargo, and Linux distributions and LTS vendors receive them early.</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Oct 17</td>
+      <td style="padding:0.6rem 0.9rem">Amazon's MadPot honeypot logs an exploitation attempt four days before public disclosure, <a href="https://www.helpnetsecurity.com/2026/10/21/php2shell-php-vulnerabilities-patched-cve-2026-109618-cve-2026-109619/" target="_blank" rel="noopener noreferrer">according to Help Net Security</a>. How the attacker got the details is unknown.</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Oct 20</td>
+      <td style="padding:0.6rem 0.9rem">Details leak on social media ahead of the planned October 22 disclosure. PHP announces an emergency release.</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Oct 21, 14:00 UTC</td>
+      <td style="padding:0.6rem 0.9rem">Advisories and four patched releases go out at once. Cloudflare ships WAF rules for known exploit vectors, including on free plans. Google Cloud automatically patches App Engine Standard and Cloud Run services that have automatic base-image updates enabled.</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Oct 22</td>
+      <td style="padding:0.6rem 0.9rem">Searchlight Cyber releases an open-source scanner. Our patched public Docker image goes live at 07:37 UTC (more below).</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Oct 26</td>
+      <td style="padding:0.6rem 0.9rem">CISA adds CVE-2026-109618 to its <a href="https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching" target="_blank" rel="noopener noreferrer">Known Exploited Vulnerabilities</a> catalog, confirming active exploitation.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>The leak is the part of the story that should worry everyone. The careful plan had a fixed date, and that date got taken away. PHP's answer was to move the release forward by a day instead of letting a public bug sit unpatched. That decision mattered more than anything else in this incident.</p>
+
+<h2 id="credits">The people who fixed it</h2>
+
+<p>Open source security runs on named people. The official advisories credit:</p>
+
+<ul>
+  <li><strong>Reporters:</strong> <a href="https://github.com/lcfr-hax" target="_blank" rel="noopener noreferrer">lcfr-hax</a>, <a href="https://github.com/sagitzadik-wiz" target="_blank" rel="noopener noreferrer">sagitzadik-wiz</a>, <a href="https://github.com/tomash-areion" target="_blank" rel="noopener noreferrer">tomash-areion</a> and <a href="https://github.com/amyb-oai" target="_blank" rel="noopener noreferrer">amyb-oai</a>.</li>
+  <li><strong>Remediation developers:</strong> <a href="https://github.com/arnaud-lb" target="_blank" rel="noopener noreferrer">arnaud-lb</a>, <a href="https://github.com/iluuu1994" target="_blank" rel="noopener noreferrer">iluuu1994</a>, <a href="https://github.com/bukka" target="_blank" rel="noopener noreferrer">bukka</a> (who also published the advisories) and <a href="https://github.com/ndossche" target="_blank" rel="noopener noreferrer">ndossche</a>.</li>
+</ul>
+
+<p>The fixes weren't band-aids. For the out-of-memory bug, the team removed the "jump out on OOM" behaviour entirely and replaced it with a soft limit that stops at the next safe point, plus a hard exit at a higher threshold. Patching this class of bug properly, across four release branches, in an emergency, is hard engineering.</p>
+
+<h2 id="how-fixes-reach-you">How a PHP fix actually reaches your server</h2>
+
+<p>A patched release on php.net doesn't mean your server is patched. The best explanation of this I've read is <a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">From Commit to Production: How a PHP Fix Actually Reaches You</a> by dams at <a href="https://www.exakat.io/" target="_blank" rel="noopener">Exakat</a>, published the day after the release and using it as the case study. His model has six layers, roughly:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Layer</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Who acts</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Typical delay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">0. Merge</td>
+      <td style="padding:0.6rem 0.9rem">PHP security team merges the fix into php-src and every supported branch</td>
+      <td style="padding:0.6rem 0.9rem">Hours (under embargo)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">1. Release</td>
+      <td style="padding:0.6rem 0.9rem">Release managers tag versions and publish source tarballs and Windows builds</td>
+      <td style="padding:0.6rem 0.9rem">Days</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">2. Packagers</td>
+      <td style="padding:0.6rem 0.9rem">Linux distros, independent packagers, Homebrew, official Docker images, static builds</td>
+      <td style="padding:0.6rem 0.9rem">Days to weeks</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">3. Rebuilds of rebuilds</td>
+      <td style="padding:0.6rem 0.9rem">RHEL derivatives, vendor and CI images, hosting control panels, local dev stacks</td>
+      <td style="padding:0.6rem 0.9rem">Another cycle, sometimes months</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">4. Managed platforms</td>
+      <td style="padding:0.6rem 0.9rem">PaaS, serverless, managed WordPress and Laravel hosts</td>
+      <td style="padding:0.6rem 0.9rem">Their schedule, not yours</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">5. Your pipeline</td>
+      <td style="padding:0.6rem 0.9rem">You pull the new base, rebuild, run CI and deploy to production, staging and dev machines</td>
+      <td style="padding:0.6rem 0.9rem">As fast as your team moves</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>A few of his points changed how I think about patching:</p>
+
+<ul>
+  <li><strong>Backported fixes are "present, but invisible."</strong> Stable distributions patch the code without changing the version number, so <code>php -v</code> can show an "old" version on a fixed server. Check the package changelog for the CVE IDs instead of auditing version strings.</li>
+  <li><strong>On an end-of-life branch, the fix never arrives.</strong> No layer above you will save you.</li>
+  <li><strong>Managed hosting is "a risk you are renting."</strong> You get convenience, and your patch window becomes your host's patch window.</li>
+  <li><strong>"Preprod is part of the attack surface"</strong>, and staging servers often hold copies of production data.</li>
+  <li><strong>Shortcuts exist.</strong> Building directly on an official image like <code>FROM php:8.5</code> skips several of the slow layers.</li>
+</ul>
+
+<p>His summary of why this release went well is the best one-line description of the whole response: <em>"It is quiet coordination, and it worked."</em> Four branches were patched within hours, and the embargo gave packagers time to compile, test and stage binaries before the public announcement.</p>
+
+<h2 id="why-it-worked">Why the response worked</h2>
+
+<ul>
+  <li><strong>Coordinated disclosure.</strong> The researchers reported privately and the fix was prepared under embargo, so downstream packagers weren't starting from zero on disclosure day.</li>
+  <li><strong>Pre-staged downstream.</strong> Distros and LTS vendors had patches before the public release, which collapsed the slowest layers of the chain.</li>
+  <li><strong>Pulling the date forward after the leak.</strong> Waiting for the planned date would have left a publicly known bug unpatched for two more days.</li>
+  <li><strong>Honest advisories.</strong> The advisories said exactly which setups were validated and which were only suspected, and labelled workarounds as partial. In the advisory's words, updating "is the only complete mitigation."</li>
+  <li><strong>Edge and cloud vendors moving the same day.</strong> WAF rules and automatic platform patching protected a lot of sites whose owners hadn't even read the news yet.</li>
+</ul>
+
+<p>It wasn't flawless. Some third-party package repositories lagged behind the coordinated release, a pre-patch workaround circulated as if it were a full fix when it wasn't, and anyone still on PHP 8.1 or older was left with source backports or nothing. The response was fast. Being on a supported version is what let you benefit from it.</p>
+
+<h2 id="what-we-did">What we did on Dashain Tika night</h2>
+
+<p>Dashain is when Nepal stops. Offices close, people travel home to their families, and Tika day is when you visit elders to receive blessings, not when you read security advisories. The fixed releases arrived that evening.</p>
+
+<p>Our projects run in Docker, and our <a href="/blog/laravel-octane-swoole-concurrent-load/">Laravel Octane + Swoole</a> services sit on our own runtime image. We also run server-management tools that are themselves PHP applications. Here's what we did:</p>
+
+<ol>
+  <li><strong>Rebuilt our Docker infrastructure.</strong> Every project's image was rebuilt on a patched PHP base and redeployed. Because everything is containerised, this was a rebuild-and-roll-out job rather than a server-by-server hunt.</li>
+  <li><strong>Rebuilt and republished our public image.</strong> <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer">roshankc1234/optimized-laravel-runtime</a> was rebuilt on PHP 8.5.12 and published as <code>php8.5.12-swoole6.2.3-iouring</code> (multi-arch, plus dedicated <code>-amd64</code> and <code>-arm64</code> tags) at 07:37 UTC on October 22, about 17.5 hours after PHP's release. If you use it, see the <a href="/blog/optimized-laravel-docker-swoole-iouring/">updated image post</a>.</li>
+  <li><strong>Updated the server-management tools that run on PHP.</strong> These are the ones teams forget, because they aren't "the app". They often sit on classic <code>mod_php</code> or FPM setups with admin-level access to everything else.</li>
+  <li><strong>All projects patched within 24 hours.</strong></li>
+</ol>
+
+<p>One honest note on Swoole. The advisories list mod_php, FPM, php-cgi, FrankenPHP and LiteSpeed as the affected server setups. Swoole and Octane run PHP differently and weren't on that list. We didn't treat that as a reason to wait. The advisories said updating was the only complete fix, so everything got updated.</p>
+
+<p>The lesson for us wasn't heroics. It was that boring infrastructure decisions made months earlier (one base image, reproducible builds, deploys we trust) are what made a festival-night emergency a rebuild instead of a crisis. We wrote about that mindset in <a href="/blog/security-basics-startups-before-fundraising/">security basics every startup should get right</a>.</p>
+
+<h2 id="checklist">Checklist: are you actually patched?</h2>
+
+<ol>
+  <li><strong>Check the real version or the changelog.</strong> You want 8.5.12, 8.4.27, 8.3.36, 8.2.35 or later, or a distro package whose changelog mentions the CVEs:
+<pre><code>php -v
+apt-get changelog php-fpm | grep -E "CVE-2026-10961[89]"
+rpm -q --changelog php-fpm | grep -E "CVE-2026-10961[89]"</code></pre></li>
+  <li><strong>Restart every PHP process.</strong> Running <code>php-fpm</code>, Apache, FrankenPHP or LiteSpeed workers keep the old code in memory until they restart. Long-running Octane workers need a fresh deploy too.</li>
+  <li><strong>Rebuild containers from a fresh base.</strong> Pull the patched base image and rebuild without cache (<code>docker build --pull --no-cache</code>). An old cached layer is an old PHP.</li>
+  <li><strong>Don't forget the quiet places:</strong> staging, preprod, CI runners, cron and queue boxes, hosting panels and internal admin tools.</li>
+  <li><strong>If you truly can't patch today</strong>, the advisories list partial mitigations: set <code>session.upload_progress.enabled = 0</code>, set <code>fatal_error_backtraces = 0</code> on PHP 8.5, avoid memory limits via <code>ulimit -v</code> / <code>RLIMIT_AS</code> (they trigger the vulnerable path), and put a WAF in front. The UK NCSC's advice is to take unpatchable systems offline. These are stopgaps, not fixes.</li>
+  <li><strong>On PHP 8.1 or older:</strong> treat this as the push to upgrade. There is no official fix coming.</li>
+  <li><strong>Look for signs of compromise.</strong> <a href="https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619" target="_blank" rel="noopener noreferrer">Google's guidance</a> highlights shells or tools like <code>curl</code> spawned by PHP processes, spikes in crashing workers, and unusually long session cookies. If you suspect a host, capture worker memory <em>before</em> restarting it, because a restart destroys the evidence.</li>
+</ol>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>PHP2Shell (CVE-2026-109618 and CVE-2026-109619) was a pair of critical core-runtime bugs affecting essentially every PHP version serving web traffic. The fixed releases are 8.5.12, 8.4.27, 8.3.36 and 8.2.35.</li>
+  <li>The PHP project contained it fast: private disclosure, an embargo that pre-staged downstream packagers, four branches patched at once, and a release pulled forward the moment details leaked.</li>
+  <li>A fix on php.net is only the first of several layers. Backports hide behind unchanged version numbers, managed hosts patch on their own schedule, and end-of-life versions never get the fix.</li>
+  <li>Upgrading isn't patching until processes restart and containers are rebuilt from a fresh base.</li>
+  <li>Simple, reproducible infrastructure is a security feature. It's what let a small team in Kathmandu patch everything within 24 hours on the busiest night of Dashain.</li>
+</ul>
+
+<h2 id="sources">Sources and further reading</h2>
+
+<ul>
+  <li>PHP security advisories: <a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w" target="_blank" rel="noopener noreferrer">GHSA-w8hw-w9fx-j79w (CVE-2026-109618)</a> and <a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp" target="_blank" rel="noopener noreferrer">GHSA-6wmf-4rv5-p3rp (CVE-2026-109619)</a></li>
+  <li>dams, Exakat: <a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">From Commit to Production: How a PHP Fix Actually Reaches You</a></li>
+  <li>CISA: <a href="https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching" target="_blank" rel="noopener noreferrer">Critical Vulnerabilities in PHP Require Immediate Patching</a></li>
+  <li>Google Cloud: <a href="https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619" target="_blank" rel="noopener noreferrer">Responding to core PHP vulnerabilities</a></li>
+  <li>UK NCSC: <a href="https://www.ncsc.gov.uk/news/critical-security-issue-affecting-php" target="_blank" rel="noopener noreferrer">Critical security issue affecting PHP</a></li>
+  <li>watchTowr: <a href="https://watchtowr.com/intelligence/php-cve-2026-109618-faq/" target="_blank" rel="noopener noreferrer">CVE-2026-109618 FAQ</a></li>
+  <li>Help Net Security: <a href="https://www.helpnetsecurity.com/2026/10/21/php2shell-php-vulnerabilities-patched-cve-2026-109618-cve-2026-109619/" target="_blank" rel="noopener noreferrer">PHP2Shell: Critical PHP vulnerabilities patched</a></li>
+</ul>
+
+<p>Running PHP in production and want a second pair of eyes on your patching pipeline? <a href="/#contact">Get in touch</a>. We've been through this one the hard way, on a festival night.</p>

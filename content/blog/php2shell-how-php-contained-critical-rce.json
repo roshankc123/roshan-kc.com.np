@@ -1,0 +1,54 @@
+{
+ "slug": "php2shell-how-php-contained-critical-rce",
+ "date": "2026-10-27",
+ "modified": "2026-10-27",
+ "read": 11,
+ "tag": "PHP · Security",
+ "title": "PHP2Shell Explained: How PHP Contained a Critical RCE | Roshan Kc",
+ "h1": "PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server",
+ "social": "PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server",
+ "short": "PHP2Shell: How the PHP Team Contained a Critical RCE",
+ "desc": "PHP2Shell (CVE-2026-109618, CVE-2026-109619) explained: what broke, how PHP shipped fixes in hours, how patches reach production, and how we patched on Dashain Tika.",
+ "keywords": "PHP2Shell, CVE-2026-109618, CVE-2026-109619, PHP vulnerability, PHP security patch, PHP 8.5.12, PHP RCE, coordinated disclosure",
+ "citations": [
+  [
+   "From Commit to Production: How a PHP Fix Actually Reaches You",
+   "https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/"
+  ],
+  [
+   "GHSA-w8hw-w9fx-j79w: RCE via OOM corruption",
+   "https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w"
+  ],
+  [
+   "GHSA-6wmf-4rv5-p3rp: RCE via stale global state",
+   "https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp"
+  ],
+  [
+   "Critical Vulnerabilities in PHP Require Immediate Patching",
+   "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching"
+  ]
+ ],
+ "prev": [
+  "/blog/php-runtime-vulnerabilities-history/",
+  "Runtime-Level PHP Vulnerabilities: What They Have in Common"
+ ],
+ "next": [
+  "/blog/optimized-laravel-docker-swoole-iouring/",
+  "Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring"
+ ],
+ "about": [
+  {
+   "@type": "Thing",
+   "name": "CVE-2026-109618"
+  },
+  {
+   "@type": "Thing",
+   "name": "CVE-2026-109619"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "PHP",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ]
+}

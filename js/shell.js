@@ -101,21 +101,33 @@
   });
 
   const BLOG_POSTS = [
-    "/blog/security-basics-startups-before-fundraising",
-    "/blog/engineering-principles-what-not-to-build",
-    "/blog/hiring-engineers-as-first-time-cto",
-    "/blog/how-ai-coding-tools-changed-engineering-velocity",
-    "/blog/hidden-cost-premature-microservices-monolith",
-    "/blog/build-vs-buy-framework-what-to-build-in-house",
-    "/blog/laravel-octane-swoole-concurrent-load",
-    "/blog/what-typephp-means-for-php-performance",
-    "/blog/business-logic-first-not-perfect-tech-stack",
-    "/blog/why-we-chose-laravel-over-nodejs",
-    "/blog/how-to-run-startup-tech-stack-free-until-funded",
-    "/blog/ship-fast-without-losing-client-trust",
-    "/blog/building-a-software-team-in-kathmandu",
-    "/blog/what-a-first-time-cto-actually-does",
-    "/blog/why-i-left-teaching-to-build-a-company"
+    "/blog/php-8-6-new-features/",
+    "/blog/php-in-2026-why-you-should-revisit-php/",
+    "/blog/choose-tech-stack-ai-era-patch-velocity/",
+    "/blog/upgrade-php-7-to-php-8-5-playbook/",
+    "/blog/php-async-fibers-coroutines/",
+    "/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/",
+    "/blog/php-type-system-evolution/",
+    "/blog/php-8-4-property-hooks-asymmetric-visibility/",
+    "/blog/php-8-5-features-production/",
+    "/blog/php-runtime-vulnerabilities-history/",
+    "/blog/php2shell-how-php-contained-critical-rce/",
+    "/blog/optimized-laravel-docker-swoole-iouring/",
+    "/blog/security-basics-startups-before-fundraising/",
+    "/blog/engineering-principles-what-not-to-build/",
+    "/blog/hiring-engineers-as-first-time-cto/",
+    "/blog/how-ai-coding-tools-changed-engineering-velocity/",
+    "/blog/hidden-cost-premature-microservices-monolith/",
+    "/blog/build-vs-buy-framework-what-to-build-in-house/",
+    "/blog/laravel-octane-swoole-concurrent-load/",
+    "/blog/what-typephp-means-for-php-performance/",
+    "/blog/business-logic-first-not-perfect-tech-stack/",
+    "/blog/why-we-chose-laravel-over-nodejs/",
+    "/blog/how-to-run-startup-tech-stack-free-until-funded/",
+    "/blog/ship-fast-without-losing-client-trust/",
+    "/blog/building-a-software-team-in-kathmandu/",
+    "/blog/what-a-first-time-cto-actually-does/",
+    "/blog/why-i-left-teaching-to-build-a-company/"
   ];
 
   const deckRoot = document.querySelector("[data-deck]");
@@ -145,15 +157,15 @@
     }
 
     if (mode === "blog-post") {
-      const file = location.pathname.split("/").pop() || "";
-      const i = Math.max(0, BLOG_POSTS.findIndex((href) => href.endsWith("/" + file) || href.endsWith(file)));
+      const file = location.pathname.replace(/\/+$/, "").split("/").pop() || "";
+      const i = Math.max(0, BLOG_POSTS.findIndex((href) => href.replace(/\/+$/, "").endsWith("/" + file)));
       if (labelEl) labelEl.textContent = "Article";
       if (indexEl) indexEl.textContent = String(i + 1);
       if (totalEl) totalEl.textContent = String(BLOG_POSTS.length);
       if (prevBtn) {
         prevBtn.setAttribute("aria-label", i <= 0 ? "Back to blog listing" : "Previous article");
         prevBtn.addEventListener("click", () => {
-          location.href = i <= 0 ? "/blog" : BLOG_POSTS[i - 1];
+          location.href = i <= 0 ? "/blog/" : BLOG_POSTS[i - 1];
         });
       }
       if (nextBtn) {
@@ -171,9 +183,67 @@
           if (i < BLOG_POSTS.length - 1) location.href = BLOG_POSTS[i + 1];
         } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
           e.preventDefault();
-          location.href = i <= 0 ? "/blog" : BLOG_POSTS[i - 1];
+          location.href = i <= 0 ? "/blog/" : BLOG_POSTS[i - 1];
         }
       });
     }
+  }
+  // Table of contents: mark the section being read (wide screens only).
+  const toc = document.querySelector(".post-toc");
+  if (toc && "IntersectionObserver" in window) {
+    const links = new Map();
+    toc.querySelectorAll('a[href^="#"]').forEach((a) => {
+      const el = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+      if (el && el.tagName === "H2") links.set(el, a);
+    });
+    const visible = new Set();
+    const mark = () => {
+      let current = null;
+      for (const h of links.keys()) {
+        if (visible.has(h)) { current = h; break; }
+      }
+      if (!current) return;
+      links.forEach((a, h) => {
+        if (h === current) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      });
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+      mark();
+    }, { rootMargin: "0px 0px -70% 0px" });
+    links.forEach((_, h) => io.observe(h));
+  }
+
+  // Blog index: filter cards by topic; state lives in ?topic= so links are shareable.
+  const filter = document.querySelector(".topic-filter");
+  if (filter) {
+    const chips = [...filter.querySelectorAll(".topic-chip")];
+    const cards = [...document.querySelectorAll(".blog-card[data-topics]")];
+    const status = filter.querySelector(".topic-filter__status");
+    const apply = (topic, push) => {
+      const known = chips.some((c) => c.dataset.topic === topic);
+      if (!known) topic = "all";
+      let shown = 0;
+      cards.forEach((card) => {
+        const match = topic === "all" || card.dataset.topics.split(" ").includes(topic);
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.topic === topic)));
+      if (status) {
+        const label = chips.find((c) => c.dataset.topic === topic)?.firstChild?.textContent.trim();
+        status.textContent = topic === "all" ? "" : `Showing ${shown} ${shown === 1 ? "post" : "posts"} about ${label}`;
+      }
+      if (push) {
+        const url = new URL(location.href);
+        if (topic === "all") url.searchParams.delete("topic");
+        else url.searchParams.set("topic", topic);
+        history.replaceState(null, "", url);
+      }
+    };
+    chips.forEach((c) => c.addEventListener("click", () => apply(c.dataset.topic, true)));
+    filter.hidden = false;
+    apply(new URLSearchParams(location.search).get("topic") || "all", false);
   }
 })();

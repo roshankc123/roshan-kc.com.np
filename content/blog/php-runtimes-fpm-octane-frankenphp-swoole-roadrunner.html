@@ -1,0 +1,84 @@
+<p><strong>Direct answer:</strong> <strong>PHP-FPM</strong> boots your app fresh on every request: simple, isolated and still the default. <strong>Swoole</strong>, <strong>RoadRunner</strong> and <strong>FrankenPHP</strong> keep the app in memory between requests, which removes bootstrap cost and typically gives several times more throughput on framework-heavy endpoints. <strong>Laravel Octane</strong> isn't a runtime; it's Laravel's adapter for those three. Choose FPM for simplicity, FrankenPHP for the easiest modern setup, Swoole when you need coroutines and in-process concurrency, and RoadRunner if your team lives in Go tooling.</p>
+
+<p>We run Laravel Octane on Swoole in production at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop</a> and publish our own <a href="/blog/optimized-laravel-docker-swoole-iouring/">Swoole + io_uring runtime image</a>. This comparison is part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="two-models">The two execution models</h2>
+
+<h3>Shared-nothing: boot, handle, forget</h3>
+<p>Classic PHP (FPM, <code>mod_php</code>, CGI) starts every request with a clean slate: load the framework, register services, handle the request, throw everything away. Opcache keeps compiled code in memory, but your application's objects, container and config are rebuilt every time.</p>
+<p>That's PHP's superpower and its cost. A memory leak or a global variable can't outlive one request, but a large framework spends milliseconds booting before it does any real work.</p>
+
+<h3>Long-running workers: boot once, serve many</h3>
+<p>Swoole, RoadRunner and FrankenPHP's worker mode boot your application once per worker and then feed it request after request. Bootstrap disappears from the hot path. The price is that <strong>state now survives between requests</strong>: static properties, singletons and anything you cache on an object. That's the source of almost every Octane bug.</p>
+
+<h2 id="comparison">Side-by-side comparison</h2>
+
+<table>
+  <thead><tr><th>Runtime</th><th>What it is</th><th>Model</th><th>Best for</th><th>Watch out for</th></tr></thead>
+  <tbody>
+    <tr><td>PHP-FPM</td><td>PHP's FastCGI process manager, behind nginx or Caddy</td><td>Shared-nothing</td><td>Most apps, simple ops, shared hosting, maximum compatibility</td><td>Bootstrap cost per request, and worker count limits concurrency</td></tr>
+    <tr><td>Apache <code>mod_php</code></td><td>PHP embedded in Apache</td><td>Shared-nothing</td><td>Legacy setups</td><td>Ties PHP to Apache's process model. It was the highest-risk setup in <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell</a>.</td></tr>
+    <tr><td>FrankenPHP</td><td>A PHP app server written in Go on top of Caddy</td><td>Classic or worker mode</td><td>New projects, single-binary deploys, automatic HTTPS, HTTP/2 and HTTP/3</td><td>Worker mode has the same state-leak rules as any long-running runtime</td></tr>
+    <tr><td>Swoole</td><td>A C/C++ PHP extension with its own HTTP server and coroutine scheduler</td><td>Long-running plus coroutines</td><td>High concurrency, WebSockets, parallel I/O inside a request</td><td>Steeper learning curve. Some extensions and libraries aren't coroutine-safe.</td></tr>
+    <tr><td>RoadRunner</td><td>A Go application server that manages PHP worker processes</td><td>Long-running</td><td>Teams wanting queues, gRPC and plugins in one Go binary</td><td>Another moving part outside PHP to configure and monitor</td></tr>
+    <tr><td>Laravel Octane</td><td>Laravel's adapter that runs your app on Swoole, RoadRunner or FrankenPHP</td><td>Uses the driver's model</td><td>Laravel apps wanting long-running performance with framework support</td><td>Your code must be safe to reuse across requests</td></tr>
+  </tbody>
+</table>
+
+<h2 id="frankenphp">FrankenPHP: the newest option, now officially backed</h2>
+
+<p>FrankenPHP, created by Kévin Dunglas, embeds PHP inside the Caddy web server. One binary gives you a web server with automatic HTTPS, HTTP/3, early hints and an optional worker mode. In May 2025 the PHP Foundation announced official support for FrankenPHP, and the project moved under the PHP GitHub organisation. That's a strong signal it's here to stay.</p>
+
+<p>Its biggest advantage is the gentle on-ramp. You can run it in classic mode as a drop-in replacement for nginx + FPM, then switch to worker mode when you're ready.</p>
+
+<h2 id="swoole">Swoole: when you need concurrency, not just speed</h2>
+
+<p>Swoole is the only option here that gives PHP <strong>coroutines</strong>: lightweight tasks that yield while waiting on I/O. That enables parallel database and HTTP calls inside one request (Octane's <code>Octane::concurrently()</code>), WebSocket servers and long-lived connections in the same process. That is why it fits device-connected and real-time workloads like many of the systems we build. The details are in <a href="/blog/laravel-octane-swoole-concurrent-load/">how we use Octane + Swoole</a>, and the async picture is in <a href="/blog/php-async-fibers-coroutines/">PHP async in 2026</a>.</p>
+
+<h2 id="roadrunner">RoadRunner: a Go supervisor for PHP workers</h2>
+
+<p>RoadRunner, from Spiral Scout, is a Go server that keeps a pool of PHP worker processes and talks to them over a fast binary protocol. It bundles plugins for HTTP, queues, gRPC, key-value storage and more. It's a good fit if you like configuring infrastructure in one YAML file and want PHP to stay plain PHP, with no extension to compile.</p>
+
+<h2 id="state">The rule every long-running runtime shares</h2>
+
+<p>Whatever you pick, the same discipline applies once workers live longer than a request:</p>
+
+<ul>
+  <li><strong>No request data in static properties or singletons.</strong> The current user, tenant or locale must be resolved per request.</li>
+  <li><strong>Reset what you cache.</strong> Octane and frameworks provide hooks for this. Use them.</li>
+  <li><strong>Recycle workers.</strong> Set a max-requests limit so slow memory leaks can't accumulate.</li>
+  <li><strong>Reload on deploy.</strong> Workers keep old code in memory until they restart. That also applies to security patches: after PHP2Shell, upgrading the package did nothing until workers restarted.</li>
+</ul>
+
+<h2 id="choosing">How to choose</h2>
+
+<table>
+  <thead><tr><th>If you…</th><th>Choose</th></tr></thead>
+  <tbody>
+    <tr><td>Want the simplest, most compatible setup, or performance is already fine</td><td>PHP-FPM behind nginx or Caddy</td></tr>
+    <tr><td>Are starting fresh and want one binary with HTTPS and HTTP/3 built in</td><td>FrankenPHP (classic mode first, worker mode later)</td></tr>
+    <tr><td>Need WebSockets, coroutines or parallel I/O inside a request</td><td>Swoole (via Octane for Laravel)</td></tr>
+    <tr><td>Want queues, gRPC and HTTP in one Go-managed server</td><td>RoadRunner</td></tr>
+    <tr><td>Run Laravel and bootstrap time is a <em>measured</em> bottleneck</td><td>Octane on whichever driver above fits</td></tr>
+  </tbody>
+</table>
+
+<p>One warning from experience: profile first. If your slow endpoint spends 300 ms in the database, switching runtimes saves you the 10–20 ms of bootstrap and nothing else. Fix the queries, then change runtimes.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>FPM boots per request (simple and isolated). Swoole, RoadRunner and FrankenPHP boot once and reuse workers (much faster, but state leaks are possible).</li>
+  <li>Laravel Octane is an adapter, not a runtime. It runs on Swoole, RoadRunner or FrankenPHP.</li>
+  <li>FrankenPHP has been officially supported by the PHP Foundation since May 2025 and is the easiest modern option.</li>
+  <li>Swoole is the choice when you need coroutines and in-process concurrency.</li>
+  <li>Long-running workers must be reloaded to pick up code changes and security patches.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://laravel.com/docs/octane" target="_blank" rel="noopener noreferrer">Laravel Octane documentation</a></li>
+  <li><a href="https://frankenphp.dev/" target="_blank" rel="noopener noreferrer">FrankenPHP</a></li>
+  <li><a href="https://www.swoole.com/" target="_blank" rel="noopener noreferrer">Swoole</a></li>
+  <li><a href="https://roadrunner.dev/" target="_blank" rel="noopener noreferrer">RoadRunner</a></li>
+  <li><a href="https://www.php.net/manual/en/install.fpm.php" target="_blank" rel="noopener noreferrer">php.net: FastCGI Process Manager</a></li>
+</ul>

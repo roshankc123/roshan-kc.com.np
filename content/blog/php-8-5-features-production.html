@@ -1,0 +1,130 @@
+<p><strong>Direct answer:</strong> The PHP 8.5 features that matter most in production are the <strong>pipe operator (<code>|&gt;</code>)</strong> for readable data transformations, <strong><code>clone()</code> with property overrides</strong> for immutable objects, the built-in <strong>URI extension</strong> for standards-compliant URL parsing, <strong><code>#[\NoDiscard]</code></strong> for catching ignored return values, <strong>backtraces on fatal errors</strong>, and <strong><code>array_first()</code> / <code>array_last()</code></strong>. PHP 8.5 was released on November 20, 2025, and is supported until December 31, 2029.</p>
+
+<p>Release notes list everything. This post covers the features that change everyday production code, with before/after examples and where each one fits. Our runtime at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop</a> runs on 8.5, so these are the ones I'd point a team to first. It's part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="pipe">The pipe operator: |&gt;</h2>
+
+<p>The pipe operator passes the value on its left into the callable on its right, so transformations read top to bottom instead of inside out.</p>
+
+<pre><code>// Before: read from the innermost call outwards
+$slug = strtolower(str_replace('.', '', str_replace(' ', '-', trim($title))));
+
+// PHP 8.5
+$slug = $title
+    |&gt; trim(...)
+    |&gt; (fn($s) =&gt; str_replace(' ', '-', $s))
+    |&gt; (fn($s) =&gt; str_replace('.', '', $s))
+    |&gt; strtolower(...);</code></pre>
+
+<p>Two practical notes:</p>
+<ul>
+  <li>Each step must be a callable that takes <strong>one</strong> argument. Arrow functions need parentheses around them.</li>
+  <li>The arrow-function wrappers are the awkward part. <a href="/blog/php-8-6-new-features/">PHP 8.6's partial function application</a> removes them: <code>|&gt; str_replace(' ', '-', ?)</code>.</li>
+</ul>
+
+<p><strong>Where it fits:</strong> input normalisation (phone numbers, slugs, imported CSV fields) and small data pipelines in jobs. <strong>Where it doesn't:</strong> anything with branching or error handling. A pipeline that needs <code>if</code> statements should stay a normal function.</p>
+
+<h2 id="clone-with">clone() with property overrides</h2>
+
+<p>Readonly classes made immutable value objects easy to define but awkward to modify. Every "wither" method had to rebuild the whole object. In 8.5, <code>clone()</code> takes an array of properties to change:</p>
+
+<pre><code>final readonly class Money
+{
+    public function __construct(
+        public int $amount,
+        public string $currency,
+    ) {}
+
+    public function withAmount(int $amount): self
+    {
+        return clone($this, ['amount' =&gt; $amount]);
+    }
+}</code></pre>
+
+<p>For DTOs and value objects (money, date ranges, API request objects) this removes a lot of constructor-forwarding code and the bugs that come with it. Forgetting to pass one argument through is the classic one.</p>
+
+<h2 id="uri">The URI extension</h2>
+
+<p><code>parse_url()</code> has never followed any URL standard, and its edge cases have caused real security bugs such as SSRF filters bypassed by URLs that <code>parse_url()</code> and the HTTP client read differently. PHP 8.5 ships a URI extension that's always available, with two standards-compliant parsers:</p>
+
+<pre><code>use Uri\Rfc3986\Uri;
+
+$uri = new Uri('https://api.example.com:8443/v1/orders?page=2');
+$uri-&gt;getHost();  // "api.example.com"
+$uri-&gt;getPort();  // 8443
+
+// Uri\WhatWg\Url parses the way browsers do</code></pre>
+
+<p><strong>Use it for:</strong> anything security-sensitive, such as webhook URL validation, allowlists for outbound requests, and redirect targets. If you validate URLs with <code>parse_url()</code> and then fetch them with a different library, the gap between the two parsers is where attackers live.</p>
+
+<h2 id="nodiscard">#[\NoDiscard]</h2>
+
+<p>Mark a function whose return value must be used, and PHP warns when a caller ignores it:</p>
+
+<pre><code>#[\NoDiscard("the result tells you whether the charge succeeded")]
+function charge(Order $order): ChargeResult { /* ... */ }
+
+charge($order);          // Warning: return value should be used
+(void) charge($order);   // explicitly ignored, no warning</code></pre>
+
+<p>This is ideal for operations that report failure through the return value rather than an exception: payment results, lock acquisition, "was anything updated?" counts.</p>
+
+<h2 id="backtraces">Backtraces on fatal errors</h2>
+
+<p>Fatal errors such as "maximum execution time exceeded" now include a stack trace. Before 8.5, a timeout in production gave you a file and line number and nothing about how you got there. For debugging slow endpoints and stuck queue workers, this alone is worth the upgrade.</p>
+
+<p><strong>Security footnote:</strong> the <code>fatal_error_backtraces</code> setting behind this feature was part of the <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell</a> attack chain on unpatched versions. Make sure you're on 8.5.12 or later.</p>
+
+<h2 id="array-first-last">array_first() and array_last()</h2>
+
+<pre><code>$latest = array_last($events);   // null if empty
+$first  = array_first($items);</code></pre>
+
+<p>Small, but it replaces <code>reset()</code>/<code>end()</code> (which move the array's internal pointer), <code>$arr[array_key_last($arr)]</code>, and a lot of helper functions.</p>
+
+<h2 id="smaller">Smaller changes worth knowing</h2>
+
+<table>
+  <thead><tr><th>Feature</th><th>What it gives you</th></tr></thead>
+  <tbody>
+    <tr><td>Closures in constant expressions</td><td>Static closures and first-class callables in attribute arguments and defaults, useful for validation and access-control attributes</td></tr>
+    <tr><td>Persistent cURL share handles</td><td>DNS and connection reuse across requests, which means fewer TLS handshakes for API-heavy apps</td></tr>
+    <tr><td><code>#[\Override]</code> on properties</td><td>Catches renamed parent properties</td></tr>
+    <tr><td>Asymmetric visibility for static properties</td><td>Extends the <a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">PHP 8.4 feature</a> to static properties</td></tr>
+    <tr><td><code>final</code> on promoted constructor properties</td><td>Less boilerplate in class hierarchies</td></tr>
+    <tr><td><code>Closure::getCurrent()</code></td><td>Recursive anonymous functions without <code>use (&amp;$fn)</code> tricks</td></tr>
+    <tr><td><code>get_error_handler()</code>, <code>get_exception_handler()</code></td><td>Inspect handlers without replacing them</td></tr>
+  </tbody>
+</table>
+
+<h2 id="deprecations">Deprecations to fix before upgrading</h2>
+
+<ul>
+  <li>The backtick operator (<code>`ls`</code>, an alias for <code>shell_exec()</code>) is deprecated.</li>
+  <li>Non-canonical casts <code>(boolean)</code>, <code>(integer)</code>, <code>(double)</code> and <code>(binary)</code> are deprecated. Use <code>(bool)</code>, <code>(int)</code>, <code>(float)</code> and <code>(string)</code>.</li>
+  <li><code>null</code> as an array offset is deprecated.</li>
+  <li>Ending <code>case</code> statements with a semicolon is deprecated.</li>
+  <li><code>__sleep()</code> / <code>__wakeup()</code> are soft-deprecated in favour of <code>__serialize()</code> / <code>__unserialize()</code>.</li>
+  <li>New warnings when casting floats that don't fit into <code>int</code>, and when casting <code>NAN</code>.</li>
+</ul>
+
+<p>Rector handles most of these automatically. The process is in the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</p>
+
+<h2 id="worth-it">Is upgrading to 8.5 worth it?</h2>
+
+<p>If you're on 8.3 or 8.4: yes, and it's one of the easiest upgrades in years. The deprecations are small, and the debugging improvements alone pay for the effort. If you're on 8.2 or older, 8.5 is the right target, because it's supported until the end of 2029.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>PHP 8.5 (November 2025) is supported until December 2029, making it the best target for upgrades today.</li>
+  <li>The pipe operator, <code>clone()</code> with overrides and <code>array_first()</code>/<code>array_last()</code> remove everyday boilerplate.</li>
+  <li>The URI extension and <code>#[\NoDiscard]</code> are quiet security and correctness wins.</li>
+  <li>Backtraces on fatal errors make production timeouts debuggable, but run 8.5.12+ because of PHP2Shell.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.php.net/releases/8.5/en.php" target="_blank" rel="noopener noreferrer">php.net: PHP 8.5 release announcement</a></li>
+  <li><a href="https://www.php.net/manual/en/migration85.php" target="_blank" rel="noopener noreferrer">php.net: Migrating from PHP 8.4 to 8.5</a></li>
+  <li><a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">php.net: Supported versions</a></li>
+</ul>

@@ -1,0 +1,30 @@
+{
+ "slug": "php-async-fibers-coroutines",
+ "date": "2026-11-05",
+ "read": 8,
+ "tag": "PHP · Async",
+ "title": "PHP Async in 2026: Fibers, Swoole, AMPHP, ReactPHP | Roshan Kc",
+ "h1": "PHP Async in 2026: Fibers, Coroutines and the Road to Native Async",
+ "social": "PHP Async in 2026: Fibers, Coroutines and the Road to Native Async",
+ "short": "PHP Async in 2026: Fibers, Coroutines and Native Async",
+ "desc": "Can PHP do async? Fibers, ReactPHP, AMPHP and Swoole explained, plus PHP 8.6's Io\\Poll, the engine concurrency RFC and PHP vs Node.js for real-time.",
+ "keywords": "php async, php fibers, php coroutines, swoole coroutines, amphp, reactphp, php vs node async, php true async",
+ "prev": [
+  "/blog/upgrade-php-7-to-php-8-5-playbook/",
+  "Upgrading a Legacy PHP 7 App to PHP 8.5"
+ ],
+ "next": [
+  "/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/",
+  "PHP Runtimes Explained: FPM, Octane, FrankenPHP, Swoole, RoadRunner"
+ ],
+ "citations": [
+  [
+   "PHP manual: Fibers",
+   "https://www.php.net/manual/en/language.fibers.php"
+  ],
+  [
+   "RFC: Concurrency Support in the PHP Engine",
+   "https://wiki.php.net/rfc/async_scheduler_abi"
+  ]
+ ]
+}

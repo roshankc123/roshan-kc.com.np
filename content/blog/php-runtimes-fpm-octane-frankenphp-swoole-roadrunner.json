@@ -1,0 +1,30 @@
+{
+ "slug": "php-runtimes-fpm-octane-frankenphp-swoole-roadrunner",
+ "date": "2026-11-04",
+ "read": 9,
+ "tag": "PHP · Performance",
+ "title": "PHP-FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner | Roshan Kc",
+ "h1": "PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner",
+ "social": "PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner",
+ "short": "PHP Runtimes Explained: FPM, Octane, FrankenPHP, Swoole, RoadRunner",
+ "desc": "PHP-FPM, FrankenPHP, Swoole, RoadRunner and Laravel Octane compared: how each runs PHP, the trade-offs of long-running workers, and how to choose for production.",
+ "keywords": "frankenphp vs swoole, php-fpm vs octane, frankenphp laravel, roadrunner vs swoole, laravel octane driver, php runtime comparison",
+ "prev": [
+  "/blog/php-async-fibers-coroutines/",
+  "PHP Async in 2026: Fibers, Coroutines and Native Async"
+ ],
+ "next": [
+  "/blog/php-type-system-evolution/",
+  "How PHP's Type System Grew Up"
+ ],
+ "citations": [
+  [
+   "Laravel Octane documentation",
+   "https://laravel.com/docs/octane"
+  ],
+  [
+   "FrankenPHP",
+   "https://frankenphp.dev/"
+  ]
+ ]
+}

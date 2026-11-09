@@ -1,0 +1,26 @@
+{
+ "slug": "php-8-5-features-production",
+ "date": "2026-10-31",
+ "read": 9,
+ "tag": "PHP · Releases",
+ "title": "PHP 8.5 Features: Pipe Operator, Clone With, URI | Roshan Kc",
+ "h1": "PHP 8.5 Features That Actually Matter in Production Code",
+ "social": "PHP 8.5 Features That Matter in Production: Pipe Operator, Clone With, URI and More",
+ "short": "PHP 8.5 Features That Actually Matter in Production",
+ "desc": "PHP 8.5 in production: the pipe operator, clone() with overrides, the URI extension, #[\\NoDiscard], fatal error backtraces and array_first(), with before/after code.",
+ "keywords": "php 8.5 features, php pipe operator, php clone with, php uri extension, php nodiscard, array_first php",
+ "prev": [
+  "/blog/php-8-4-property-hooks-asymmetric-visibility/",
+  "Property Hooks and Asymmetric Visibility in PHP 8.4"
+ ],
+ "next": [
+  "/blog/php-runtime-vulnerabilities-history/",
+  "Runtime-Level PHP Vulnerabilities: What They Have in Common"
+ ],
+ "citations": [
+  [
+   "PHP 8.5 release announcement",
+   "https://www.php.net/releases/8.5/en.php"
+  ]
+ ]
+}

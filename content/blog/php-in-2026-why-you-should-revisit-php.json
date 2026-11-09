@@ -1,0 +1,30 @@
+{
+ "slug": "php-in-2026-why-you-should-revisit-php",
+ "date": "2026-11-08",
+ "read": 10,
+ "tag": "PHP · Modern PHP",
+ "title": "Is PHP Still Relevant in 2026? Modern PHP Explained | Roshan Kc",
+ "h1": "PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date",
+ "social": "Is PHP Still Relevant in 2026? Why Everything You Know About PHP Is Out of Date",
+ "short": "PHP in 2026: Why You Should Revisit PHP",
+ "desc": "Is PHP dead? No. It runs ~70% of the web and ships yearly releases with enums, property hooks and a pipe operator. What changed since PHP 5, and what's missing.",
+ "keywords": "is php still relevant 2026, is php dead, modern php, php 8, php evolution, php 2026",
+ "prev": [
+  "/blog/php-8-6-new-features/",
+  "PHP 8.6: New Features and the RFCs to Watch"
+ ],
+ "next": [
+  "/blog/choose-tech-stack-ai-era-patch-velocity/",
+  "How to Choose a Tech Stack in the AI Era"
+ ],
+ "citations": [
+  [
+   "W3Techs: Usage statistics of PHP",
+   "https://w3techs.com/technologies/details/pl-PHP"
+  ],
+  [
+   "PHP supported versions",
+   "https://www.php.net/supported-versions.php"
+  ]
+ ]
+}

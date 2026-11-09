@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="expanded">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>How to Choose a Tech Stack in the AI Era: Patch Velocity | Roshan Kc</title>
+  <meta name="description" content="Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/">
+  <meta property="og:title" content="How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype">
+  <meta property="og:description" content="Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-07">
+  <meta property="article:modified_time" content="2026-11-07">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype">
+  <meta name="twitter:description" content="Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype",
+  "description": "Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-07",
+  "dateModified": "2026-11-07",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/"
+  },
+  "keywords": "how to choose a tech stack, tech stack selection, patch velocity, AI vulnerability discovery, software supply chain security, startup tech stack",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "Google Project Zero: From Naptime to Big Sleep",
+      "url": "https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "From Commit to Production: How a PHP Fix Actually Reaches You",
+      "url": "https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype",
+      "item": "https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="false" aria-label="Full width reading">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Presence</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>The Story</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Focus</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Connect</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Presence</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>The Story</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Focus</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Connect</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All notes</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">Engineering · Security</span>
+              <time datetime="2026-11-07">November 7, 2026</time>
+              <span>9 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> Don't choose a tech stack for hype or benchmark scores. Choose it for <strong>the people behind it</strong>: a committed core team, a predictable release and support schedule, a proven security process, and a record of shipping fixes fast when something major breaks. In the AI era, vulnerabilities are being found faster than ever, so the speed of patches, fixes and coordination, which I call <strong>patch velocity</strong>, matters more than raw performance.</p>
+
+<p>I've been part of plenty of stack debates as a CTO at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>. Most of them argue about the wrong things: which framework is trending, which runtime wins a synthetic benchmark. After October 2026, I think about this question differently. This post explains why.</p>
+
+<h2 id="hype-and-benchmarks">Why hype and benchmarks are the wrong starting point<a class="h-anchor" href="#hype-and-benchmarks" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><strong>Hype fades; maintenance doesn't.</strong> The framework everyone is excited about this year may lose its maintainers in three. Your product will still need security patches in year five.</li>
+  <li><strong>Benchmarks measure the wrong bottleneck.</strong> Most business applications spend their time in the database, the network and third-party APIs, not the language runtime. A 2× faster runtime rarely makes a 2× faster product. We explained this in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first, not the perfect stack</a>.</li>
+  <li><strong>Performance is fixable later; abandonment isn't.</strong> You can add caching, queues or a faster runtime to a well-maintained stack. You can't add a security team to an abandoned one.</li>
+</ul>
+
+<h2 id="ai-changed">What AI changed about security<a class="h-anchor" href="#ai-changed" aria-label="Link to this section">#</a></h2>
+
+<p>Vulnerability research used to be slow, expensive and specialist work. That's no longer true:</p>
+
+<ul>
+  <li>In 2024, Google's Big Sleep agent found an exploitable memory-safety bug in SQLite, one of the most heavily tested codebases in the world, before it reached a release.</li>
+  <li>DARPA's AI Cyber Challenge showed autonomous systems finding and patching real vulnerabilities in widely used open-source software.</li>
+  <li>At least one of the research teams behind <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell</a>, two critical bugs in PHP's core engine disclosed in October 2026, used AI models as part of discovery and remediation, according to Google Cloud's write-up.</li>
+  <li>Maintainers report the other side too: a flood of AI-generated bug reports, many of them false positives, that still have to be triaged.</li>
+</ul>
+
+<p>The consequence: <strong>discovery is no longer the bottleneck. Patching is.</strong> Old, quiet code is getting fresh eyes, and attackers have the same tools defenders do. When a critical bug lands, what matters is how quickly the fix gets from the maintainers to your production servers.</p>
+
+<h2 id="patch-velocity">Patch velocity: the metric that matters now<a class="h-anchor" href="#patch-velocity" aria-label="Link to this section">#</a></h2>
+
+<p>Patch velocity is the time between "a vulnerability is known" and "your production systems are fixed". It has two halves:</p>
+
+<ol>
+  <li><strong>Upstream velocity:</strong> how fast the stack's maintainers confirm, fix, release and coordinate with distributions, cloud providers and security vendors.</li>
+  <li><strong>Your velocity:</strong> how fast your team can rebuild, test and deploy the fix.</li>
+</ol>
+
+<p>You control the second half. You <em>choose</em> the first half when you pick a stack.</p>
+
+<h2 id="case-study">Case study: PHP2Shell<a class="h-anchor" href="#case-study" aria-label="Link to this section">#</a></h2>
+
+<p>PHP2Shell is a good example of strong upstream velocity:</p>
+
+<ul>
+  <li>Researchers reported privately, and the PHP security team developed fixes under embargo.</li>
+  <li>Linux distributions and LTS vendors got the patches early.</li>
+  <li>When details leaked a day before the planned disclosure, the team released immediately: four supported branches patched on the same day.</li>
+  <li>Cloudflare and Google shipped protections the same day, and the advisories were honest about what was confirmed and what was only suspected.</li>
+</ul>
+
+<p>As dams at Exakat put it in his <a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">analysis of how a PHP fix reaches production</a>, "It is quiet coordination, and it worked." On our side, a containerised setup let us patch every project within 24 hours, on the main day of Dashain. Neither half alone would have been enough.</p>
+
+<p>The counter-example from the same incident: teams on PHP 8.1 and older got no official fix. A stack is only as safe as the <em>supported</em> version you're actually running.</p>
+
+<h2 id="checklist">How to evaluate a stack: a checklist<a class="h-anchor" href="#checklist" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Question</th><th style="padding:0.6rem 0.9rem;text-align:left">Good sign</th><th style="padding:0.6rem 0.9rem;text-align:left">Red flag</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Who maintains it?</td><td style="padding:0.6rem 0.9rem">A funded foundation or company, with several paid core maintainers</td><td style="padding:0.6rem 0.9rem">One volunteer, or a company whose business no longer depends on it</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Is there a published support policy?</td><td style="padding:0.6rem 0.9rem">Clear dates for bug-fix and security support per version</td><td style="padding:0.6rem 0.9rem">"Use the latest", with no end-of-life dates</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Is there a security process?</td><td style="padding:0.6rem 0.9rem">A security contact, private reporting, advisories with CVEs</td><td style="padding:0.6rem 0.9rem">Security issues reported in public GitHub issues</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">How did they handle their last critical bug?</td><td style="padding:0.6rem 0.9rem">Days, coordinated with distros and vendors, clear advisory</td><td style="padding:0.6rem 0.9rem">Weeks of silence, or a fix only in an unreleased branch</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Is the release cadence predictable?</td><td style="padding:0.6rem 0.9rem">A fixed yearly or regular schedule you can plan upgrades around</td><td style="padding:0.6rem 0.9rem">Irregular big-bang releases with breaking changes</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">How deep is the dependency tree?</td><td style="padding:0.6rem 0.9rem">A rich standard library and a few well-maintained packages</td><td style="padding:0.6rem 0.9rem">Hundreds of transitive micro-packages from unknown maintainers</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Can you hire for it?</td><td style="padding:0.6rem 0.9rem">A large talent pool and plenty of documentation</td><td style="padding:0.6rem 0.9rem">A handful of experts, mostly in other time zones</td></tr>
+  </tbody>
+</table></div>
+
+<p>Apply this to every layer you depend on: the language, the framework, the database, your container base image and your hosting provider.</p>
+
+<h2 id="how-stacks-compare">How mainstream stacks score<a class="h-anchor" href="#how-stacks-compare" aria-label="Link to this section">#</a></h2>
+
+<p>The good news is that most mainstream stacks pass. PHP has the PHP Foundation, paid core developers, a fixed November release cycle and published end-of-life dates. Node.js has the OpenJS Foundation, a security working group and scheduled security releases. Python has the PSF and a security response team. Go, Java and .NET are backed by large companies with formal security programs. Frameworks like Laravel, Symfony, Django and Rails publish support windows and security policies.</p>
+
+<p>The risk is rarely the language. It's the long tail: the small library nobody remembers adding, the abandoned admin-panel plugin, the trendy framework whose maintainers moved on. That's where patch velocity drops to zero.</p>
+
+<h2 id="why-we-chose">Why this is how we chose our stack<a class="h-anchor" href="#why-we-chose" aria-label="Link to this section">#</a></h2>
+
+<p>When we chose Laravel and PHP at MarginTop, the reasons were hiring, delivery speed and ecosystem maturity, as I wrote in <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>. In hindsight, the most valuable property turned out to be the one we talked about least: a mature, committed team upstream, with a security process that works under pressure.</p>
+
+<h2 id="your-half">Make your half fast too<a class="h-anchor" href="#your-half" aria-label="Link to this section">#</a></h2>
+
+<p>Choosing a stack with good upstream velocity is only half the job:</p>
+
+<ul>
+  <li><strong>Stay on supported versions,</strong> and schedule upgrades every year. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">PHP upgrade playbook</a>.</li>
+  <li><strong>Use one base image</strong> and reproducible builds, so a patch becomes a rebuild instead of a hunt.</li>
+  <li><strong>Automate dependency alerts</strong> (Dependabot, Renovate, <code>composer audit</code>, <code>npm audit</code>), and act on the critical ones within days.</li>
+  <li><strong>Keep the dependency tree small.</strong> Every package is a team whose patch velocity you now depend on. Our <a href="/blog/build-vs-buy-framework-what-to-build-in-house/">build vs buy framework</a> covers this.</li>
+  <li><strong>Practise.</strong> If you've never rebuilt and redeployed everything in a few hours, you won't manage it on the night it matters.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li>Don't choose a stack for hype or benchmarks. Choose it for the committed team, support policy and security process behind it.</li>
+  <li>AI has made vulnerability discovery faster and cheaper, so the bottleneck is now patching.</li>
+  <li>Patch velocity has two halves: upstream (the maintainers) and yours (your build and deploy pipeline). You choose the first when you pick a stack.</li>
+  <li>PHP2Shell showed both halves working: coordinated upstream fixes in hours, and downstream teams patching within a day.</li>
+  <li>The real risk usually lives in the long tail of small, unmaintained dependencies, so keep that tail short.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li><a href="https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html" target="_blank" rel="noopener noreferrer">Google Project Zero: From Naptime to Big Sleep</a></li>
+  <li><a href="https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619" target="_blank" rel="noopener noreferrer">Google Cloud: Responding to core PHP vulnerabilities</a></li>
+  <li><a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">Exakat: From Commit to Production</a></li>
+  <li><a href="https://fossforce.com/2026/10/fresh-eyes-on-old-code-ai-and-open-source-security/" target="_blank" rel="noopener noreferrer">FOSS Force: Fresh eyes on old code, AI and open source security</a></li>
+  <li><a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">php.net: Supported versions</a></li>
+</ul>
+
+<p>Choosing a stack for a new product, or worried about the one you have? <a href="/#contact">Get in touch</a>. We'll help you look past the hype.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li aria-current="page"><span>How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</span></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/how-to-run-startup-tech-stack-free-until-funded/">How to Run Your Startup Tech Stack for Free Until You&#x27;re Funded</a><time datetime="2026-08-26">August 26, 2026</time></li>
+            <li><a href="/blog/business-logic-first-not-perfect-tech-stack/">Business Logic First: Why We Don&#x27;t Worry About the Perfect Tech Stack</a><time datetime="2026-08-28">August 28, 2026</time></li>
+            <li><a href="/blog/security-basics-startups-before-fundraising/">Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</a><time datetime="2026-09-05">September 5, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#hype-and-benchmarks">Why hype and benchmarks are the wrong starting point</a></li>
+          <li><a href="#ai-changed">What AI changed about security</a></li>
+          <li><a href="#patch-velocity">Patch velocity: the metric that matters now</a></li>
+          <li><a href="#case-study">Case study: PHP2Shell</a></li>
+          <li><a href="#checklist">How to evaluate a stack: a checklist</a></li>
+          <li><a href="#how-stacks-compare">How mainstream stacks score</a></li>
+          <li><a href="#why-we-chose">Why this is how we chose our stack</a></li>
+          <li><a href="#your-half">Make your half fast too</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why You Should Revisit PHP</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer">
+          <p>&copy; <span data-copyright-year></span> Roshan Kc · Kathmandu, Nepal</p>
+          <p>
+            <a href="/blog/">Writing archive</a>
+            ·
+            <a href="/sitemap">Sitemap</a>
+            ·
+            <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+          </p>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>16</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

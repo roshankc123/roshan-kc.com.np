@@ -1,0 +1,30 @@
+{
+ "slug": "php-type-system-evolution",
+ "date": "2026-11-03",
+ "read": 9,
+ "tag": "PHP · Language",
+ "title": "PHP Type System: strict_types, Enums, Generics | Roshan Kc",
+ "h1": "The PHP Type System Grew Up: From Loose Scripts to Strict Contracts",
+ "social": "The PHP Type System Grew Up: strict_types, Enums, Readonly and the Generics Gap",
+ "short": "How PHP's Type System Grew Up",
+ "desc": "How PHP's type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.",
+ "keywords": "php strict types, php type system, php enums, php generics, phpstan generics, php union types, php readonly class",
+ "prev": [
+  "/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/",
+  "PHP Runtimes Explained: FPM, Octane, FrankenPHP, Swoole, RoadRunner"
+ ],
+ "next": [
+  "/blog/php-8-4-property-hooks-asymmetric-visibility/",
+  "Property Hooks and Asymmetric Visibility in PHP 8.4"
+ ],
+ "citations": [
+  [
+   "PHP manual: Type declarations",
+   "https://www.php.net/manual/en/language.types.declarations.php"
+  ],
+  [
+   "PHPStan: Generics in PHP using PHPDocs",
+   "https://phpstan.org/blog/generics-in-php-using-phpdocs"
+  ]
+ ]
+}

@@ -1,0 +1,128 @@
+<p><strong>Direct answer:</strong> PHP went from almost no types to a strict, runtime-enforced type system in about ten years. PHP 7 added scalar and return types, 7.4 added typed properties, 8.0 added union types, 8.1 added enums, readonly and <code>never</code>, 8.2 added DNF types and readonly classes, and 8.3 added typed constants. PHP still has <strong>no native generics</strong>. Static analysers like <strong>PHPStan</strong> and <strong>Psalm</strong> fill that gap with docblock generics checked before deploy.</p>
+
+<p>If you last wrote PHP in the 5.x era, the type system is the biggest thing you've missed. This post walks through how it grew, how to use it well today, and where it still stops. It's part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="timeline">How PHP's type system grew</h2>
+
+<table>
+  <thead><tr><th>Version</th><th>Type features added</th></tr></thead>
+  <tbody>
+    <tr><td>5.x (2004–2014)</td><td>Class, interface, <code>array</code> and <code>callable</code> parameter types only. No scalars, no return types.</td></tr>
+    <tr><td>7.0 (2015)</td><td>Scalar types (<code>int</code>, <code>float</code>, <code>string</code>, <code>bool</code>), return types, <code>declare(strict_types=1)</code></td></tr>
+    <tr><td>7.1</td><td>Nullable types (<code>?string</code>), <code>void</code>, <code>iterable</code></td></tr>
+    <tr><td>7.2</td><td><code>object</code> type</td></tr>
+    <tr><td>7.4</td><td>Typed properties, covariant returns and contravariant parameters</td></tr>
+    <tr><td>8.0 (2020)</td><td>Union types (<code>int|string</code>), <code>mixed</code>, <code>static</code> return type, constructor promotion</td></tr>
+    <tr><td>8.1</td><td>Enums, readonly properties, intersection types (<code>A&amp;B</code>), <code>never</code></td></tr>
+    <tr><td>8.2</td><td>DNF types (<code>(A&amp;B)|null</code>), standalone <code>true</code>/<code>false</code>/<code>null</code>, readonly classes</td></tr>
+    <tr><td>8.3</td><td>Typed class constants, <code>#[\Override]</code></td></tr>
+    <tr><td>8.4–8.6</td><td>Properties in interfaces via hooks, asymmetric visibility, readonly property defaults</td></tr>
+  </tbody>
+</table>
+
+<h2 id="strict-types">strict_types: the switch most people misunderstand</h2>
+
+<p>By default PHP <em>coerces</em> scalars: pass <code>"5"</code> to an <code>int</code> parameter and you get <code>5</code>. With <code>declare(strict_types=1);</code> at the top of a file, a wrong scalar type throws a <code>TypeError</code> instead.</p>
+
+<p>The subtle part: strict mode applies to <strong>calls made from that file</strong>, not to functions defined in it. A library declaring strict types doesn't make your calls strict; your file has to declare it. The practical rule is to put it in every file and enforce it with a coding-standard check.</p>
+
+<pre><code>&lt;?php
+declare(strict_types=1);
+
+function addVat(int $cents): int
+{
+    return (int) round($cents * 1.13);
+}
+
+addVat("500"); // TypeError in strict mode; silently 500 without it</code></pre>
+
+<h2 id="enums">Enums replaced magic strings</h2>
+
+<p>Before 8.1, statuses were strings or class constants, and nothing stopped <code>'pendng'</code> from reaching the database. Backed enums fix that and carry behaviour:</p>
+
+<pre><code>enum OrderStatus: string
+{
+    case Pending = 'pending';
+    case Paid = 'paid';
+    case Refunded = 'refunded';
+
+    public function isFinal(): bool
+    {
+        return $this === self::Refunded;
+    }
+}
+
+$status = OrderStatus::from($row['status']); // throws on unknown values</code></pre>
+
+<p>Laravel casts enum columns automatically, and <code>match</code> on an enum makes missing cases obvious in code review and in static analysis.</p>
+
+<h2 id="readonly">Readonly and immutable objects</h2>
+
+<pre><code>final readonly class Money
+{
+    public function __construct(
+        public int $amount,
+        public Currency $currency,
+    ) {}
+}</code></pre>
+
+<p>Readonly classes make value objects (money, coordinates, date ranges, API payloads) safe to pass around without defensive copying. <a href="/blog/php-8-5-features-production/">PHP 8.5's <code>clone()</code> with overrides</a> makes them easy to modify, and <a href="/blog/php-8-6-new-features/">8.6 allows readonly defaults</a>.</p>
+
+<h2 id="never-and-dnf">The precise types: never, intersections, DNF</h2>
+
+<ul>
+  <li><code>never</code> means "this function doesn't return": it throws or exits. That lets analysers know code after <code>abort()</code> is unreachable.</li>
+  <li>Intersection types (<code>Countable&amp;Iterator</code>) require an object to implement several interfaces at once.</li>
+  <li>DNF types combine both: <code>(HasId&amp;HasName)|null</code>.</li>
+</ul>
+
+<h2 id="generics">The gap: generics</h2>
+
+<p>PHP can't express "a collection of <code>User</code>" at runtime. <code>array</code> and <code>Collection</code> say nothing about their contents. Several generics proposals have been explored, and the most recent RFC (bound-erased generic types) was declined. There's no live generics RFC as of PHP 8.6.</p>
+
+<p>The ecosystem's answer is <strong>docblock generics</strong>, checked by static analysis:</p>
+
+<pre><code>/**
+ * @template T
+ * @param class-string&lt;T&gt; $class
+ * @return list&lt;T&gt;
+ */
+function findAll(string $class): array { /* ... */ }
+
+/** @var Collection&lt;int, User&gt; $users */</code></pre>
+
+<p>PHPStan and Psalm understand these annotations, along with array shapes (<code>array{id: int, email: string}</code>), literal types and non-empty strings. Laravel's own codebase ships generic annotations, and Larastan brings PHPStan's understanding to Eloquent.</p>
+
+<h2 id="static-analysis">Static analysis is part of the type system now</h2>
+
+<p>In modern PHP, "the type system" really means two layers: runtime types enforced by the engine, and static types enforced in CI. A practical setup:</p>
+
+<ol>
+  <li><code>declare(strict_types=1)</code> everywhere.</li>
+  <li>Native types on every parameter, return and property. Use docblocks only for what native types can't express.</li>
+  <li>PHPStan (or Larastan for Laravel) in CI. Start at a level your codebase passes, use a baseline file for existing errors, and raise the level over time.</li>
+  <li>Treat new type errors like failing tests: they block the merge.</li>
+</ol>
+
+<p>This is also what makes AI-assisted coding safer. Typed code gives tools and reviewers a contract to check against, a point I made in <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI coding tools changed our velocity</a>.</p>
+
+<h2 id="why-it-matters">Why types matter beyond catching bugs</h2>
+
+<p>Fully typed PHP is what makes ahead-of-time compilation possible at all. Projects like <a href="/blog/what-typephp-means-for-php-performance/">TypePHP</a> can only compile code whose types are known. The JIT benefits from stable types too. Every type you add today keeps future performance options open.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>PHP's type system grew from class hints in PHP 5 to unions, enums, readonly classes, DNF and typed constants in PHP 8.</li>
+  <li><code>strict_types</code> applies to calls made from a file, so declare it in every file.</li>
+  <li>Enums and readonly value objects remove whole categories of bugs.</li>
+  <li>There are no native generics, and the last RFC was declined. Use PHPStan or Psalm docblock generics.</li>
+  <li>Runtime types plus static analysis in CI is the modern PHP type system.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.php.net/manual/en/language.types.declarations.php" target="_blank" rel="noopener noreferrer">PHP manual: Type declarations</a></li>
+  <li><a href="https://www.php.net/manual/en/language.enumerations.php" target="_blank" rel="noopener noreferrer">PHP manual: Enumerations</a></li>
+  <li><a href="https://phpstan.org/blog/generics-in-php-using-phpdocs" target="_blank" rel="noopener noreferrer">PHPStan: Generics in PHP using PHPDocs</a></li>
+  <li><a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">PHP RFC index</a></li>
+</ul>

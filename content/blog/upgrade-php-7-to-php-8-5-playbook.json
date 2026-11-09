@@ -1,0 +1,30 @@
+{
+ "slug": "upgrade-php-7-to-php-8-5-playbook",
+ "date": "2026-11-06",
+ "read": 10,
+ "tag": "PHP · Upgrades",
+ "title": "Upgrade PHP 7 to PHP 8.5: A Step-by-Step Playbook | Roshan Kc",
+ "h1": "Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook",
+ "social": "Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook with Rector and PHPStan",
+ "short": "Upgrading a Legacy PHP 7 App to PHP 8.5",
+ "desc": "Step-by-step PHP 7 to 8.5 upgrade: end-of-life dates, tests, PHPStan, Rector, the breaking changes that bite, and how to roll out safely before PHP 8.2 support ends.",
+ "keywords": "upgrade php 7 to 8, php 8.5 upgrade, rector php upgrade, php end of life, php 8.2 end of life, phpstan legacy code",
+ "prev": [
+  "/blog/choose-tech-stack-ai-era-patch-velocity/",
+  "How to Choose a Tech Stack in the AI Era"
+ ],
+ "next": [
+  "/blog/php-async-fibers-coroutines/",
+  "PHP Async in 2026: Fibers, Coroutines and Native Async"
+ ],
+ "citations": [
+  [
+   "PHP supported versions",
+   "https://www.php.net/supported-versions.php"
+  ],
+  [
+   "Rector",
+   "https://getrector.com/"
+  ]
+ ]
+}

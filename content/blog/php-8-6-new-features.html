@@ -1,0 +1,131 @@
+<p><strong>Direct answer:</strong> PHP 8.6 is scheduled for <strong>November 19, 2026</strong> (it's at RC5 as I write this). The headline features are <strong>partial function application</strong> with <code>?</code> placeholders, a native <strong><code>clamp()</code></strong>, a <strong><code>Time\Duration</code></strong> class, <strong>readonly property defaults</strong>, a <strong>native polling API</strong> (<code>Io\Poll</code>) and <strong>more secure session defaults</strong>. It's an incremental release: useful quality-of-life changes, no rewrite required.</p>
+
+<p>This is part of my series on <a href="/blog/php-in-2026-why-you-should-revisit-php/">where PHP stands in 2026</a>. Features below are taken from the RFCs marked <em>Implemented</em> for 8.6 on the PHP wiki. I'll update this post once the final release ships.</p>
+
+<h2 id="pfa">Partial function application: the headline feature</h2>
+
+<p>Partial function application (PFA) lets you call a function with some arguments filled in and get back a closure that takes the rest. A <code>?</code> stands for exactly one argument and <code>...</code> stands for "all remaining arguments". The RFC passed 33–0.</p>
+
+<pre><code>// Before: a wrapper closure for every pre-filled argument
+$toSlug = fn(string $s): string =&gt; str_replace(' ', '-', $s);
+
+// PHP 8.6
+$toSlug = str_replace(' ', '-', ?);
+$toSlug('Hello World'); // "Hello-World"
+
+$lower = array_map(strtolower(...), $titles);  // first-class callable (8.1)
+$trimmed = array_map(trim(?, " \n"), $lines);  // partial application (8.6)</code></pre>
+
+<p>Where it really pays off is with the <a href="/blog/php-8-5-features-production/">pipe operator from PHP 8.5</a>. In 8.5 you had to wrap any multi-argument call in an arrow function. In 8.6 you don't, and the engine compiles a single-placeholder partial on the right of <code>|&gt;</code> into a direct call, so there's no closure overhead:</p>
+
+<pre><code>// PHP 8.5
+$slug = $title
+    |&gt; trim(...)
+    |&gt; (fn($s) =&gt; str_replace(' ', '-', $s))
+    |&gt; strtolower(...);
+
+// PHP 8.6
+$slug = $title
+    |&gt; trim(...)
+    |&gt; str_replace(' ', '-', ?)
+    |&gt; strtolower(...);</code></pre>
+
+<p>A few rules worth knowing:</p>
+<ul>
+  <li>Arguments you pass are evaluated when the partial is <em>created</em>, not when it's called.</li>
+  <li>The closure keeps the original parameter names, types and defaults.</li>
+  <li><code>new Foo(1, ?)</code> isn't supported; use a static factory method instead.</li>
+</ul>
+
+<h2 id="clamp">clamp()</h2>
+
+<p>Every codebase has written <code>max($min, min($max, $value))</code> at some point, and gotten it backwards at least once. PHP 8.6 adds it natively:</p>
+
+<pre><code>clamp(101, min: 0, max: 100); // 100
+clamp(-1,  min: 0, max: 100); // 0</code></pre>
+
+<p>It works with any comparable values, including <code>DateTime</code> objects, and throws a <code>ValueError</code> if <code>$min</code> is greater than <code>$max</code>.</p>
+
+<h2 id="duration">The Duration class</h2>
+
+<p><code>Time\Duration</code> is an immutable, nanosecond-precision time span. That's useful for timeouts, retries and measuring elapsed time without juggling integers that might be seconds or might be milliseconds.</p>
+
+<pre><code>use Time\Duration;
+
+$timeout = Duration::fromSeconds(5);
+$backoff = Duration::fromMilliseconds(100)-&gt;multiplyBy(2 ** $attempt);
+
+if ($backoff &gt; $timeout) {
+    // give up
+}</code></pre>
+
+<h2 id="readonly-defaults">Readonly property defaults</h2>
+
+<p>Readonly properties can finally have a default value. Before 8.6, this was a compile-time error:</p>
+
+<pre><code>final readonly class CreateBooksTable implements Migration
+{
+    public string $name = '2026_01_01_create_books_table';
+}</code></pre>
+
+<p>The default counts as the one allowed initialisation, so the constructor can't overwrite it. It passed 24–0.</p>
+
+<h2 id="poll">Io\Poll: a native polling API</h2>
+
+<p>The new <code>Io\Poll</code> namespace wraps each operating system's efficient event mechanism (epoll on Linux, kqueue on macOS/BSD, WSAPoll on Windows) behind one API. Application developers will rarely touch it directly. It matters because event loops and async libraries can stop relying on the decades-old <code>stream_select()</code>. More on this in <a href="/blog/php-async-fibers-coroutines/">PHP async in 2026</a>.</p>
+
+<h2 id="smaller">Smaller changes worth knowing</h2>
+
+<table>
+  <thead><tr><th>Change</th><th>Why it matters</th></tr></thead>
+  <tbody>
+    <tr><td>Secure session defaults: <code>use_strict_mode=1</code>, <code>cookie_httponly=1</code>, <code>cookie_samesite=Lax</code></td><td>Safer native sessions out of the box. Laravel and Symfony manage their own cookies, so most framework apps won't notice.</td></tr>
+    <tr><td><code>SortDirection</code> enum (<code>Ascending</code>, <code>Descending</code>)</td><td>A shared type so libraries stop inventing their own <code>'asc'</code>/<code>'desc'</code> strings.</td></tr>
+    <tr><td><code>#[\Override]</code> on class constants</td><td>Catches typos and removed parent constants at compile time.</td></tr>
+    <tr><td>Enums can implement <code>__debugInfo()</code></td><td>Cleaner <code>var_dump()</code> output when debugging.</td></tr>
+    <tr><td>Function arguments shown in error messages</td><td>Faster debugging from logs.</td></tr>
+    <tr><td><code>json_decode()</code> errors include the position</td><td>No more guessing where malformed JSON broke.</td></tr>
+    <tr><td><code>trim()</code> strips form-feed (<code>\f</code>) by default</td><td>A minor behaviour change to watch for in tests.</td></tr>
+    <tr><td>Doc comments on function parameters, <code>grapheme_strrev()</code>, closure optimisations</td><td>Better tooling, correct Unicode string reversal, and faster closures.</td></tr>
+  </tbody>
+</table>
+
+<p>8.6 also deprecates returning values from <code>__construct()</code> and <code>__destruct()</code>, alongside a batch of smaller deprecations. Run your test suite with deprecations visible before upgrading.</p>
+
+<h2 id="rfcs-to-watch">RFCs to watch after 8.6</h2>
+
+<ul>
+  <li><strong>Concurrency Support in the PHP Engine</strong> (under discussion): an engine-level coroutine core and pluggable scheduler extracted from the TrueAsync work. It's the most important long-term proposal for PHP right now.</li>
+  <li><strong>Pattern matching with an <code>is</code> keyword</strong> (under discussion): a single expression to check a value's type and shape, much like <code>instanceof</code> extended to array shapes and literal values.</li>
+  <li><strong>Partial application for <code>$this</code> methods</strong> (under discussion): extends PFA to instance methods.</li>
+  <li><strong>Generics:</strong> there's no live generics RFC. The most recent attempt (bound-erased generic types) was declined. PHPStan and Psalm remain the answer; see <a href="/blog/php-type-system-evolution/">PHP's type system</a>.</li>
+</ul>
+
+<h2 id="how-rfcs-work">How a feature gets into PHP</h2>
+
+<p>Every language change goes through an RFC on <a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">wiki.php.net</a>. It's discussed on the internals mailing list, then voted on by core contributors, and language changes need a two-thirds majority. Releases follow a fixed yearly cycle: alphas in summer, feature freeze in September, release candidates through autumn and general availability in late November. That predictability is underrated. You can plan upgrades a year ahead.</p>
+
+<h2 id="should-you-upgrade">Should you upgrade to 8.6?</h2>
+
+<ul>
+  <li><strong>New projects:</strong> start on 8.6 once your framework and key packages officially support it, usually within weeks.</li>
+  <li><strong>Existing apps on 8.4 or 8.5:</strong> no rush. Upgrade in Q1 after the first patch releases, with deprecations turned on in CI.</li>
+  <li><strong>Apps on 8.2 or older:</strong> 8.2's security support ends December 31, 2026. That's your real deadline, not 8.6. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>PHP 8.6 is due November 19, 2026, and is an incremental, low-risk release.</li>
+  <li>Partial function application with <code>?</code> and <code>...</code> is the headline, and it makes the 8.5 pipe operator far more practical.</li>
+  <li><code>clamp()</code>, <code>Time\Duration</code>, readonly defaults and <code>Io\Poll</code> remove common boilerplate and lay groundwork for async.</li>
+  <li>Native async, pattern matching and generics are not in 8.6. Async is the proposal to watch.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://wiki.php.net/rfc/partial_function_application_v2" target="_blank" rel="noopener noreferrer">RFC: Partial Function Application v2</a></li>
+  <li><a href="https://wiki.php.net/rfc/readonly_property_defaults" target="_blank" rel="noopener noreferrer">RFC: Readonly property defaults</a></li>
+  <li><a href="https://wiki.php.net/rfc/async_scheduler_abi" target="_blank" rel="noopener noreferrer">RFC: Concurrency Support in the PHP Engine</a></li>
+  <li><a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">PHP RFC index</a></li>
+  <li><a href="https://php.watch/versions/8.6" target="_blank" rel="noopener noreferrer">PHP.Watch: PHP 8.6</a> and <a href="https://laravel-news.com/php-8-6" target="_blank" rel="noopener noreferrer">Laravel News: What's new in PHP 8.6</a></li>
+</ul>

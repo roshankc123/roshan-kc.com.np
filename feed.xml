@@ -2,136 +2,235 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Roshan Kc — Founder &amp; CTO Notes</title>
-    <link>https://www.roshan-kc.com.np/blog</link>
+    <link>https://www.roshan-kc.com.np/blog/</link>
     <description>Essays from Roshan Kc on founding MarginTop Solutions, the CTO craft, building teams in Kathmandu, and shipping without losing trust.</description>
     <language>en</language>
-    <lastBuildDate>2026-09-05</lastBuildDate>
+    <lastBuildDate>2026-11-09</lastBuildDate>
     <atom:link href="https://www.roshan-kc.com.np/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>PHP 8.6: New Features and the RFCs to Watch</title>
+      <link>https://www.roshan-kc.com.np/blog/php-8-6-new-features/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-8-6-new-features/</guid>
+      <pubDate>2026-11-09</pubDate>
+      <description>PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\Duration, readonly defaults, Io\Poll and secure session defaults, with code examples.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</title>
+      <link>https://www.roshan-kc.com.np/blog/php-in-2026-why-you-should-revisit-php/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-in-2026-why-you-should-revisit-php/</guid>
+      <pubDate>2026-11-08</pubDate>
+      <description>Is PHP dead? No. It runs ~70% of the web and ships yearly releases with enums, property hooks and a pipe operator. What changed since PHP 5, and what&#x27;s missing.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</title>
+      <link>https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/</guid>
+      <pubDate>2026-11-07</pubDate>
+      <description>Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</title>
+      <link>https://www.roshan-kc.com.np/blog/upgrade-php-7-to-php-8-5-playbook/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/upgrade-php-7-to-php-8-5-playbook/</guid>
+      <pubDate>2026-11-06</pubDate>
+      <description>Step-by-step PHP 7 to 8.5 upgrade: end-of-life dates, tests, PHPStan, Rector, the breaking changes that bite, and how to roll out safely before PHP 8.2 support ends.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</title>
+      <link>https://www.roshan-kc.com.np/blog/php-async-fibers-coroutines/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-async-fibers-coroutines/</guid>
+      <pubDate>2026-11-05</pubDate>
+      <description>Can PHP do async? Fibers, ReactPHP, AMPHP and Swoole explained, plus PHP 8.6&#x27;s Io\Poll, the engine concurrency RFC and PHP vs Node.js for real-time.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</title>
+      <link>https://www.roshan-kc.com.np/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/</guid>
+      <pubDate>2026-11-04</pubDate>
+      <description>PHP-FPM, FrankenPHP, Swoole, RoadRunner and Laravel Octane compared: how each runs PHP, the trade-offs of long-running workers, and how to choose for production.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</title>
+      <link>https://www.roshan-kc.com.np/blog/php-type-system-evolution/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-type-system-evolution/</guid>
+      <pubDate>2026-11-03</pubDate>
+      <description>How PHP&#x27;s type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</title>
+      <link>https://www.roshan-kc.com.np/blog/php-8-4-property-hooks-asymmetric-visibility/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-8-4-property-hooks-asymmetric-visibility/</guid>
+      <pubDate>2026-11-01</pubDate>
+      <description>PHP 8.4 property hooks and asymmetric visibility explained: replace getters and setters, virtual properties, private(set), and when not to use hooks.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>PHP 8.5 Features That Actually Matter in Production Code</title>
+      <link>https://www.roshan-kc.com.np/blog/php-8-5-features-production/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-8-5-features-production/</guid>
+      <pubDate>2026-10-31</pubDate>
+      <description>PHP 8.5 in production: the pipe operator, clone() with overrides, the URI extension, #[\NoDiscard], fatal error backtraces and array_first(), with before/after code.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</title>
+      <link>https://www.roshan-kc.com.np/blog/php-runtime-vulnerabilities-history/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-runtime-vulnerabilities-history/</guid>
+      <pubDate>2026-10-29</pubDate>
+      <description>From CVE-2019-11043 and the 2021 php-src backdoor to CVE-2024-4577 and PHP2Shell: how PHP runtime bugs worked, what they share, and how to harden your servers.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
+      <title>PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</title>
+      <link>https://www.roshan-kc.com.np/blog/php2shell-how-php-contained-critical-rce/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php2shell-how-php-contained-critical-rce/</guid>
+      <pubDate>2026-10-27</pubDate>
+      <description>PHP2Shell (CVE-2026-109618, CVE-2026-109619) explained: what broke, how PHP shipped fixes in hours, how patches reach production, and how we patched on Dashain Tika.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+
+    <item>
       <title>Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring</title>
-      <link>https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring</guid>
+      <link>https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/</guid>
       <pubDate>2026-09-07</pubDate>
-      <description>A free public Docker image: PHP 8.5 + Swoole 6.2.2 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64) — ARM64/Graviton recommended for best io_uring throughput per dollar. Includes Nginx and Supervisor. Drop it into your Laravel app in 15 minutes.</description>
+      <description>A free public Docker image: PHP 8.5.12 + Swoole 6.2.3 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64) — ARM64/Graviton recommended for best io_uring throughput per dollar. Includes Nginx and Supervisor. Drop it into your Laravel app in 15 minutes.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
 
     <item>
       <title>Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</title>
-      <link>https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising</guid>
+      <link>https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising/</guid>
       <pubDate>2026-09-05</pubDate>
       <description>Security basics early-stage startups should fix before fundraising: auth, secrets, encryption, access, dependencies, backups, logging — and SOC 2 sequencing.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Our Engineering Principles: How We Decide What NOT to Build</title>
-      <link>https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build</guid>
+      <link>https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build/</guid>
       <pubDate>2026-09-04</pubDate>
       <description>MarginTop&#x27;s engineering principles for scope discipline — how we decide what not to build so teams ship trustworthy software.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>What I Look for When Hiring Engineers as a First-Time CTO</title>
-      <link>https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto</guid>
+      <link>https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto/</guid>
       <pubDate>2026-09-03</pubDate>
       <description>What Roshan Kc looks for when hiring engineers as a first-time CTO: ownership, communication, and trade-off judgment over résumé keywords.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</title>
-      <link>https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity</guid>
+      <link>https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity/</guid>
       <pubDate>2026-09-02</pubDate>
       <description>How Cursor and Claude changed MarginTop&#x27;s engineering velocity while review, tests, domain docs, and secret hygiene kept our standards intact.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</title>
-      <link>https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith</guid>
+      <link>https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith/</guid>
       <pubDate>2026-09-01</pubDate>
       <description>Why MarginTop still ships a modular Laravel monolith — the hidden costs of premature microservices and when splitting actually makes sense.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Build vs. Buy: The Framework We Use to Decide What to Build In-House</title>
-      <link>https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house</guid>
+      <link>https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house/</guid>
       <pubDate>2026-08-31</pubDate>
       <description>MarginTop&#x27;s build vs buy framework: differentiator vs commodity, Stripe/Cashier and Sanctum examples, and the maintenance tax of building in-house.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</title>
-      <link>https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load</guid>
+      <link>https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/</guid>
       <pubDate>2026-08-30</pubDate>
       <description>How MarginTop uses Laravel Octane with Swoole workers, task workers, and Octane::concurrently to handle concurrent load without rewriting the Laravel app.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>What TypePHP Means for the Future of PHP Performance</title>
-      <link>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance</guid>
+      <link>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</guid>
       <pubDate>2026-08-29</pubDate>
       <description>TypePHP is Swoole&#x27;s open-source AOT compiler (PHP to C++ to native). What it means for PHP performance, early caveats, and why we still ship with Laravel.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Business Logic First: Why We Don&#x27;t Worry About the Perfect Tech Stack</title>
-      <link>https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack</guid>
+      <link>https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack/</guid>
       <pubDate>2026-08-28</pubDate>
       <description>Why MarginTop prioritizes business logic over the perfect tech stack — AI lowers stack regret, while data and rules remain the real risk.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Why We Chose Laravel Over Node.js for Our Stack</title>
-      <link>https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs</guid>
+      <link>https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs/</guid>
       <pubDate>2026-08-27</pubDate>
       <description>Why MarginTop Solutions chose Laravel over Node.js: hiring pool, team velocity, Forge/Vapor/Cashier/Sanctum, and when we would reconsider.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>How to Run Your Startup Tech Stack for Free Until You&#x27;re Funded</title>
-      <link>https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded</guid>
+      <link>https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded/</guid>
       <pubDate>2026-08-26</pubDate>
       <description>Stack AWS Activate, Azure, and Google Cloud startup credits to keep infrastructure near $0 until you validate or raise.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Ship Fast Without Losing Client Trust: A CTO’s Playbook</title>
-      <link>https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust</guid>
+      <link>https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust/</guid>
       <pubDate>2026-08-18</pubDate>
       <description>A CTO playbook for speed without silent quality debt.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Building a Software Team in Kathmandu From Zero</title>
-      <link>https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu</guid>
+      <link>https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu/</guid>
       <pubDate>2026-06-10</pubDate>
       <description>How MarginTop grew from online freelancers to a Pulchwok crew.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>What a First-Time CTO Actually Does (Beyond the Title)</title>
-      <link>https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does</guid>
+      <link>https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does/</guid>
       <pubDate>2026-04-28</pubDate>
       <description>Beyond the title — architecture, trust, and unblocking the room.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>
       <title>Why I Left Teaching to Build a Company in Kathmandu</title>
-      <link>https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company</link>
-      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company</guid>
+      <link>https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company/</guid>
       <pubDate>2026-03-12</pubDate>
       <description>The real tradeoffs of going full-time on MarginTop in Kathmandu.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="expanded">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PHP Type System: strict_types, Enums, Generics | Roshan Kc</title>
+  <meta name="description" content="How PHP&#x27;s type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/php-type-system-evolution/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/php-type-system-evolution/">
+  <meta property="og:title" content="The PHP Type System Grew Up: strict_types, Enums, Readonly and the Generics Gap">
+  <meta property="og:description" content="How PHP&#x27;s type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-03">
+  <meta property="article:modified_time" content="2026-11-03">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The PHP Type System Grew Up: strict_types, Enums, Readonly and the Generics Gap">
+  <meta name="twitter:description" content="How PHP&#x27;s type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The PHP Type System Grew Up: From Loose Scripts to Strict Contracts",
+  "description": "How PHP's type system evolved from PHP 5 to 8.6: strict_types, union and DNF types, enums, readonly classes, the missing generics, and how PHPStan fills the gap.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-03",
+  "dateModified": "2026-11-03",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/php-type-system-evolution/"
+  },
+  "keywords": "php strict types, php type system, php enums, php generics, phpstan generics, php union types, php readonly class",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "PHP manual: Type declarations",
+      "url": "https://www.php.net/manual/en/language.types.declarations.php"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "PHPStan: Generics in PHP using PHPDocs",
+      "url": "https://phpstan.org/blog/generics-in-php-using-phpdocs"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The PHP Type System Grew Up: From Loose Scripts to Strict Contracts",
+      "item": "https://www.roshan-kc.com.np/blog/php-type-system-evolution/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="false" aria-label="Full width reading">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Presence</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>The Story</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Focus</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Connect</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Presence</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>The Story</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Focus</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Connect</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All notes</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">PHP · Language</span>
+              <time datetime="2026-11-03">November 3, 2026</time>
+              <span>9 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> PHP went from almost no types to a strict, runtime-enforced type system in about ten years. PHP 7 added scalar and return types, 7.4 added typed properties, 8.0 added union types, 8.1 added enums, readonly and <code>never</code>, 8.2 added DNF types and readonly classes, and 8.3 added typed constants. PHP still has <strong>no native generics</strong>. Static analysers like <strong>PHPStan</strong> and <strong>Psalm</strong> fill that gap with docblock generics checked before deploy.</p>
+
+<p>If you last wrote PHP in the 5.x era, the type system is the biggest thing you've missed. This post walks through how it grew, how to use it well today, and where it still stops. It's part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="timeline">How PHP's type system grew<a class="h-anchor" href="#timeline" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Version</th><th style="padding:0.6rem 0.9rem;text-align:left">Type features added</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">5.x (2004–2014)</td><td style="padding:0.6rem 0.9rem">Class, interface, <code>array</code> and <code>callable</code> parameter types only. No scalars, no return types.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">7.0 (2015)</td><td style="padding:0.6rem 0.9rem">Scalar types (<code>int</code>, <code>float</code>, <code>string</code>, <code>bool</code>), return types, <code>declare(strict_types=1)</code></td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">7.1</td><td style="padding:0.6rem 0.9rem">Nullable types (<code>?string</code>), <code>void</code>, <code>iterable</code></td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">7.2</td><td style="padding:0.6rem 0.9rem"><code>object</code> type</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">7.4</td><td style="padding:0.6rem 0.9rem">Typed properties, covariant returns and contravariant parameters</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">8.0 (2020)</td><td style="padding:0.6rem 0.9rem">Union types (<code>int|string</code>), <code>mixed</code>, <code>static</code> return type, constructor promotion</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">8.1</td><td style="padding:0.6rem 0.9rem">Enums, readonly properties, intersection types (<code>A&amp;B</code>), <code>never</code></td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">8.2</td><td style="padding:0.6rem 0.9rem">DNF types (<code>(A&amp;B)|null</code>), standalone <code>true</code>/<code>false</code>/<code>null</code>, readonly classes</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">8.3</td><td style="padding:0.6rem 0.9rem">Typed class constants, <code>#[\Override]</code></td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">8.4–8.6</td><td style="padding:0.6rem 0.9rem">Properties in interfaces via hooks, asymmetric visibility, readonly property defaults</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="strict-types">strict_types: the switch most people misunderstand<a class="h-anchor" href="#strict-types" aria-label="Link to this section">#</a></h2>
+
+<p>By default PHP <em>coerces</em> scalars: pass <code>"5"</code> to an <code>int</code> parameter and you get <code>5</code>. With <code>declare(strict_types=1);</code> at the top of a file, a wrong scalar type throws a <code>TypeError</code> instead.</p>
+
+<p>The subtle part: strict mode applies to <strong>calls made from that file</strong>, not to functions defined in it. A library declaring strict types doesn't make your calls strict; your file has to declare it. The practical rule is to put it in every file and enforce it with a coding-standard check.</p>
+
+<pre><code>&lt;?php
+declare(strict_types=1);
+
+function addVat(int $cents): int
+{
+    return (int) round($cents * 1.13);
+}
+
+addVat("500"); // TypeError in strict mode; silently 500 without it</code></pre>
+
+<h2 id="enums">Enums replaced magic strings<a class="h-anchor" href="#enums" aria-label="Link to this section">#</a></h2>
+
+<p>Before 8.1, statuses were strings or class constants, and nothing stopped <code>'pendng'</code> from reaching the database. Backed enums fix that and carry behaviour:</p>
+
+<pre><code>enum OrderStatus: string
+{
+    case Pending = 'pending';
+    case Paid = 'paid';
+    case Refunded = 'refunded';
+
+    public function isFinal(): bool
+    {
+        return $this === self::Refunded;
+    }
+}
+
+$status = OrderStatus::from($row['status']); // throws on unknown values</code></pre>
+
+<p>Laravel casts enum columns automatically, and <code>match</code> on an enum makes missing cases obvious in code review and in static analysis.</p>
+
+<h2 id="readonly">Readonly and immutable objects<a class="h-anchor" href="#readonly" aria-label="Link to this section">#</a></h2>
+
+<pre><code>final readonly class Money
+{
+    public function __construct(
+        public int $amount,
+        public Currency $currency,
+    ) {}
+}</code></pre>
+
+<p>Readonly classes make value objects (money, coordinates, date ranges, API payloads) safe to pass around without defensive copying. <a href="/blog/php-8-5-features-production/">PHP 8.5's <code>clone()</code> with overrides</a> makes them easy to modify, and <a href="/blog/php-8-6-new-features/">8.6 allows readonly defaults</a>.</p>
+
+<h2 id="never-and-dnf">The precise types: never, intersections, DNF<a class="h-anchor" href="#never-and-dnf" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><code>never</code> means "this function doesn't return": it throws or exits. That lets analysers know code after <code>abort()</code> is unreachable.</li>
+  <li>Intersection types (<code>Countable&amp;Iterator</code>) require an object to implement several interfaces at once.</li>
+  <li>DNF types combine both: <code>(HasId&amp;HasName)|null</code>.</li>
+</ul>
+
+<h2 id="generics">The gap: generics<a class="h-anchor" href="#generics" aria-label="Link to this section">#</a></h2>
+
+<p>PHP can't express "a collection of <code>User</code>" at runtime. <code>array</code> and <code>Collection</code> say nothing about their contents. Several generics proposals have been explored, and the most recent RFC (bound-erased generic types) was declined. There's no live generics RFC as of PHP 8.6.</p>
+
+<p>The ecosystem's answer is <strong>docblock generics</strong>, checked by static analysis:</p>
+
+<pre><code>/**
+ * @template T
+ * @param class-string&lt;T&gt; $class
+ * @return list&lt;T&gt;
+ */
+function findAll(string $class): array { /* ... */ }
+
+/** @var Collection&lt;int, User&gt; $users */</code></pre>
+
+<p>PHPStan and Psalm understand these annotations, along with array shapes (<code>array{id: int, email: string}</code>), literal types and non-empty strings. Laravel's own codebase ships generic annotations, and Larastan brings PHPStan's understanding to Eloquent.</p>
+
+<h2 id="static-analysis">Static analysis is part of the type system now<a class="h-anchor" href="#static-analysis" aria-label="Link to this section">#</a></h2>
+
+<p>In modern PHP, "the type system" really means two layers: runtime types enforced by the engine, and static types enforced in CI. A practical setup:</p>
+
+<ol>
+  <li><code>declare(strict_types=1)</code> everywhere.</li>
+  <li>Native types on every parameter, return and property. Use docblocks only for what native types can't express.</li>
+  <li>PHPStan (or Larastan for Laravel) in CI. Start at a level your codebase passes, use a baseline file for existing errors, and raise the level over time.</li>
+  <li>Treat new type errors like failing tests: they block the merge.</li>
+</ol>
+
+<p>This is also what makes AI-assisted coding safer. Typed code gives tools and reviewers a contract to check against, a point I made in <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI coding tools changed our velocity</a>.</p>
+
+<h2 id="why-it-matters">Why types matter beyond catching bugs<a class="h-anchor" href="#why-it-matters" aria-label="Link to this section">#</a></h2>
+
+<p>Fully typed PHP is what makes ahead-of-time compilation possible at all. Projects like <a href="/blog/what-typephp-means-for-php-performance/">TypePHP</a> can only compile code whose types are known. The JIT benefits from stable types too. Every type you add today keeps future performance options open.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li>PHP's type system grew from class hints in PHP 5 to unions, enums, readonly classes, DNF and typed constants in PHP 8.</li>
+  <li><code>strict_types</code> applies to calls made from a file, so declare it in every file.</li>
+  <li>Enums and readonly value objects remove whole categories of bugs.</li>
+  <li>There are no native generics, and the last RFC was declined. Use PHPStan or Psalm docblock generics.</li>
+  <li>Runtime types plus static analysis in CI is the modern PHP type system.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li><a href="https://www.php.net/manual/en/language.types.declarations.php" target="_blank" rel="noopener noreferrer">PHP manual: Type declarations</a></li>
+  <li><a href="https://www.php.net/manual/en/language.enumerations.php" target="_blank" rel="noopener noreferrer">PHP manual: Enumerations</a></li>
+  <li><a href="https://phpstan.org/blog/generics-in-php-using-phpdocs" target="_blank" rel="noopener noreferrer">PHPStan: Generics in PHP using PHPDocs</a></li>
+  <li><a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">PHP RFC index</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li aria-current="page"><span>The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</span></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/hidden-cost-premature-microservices-monolith/">The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</a><time datetime="2026-09-01">September 1, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#timeline">How PHP&#x27;s type system grew</a></li>
+          <li><a href="#strict-types">strict_types: the switch most people misunderstand</a></li>
+          <li><a href="#enums">Enums replaced magic strings</a></li>
+          <li><a href="#readonly">Readonly and immutable objects</a></li>
+          <li><a href="#never-and-dnf">The precise types: never, intersections, DNF</a></li>
+          <li><a href="#generics">The gap: generics</a></li>
+          <li><a href="#static-analysis">Static analysis is part of the type system now</a></li>
+          <li><a href="#why-it-matters">Why types matter beyond catching bugs</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM, Octane, FrankenPHP, Swoole, RoadRunner</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility in PHP 8.4</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer">
+          <p>&copy; <span data-copyright-year></span> Roshan Kc · Kathmandu, Nepal</p>
+          <p>
+            <a href="/blog/">Writing archive</a>
+            ·
+            <a href="/sitemap">Sitemap</a>
+            ·
+            <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+          </p>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>16</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

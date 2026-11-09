@@ -6,28 +6,28 @@
 
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Optimized Laravel Docker Image with PHP 8.5 + Swoole + io_uring | Roshan Kc</title>
-  <meta name="description" content="A free public Docker image: PHP 8.5 + Swoole 6.2.2 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64). ARM64/Graviton recommended for best io_uring efficiency. Drop-in runtime base with Nginx and Supervisor.">
+  <title>Laravel Docker Image: PHP 8.5 + Swoole + io_uring | Roshan Kc</title>
+  <meta name="description" content="Free Docker image for Laravel Octane: PHP 8.5.12 + Swoole 6.2.3 built with io_uring, multi-arch (amd64 + arm64), Nginx and Supervisor. Patched for PHP2Shell.">
   <meta name="author" content="Roshan Kc">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="keywords" content="Laravel Docker image, Swoole io_uring, Laravel Octane Docker, PHP 8.5 Docker, ARM64 Laravel, Graviton Laravel PHP, optimized Laravel runtime, Swoole ARM64, io_uring PHP, Docker Laravel performance">
   <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
   <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
-  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Roshan Kc">
-  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/">
   <meta property="og:title" content="Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring">
-  <meta property="og:description" content="A free public Docker image: PHP 8.5 + Swoole 6.2.2 rebuilt with io_uring for Laravel Octane. ARM64 (Graviton) recommended for best performance. Multi-arch, Nginx, Supervisor included.">
+  <meta property="og:description" content="A free public Docker image: PHP 8.5 + Swoole 6.2.3 rebuilt with io_uring for Laravel Octane. ARM64 (Graviton) recommended for best performance. Multi-arch, Nginx, Supervisor included.">
   <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
   <meta property="article:published_time" content="2026-09-07">
-  <meta property="article:modified_time" content="2026-09-07">
+  <meta property="article:modified_time" content="2026-11-09">
   <meta property="article:author" content="Roshan Kc">
   <meta property="og:image:alt" content="Portrait of Roshan Kc">
   <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring">
-  <meta name="twitter:description" content="Free Docker image: PHP 8.5 + Swoole 6.2.2 + io_uring for Laravel Octane. ARM64/Graviton recommended. Multi-arch, Nginx + Supervisor included.">
+  <meta name="twitter:description" content="Free Docker image: PHP 8.5 + Swoole 6.2.3 + io_uring for Laravel Octane. ARM64/Graviton recommended. Multi-arch, Nginx + Supervisor included.">
   <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <meta name="theme-color" content="#FAFBFC">
@@ -38,36 +38,40 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Optimized Laravel Docker Image: PHP 8.5 + Swoole 6.2.2 + io_uring",
-  "description": "A free public Docker image with PHP 8.5 + Swoole 6.2.2 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64). ARM64 / AWS Graviton recommended for best io_uring throughput. Includes Nginx, Supervisor, and common PHP extensions.",
+  "headline": "Optimized Laravel Docker Image: PHP 8.5 + Swoole 6.2.3 + io_uring",
+  "description": "A free public Docker image with PHP 8.5 + Swoole 6.2.3 rebuilt with io_uring for Laravel Octane. Multi-arch (amd64 + arm64). ARM64 / AWS Graviton recommended for best io_uring throughput. Includes Nginx, Supervisor, and common PHP extensions.",
   "image": "https://www.roshan-kc.com.np/images/profile.webp",
   "datePublished": "2026-09-07",
-  "dateModified": "2026-09-07",
+  "dateModified": "2026-11-09",
   "author": {
     "@type": "Person",
     "name": "Roshan Kc",
     "url": "https://www.roshan-kc.com.np/",
-    "jobTitle": "Cofounder & CTO"
+    "jobTitle": "Cofounder & CTO",
+    "@id": "https://www.roshan-kc.com.np/#person"
   },
   "publisher": {
     "@type": "Person",
     "name": "Roshan Kc",
-    "url": "https://www.roshan-kc.com.np/"
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring"
+    "@id": "https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/"
   },
   "keywords": "Laravel Docker, Swoole io_uring, Laravel Octane Docker, PHP 8.5 Docker, optimized Laravel runtime, ARM64 Laravel Docker, Graviton Laravel, Swoole ARM64, io_uring ARM64",
   "inLanguage": "en",
   "speakable": {
     "@type": "SpeakableSpecification",
-    "cssSelector": [".prose p:first-of-type"]
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
   },
   "isPartOf": {
     "@type": "Blog",
     "name": "Notes by Roshan Kc",
-    "url": "https://www.roshan-kc.com.np/blog"
+    "url": "https://www.roshan-kc.com.np/blog/"
   }
 }
   </script>
@@ -86,13 +90,13 @@
       "@type": "ListItem",
       "position": 2,
       "name": "Blog",
-      "item": "https://www.roshan-kc.com.np/blog"
+      "item": "https://www.roshan-kc.com.np/blog/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring",
-      "item": "https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring"
+      "item": "https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/"
     }
   ]
 }
@@ -110,7 +114,7 @@
         <div class="left-nav-brand">
           <a href="/" class="font-display name">Roshan Kc</a>
           <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
-            Cofounder &amp; CTO, MarginTop Solutions
+            Co-Founder and CTO, MarginTop Solutions
             <span class="visually-hidden">(opens in a new tab)</span>
           </a>
         </div>
@@ -118,7 +122,10 @@
                     <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Presence</a></li>
                     <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>The Story</a></li>
                     <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Focus</a></li>
-                    <li><a href="/blog" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
                     <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Connect</a></li>
         </ul>
       </div>
@@ -156,7 +163,10 @@
                     <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Presence</a></li>
                     <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>The Story</a></li>
                     <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Focus</a></li>
-                    <li><a href="/blog"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
                     <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Connect</a></li>
         </ul>
 
@@ -177,8 +187,8 @@
 
     <main id="main-content" class="main-pane">
       <div class="main-inner">
-        <p style="margin:0 0 1.25rem"><a href="/blog" style="color:var(--sapphire);font-weight:700">&larr; All notes</a></p>
-        <article class="prose">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">&larr; All notes</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
 
           <header style="margin-bottom:2rem">
             <div class="blog-meta">
@@ -189,13 +199,15 @@
             <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here's Why It Exists)</h1>
           </header>
 
-<p><strong>Direct answer:</strong> The official <code>phpswoole/swoole</code> Docker image does not compile <strong>io_uring</strong> support &mdash; a Linux kernel async I/O mechanism that meaningfully reduces syscall overhead for high-concurrency Swoole servers. I built and published <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer"><code>roshankc1234/optimized-laravel-runtime</code></a> to fix that: PHP 8.5 + Swoole 6.2.2 rebuilt from source with <code>--enable-iouring</code>, Nginx, Supervisor, and common PHP extensions &mdash; in a lean ~78MB Alpine image anyone can use as a Laravel Octane base.</p>
+<p style="border-left:4px solid var(--sapphire);background:var(--wash);padding:0.9rem 1.1rem;margin:0 0 1.5rem"><strong>Security update (October 22, 2026):</strong> the image was rebuilt on <strong>PHP 8.5.12</strong> to fix <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell (CVE-2026-109618 and CVE-2026-109619)</a>. Use <code>php8.5.12-swoole6.2.3-iouring</code>. The older <code>php8.5-swoole6.2.2-iouring</code> tag is built on an unpatched PHP and should not be used.</p>
+
+<p><strong>Direct answer:</strong> The official <code>phpswoole/swoole</code> Docker image does not compile <strong>io_uring</strong> support &mdash; a Linux kernel async I/O mechanism that meaningfully reduces syscall overhead for high-concurrency Swoole servers. I built and published <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer"><code>roshankc1234/optimized-laravel-runtime</code></a> to fix that: PHP 8.5 + Swoole 6.2.3 rebuilt from source with <code>--enable-iouring</code>, Nginx, Supervisor, and common PHP extensions &mdash; in a lean ~78MB Alpine image anyone can use as a Laravel Octane base.</p>
 
 <p>The image is <strong>multi-arch</strong>: it supports both <code>linux/amd64</code> and <code>linux/arm64</code>. If you have a choice, <strong>run it on ARM64</strong> (AWS Graviton, Apple Silicon in CI, Ampere Altra). io_uring on ARM64 delivers excellent throughput, and Graviton3 instances typically offer 20&ndash;40% better price/performance than equivalent x86 EC2 instances &mdash; pairing io_uring with arm64 is the highest-leverage configuration for most Laravel API workloads.</p>
 
 <p>This post explains what io_uring is, why ARM64 is the preferred target, what&#39;s inside the image, and how to wire it into your Laravel app in 15 minutes.</p>
 
-<h2 id="what-is-iouring">What io_uring actually is</h2>
+<h2 id="what-is-iouring">What io_uring actually is<a class="h-anchor" href="#what-is-iouring" aria-label="Link to this section">#</a></h2>
 
 <p>io_uring is a Linux kernel interface for asynchronous I/O introduced by Jens Axboe in kernel 5.1 (2019) and substantially improved in 5.6 and 5.10. Before io_uring, the dominant async I/O mechanism in high-performance servers was <strong>epoll</strong> &mdash; an event notification mechanism that tells you when a file descriptor is ready for I/O, but still requires separate <code>read()</code>/<code>write()</code> syscalls to actually perform the operation.</p>
 
@@ -230,7 +242,7 @@
 
 <p>Real-world benchmarks on io_uring vs epoll for web server workloads (from the <a href="https://kernel.dk/io_uring.pdf" target="_blank" rel="noopener noreferrer">original Axboe paper</a> and subsequent benchmarks) show throughput improvements in the range of 10&ndash;50% for I/O-intensive workloads at high concurrency, with larger gains appearing as connection counts increase. Cloudflare has published data showing io_uring-based servers outperforming epoll-based equivalents by 15&ndash;30% on their edge workloads. The gains are workload-dependent &mdash; a PHP app spending most of its time in the database will see less improvement than a file-serving or network-proxying workload.</p>
 
-<h2 id="arm64-preferred">Why ARM64 is the preferred architecture for this image</h2>
+<h2 id="arm64-preferred">Why ARM64 is the preferred architecture for this image<a class="h-anchor" href="#arm64-preferred" aria-label="Link to this section">#</a></h2>
 
 <p>Both amd64 and arm64 are supported and tested. But if you&#39;re deploying on AWS and haven&#39;t already switched to Graviton, now is a good time to consider it &mdash; and io_uring makes the case even stronger.</p>
 
@@ -266,7 +278,7 @@
       <td style="padding:0.6rem 0.9rem">&#x2705; Included in manifest (also available as dedicated arm64 tag)</td>
     </tr>
     <tr style="border-bottom:1px solid var(--rule)">
-      <td style="padding:0.6rem 0.9rem"><strong>Swoole 6.2.2 build</strong></td>
+      <td style="padding:0.6rem 0.9rem"><strong>Swoole 6.2.3 build</strong></td>
       <td style="padding:0.6rem 0.9rem">Compiled and tested</td>
       <td style="padding:0.6rem 0.9rem">Compiled and tested; io_uring verified on AL2023 arm64</td>
     </tr>
@@ -281,15 +293,15 @@
 <p>AWS Graviton3 (C7g, M7g, R7g families) runs Amazon Linux 2023 with a 6.1 kernel by default. Pull the multi-arch image and Docker will automatically select the arm64 layer on Graviton. You don&#39;t need to specify the platform flag unless you&#39;re cross-compiling locally on an x86 machine:</p>
 
 <pre><code># On Graviton: Docker automatically picks arm64 layer
-docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
 
 # Force arm64 explicitly (e.g. cross-compile on x86 CI):
-docker pull --platform linux/arm64 roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring
+docker pull --platform linux/arm64 roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
 
 # Dedicated arm64-only tag (same image, no manifest lookup overhead):
-docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring-arm64</code></pre>
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring-arm64</code></pre>
 
-<h2 id="why-the-official-image-doesnt-have-it">Why the official phpswoole image doesn&#39;t have io_uring</h2>
+<h2 id="why-the-official-image-doesnt-have-it">Why the official phpswoole image doesn&#39;t have io_uring<a class="h-anchor" href="#why-the-official-image-doesnt-have-it" aria-label="Link to this section">#</a></h2>
 
 <p>The <a href="https://hub.docker.com/r/phpswoole/swoole" target="_blank" rel="noopener noreferrer">official <code>phpswoole/swoole</code></a> images compile Swoole with a standard set of flags. As of Swoole 6.x, <code>--enable-iouring</code> is an opt-in compile flag &mdash; it&#39;s not included in the standard build because:</p>
 
@@ -301,7 +313,7 @@ docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring-ar
 
 <p>These are all legitimate reasons not to include it by default. But if you&#39;re running on a modern Linux host (kernel 5.12+, which covers Amazon Linux 2023, Ubuntu 22.04+, and most current cloud images), you&#39;re leaving performance on the table by not using io_uring.</p>
 
-<h2 id="what-is-in-the-image">What&#39;s inside the image</h2>
+<h2 id="what-is-in-the-image">What&#39;s inside the image<a class="h-anchor" href="#what-is-in-the-image" aria-label="Link to this section">#</a></h2>
 
 <p>The image is built in two stages on an Alpine base:</p>
 
@@ -320,11 +332,11 @@ docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring-ar
   <tbody>
     <tr style="border-bottom:1px solid var(--rule)">
       <td style="padding:0.6rem 0.9rem">PHP</td>
-      <td style="padding:0.6rem 0.9rem">8.5 (Alpine)</td>
+      <td style="padding:0.6rem 0.9rem">8.5.12 (Alpine)</td>
     </tr>
     <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
       <td style="padding:0.6rem 0.9rem">Swoole</td>
-      <td style="padding:0.6rem 0.9rem">6.2.2, compiled with <code>--enable-iouring</code></td>
+      <td style="padding:0.6rem 0.9rem">6.2.3, compiled with <code>--enable-iouring</code></td>
     </tr>
     <tr style="border-bottom:1px solid var(--rule)">
       <td style="padding:0.6rem 0.9rem">Web server</td>
@@ -363,15 +375,15 @@ docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring-ar
 
 <p>What&#39;s <em>not</em> in the image: Composer, git, or application code. This is a <strong>base runtime</strong> &mdash; you copy your application on top of it. That&#39;s intentional: keeping build-time tools out of the runtime image is a security and size best practice.</p>
 
-<h2 id="quick-start">Quick start: pull and verify</h2>
+<h2 id="quick-start">Quick start: pull and verify<a class="h-anchor" href="#quick-start" aria-label="Link to this section">#</a></h2>
 
 <p>The multi-arch manifest means <code>docker pull</code> automatically picks the right layer for your host:</p>
 
 <pre><code># Works on both x86 and Graviton/ARM &mdash; Docker selects the right layer
-docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
 
 # Verify io_uring compiled correctly
-docker run --rm roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring \
+docker run --rm roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring \
   php --ri swoole | grep -i uring</code></pre>
 
 <p>You should see:</p>
@@ -380,7 +392,7 @@ docker run --rm roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iourin
 
 <p>Also check which architecture Docker selected on your host:</p>
 
-<pre><code>docker run --rm roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring \
+<pre><code>docker run --rm roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring \
   uname -m
 # aarch64  &rarr; you are on arm64 (Graviton, M-series, Ampere)
 # x86_64   &rarr; you are on amd64</code></pre>
@@ -397,11 +409,11 @@ security_opt:
 
 <p>A minimal seccomp profile that adds io_uring syscalls to Docker&#39;s default allowlist is straightforward to create &mdash; I&#39;ll link a reference profile below. The key syscalls to allow are <code>io_uring_setup</code>, <code>io_uring_enter</code>, and <code>io_uring_register</code>.</p>
 
-<h2 id="dockerfile">Dockerfile for your Laravel app</h2>
+<h2 id="dockerfile">Dockerfile for your Laravel app<a class="h-anchor" href="#dockerfile" aria-label="Link to this section">#</a></h2>
 
 <p>Here&#39;s a production-ready Dockerfile that uses the image as a base:</p>
 
-<pre><code>FROM roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring
+<pre><code>FROM roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
 
 WORKDIR /var/www
 
@@ -433,7 +445,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Stage 2: Runtime
-FROM roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring
+FROM roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
 
 WORKDIR /var/www
 COPY --chown=www-data:www-data . .
@@ -449,7 +461,7 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 EXPOSE 80
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]</code></pre>
 
-<h2 id="nginx-supervisor-config">Nginx and Supervisord configuration</h2>
+<h2 id="nginx-supervisor-config">Nginx and Supervisord configuration<a class="h-anchor" href="#nginx-supervisor-config" aria-label="Link to this section">#</a></h2>
 
 <p>Nginx proxies incoming HTTP traffic to Octane&#39;s Swoole server running on port 8000 internally. The key Nginx block:</p>
 
@@ -500,7 +512,7 @@ stderr_logfile_maxbytes=0</code></pre>
 
 <p>Tune <code>--workers</code> to your CPU count. A common starting point is <code>2 &times; CPU cores</code> for I/O-bound Laravel apps. Use <code>--task-workers</code> separately if you want dedicated task workers.</p>
 
-<h2 id="docker-compose">docker-compose.yml for local development</h2>
+<h2 id="docker-compose">docker-compose.yml for local development<a class="h-anchor" href="#docker-compose" aria-label="Link to this section">#</a></h2>
 
 <pre><code>version: "3.9"
 
@@ -535,7 +547,7 @@ services:
 volumes:
   pgdata:</code></pre>
 
-<h2 id="kernel-requirements">Kernel requirements and cloud compatibility</h2>
+<h2 id="kernel-requirements">Kernel requirements and cloud compatibility<a class="h-anchor" href="#kernel-requirements" aria-label="Link to this section">#</a></h2>
 
 <p>io_uring requires Linux kernel &ge; 5.1. The SQPOLL feature (zero-syscall mode) requires &ge; 5.11. For production, I recommend &ge; 5.12. Here&#39;s what that means for common cloud environments:</p>
 
@@ -588,7 +600,7 @@ volumes:
 
 <p>Check your kernel version with <code>uname -r</code>. If you&#39;re on a kernel that supports io_uring but Swoole logs a failure, check <code>sysctl kernel.io_uring_disabled</code> &mdash; a value of <code>2</code> means io_uring is disabled system-wide by the host. Values <code>0</code> (enabled) or <code>1</code> (requires a privilege) are fine for Docker workloads.</p>
 
-<h2 id="what-is-not-included">What&#39;s not included and why</h2>
+<h2 id="what-is-not-included">What&#39;s not included and why<a class="h-anchor" href="#what-is-not-included" aria-label="Link to this section">#</a></h2>
 
 <p>The image intentionally excludes Composer, git, and application source code. The reasoning:</p>
 
@@ -598,7 +610,7 @@ volumes:
   <li><strong>Layer caching.</strong> Multi-stage builds let you cache dependency installation separately from application code. A code change in your app doesn&#39;t invalidate the vendor directory layer.</li>
 </ul>
 
-<h2 id="when-to-use-this">When this image is the right choice</h2>
+<h2 id="when-to-use-this">When this image is the right choice<a class="h-anchor" href="#when-to-use-this" aria-label="Link to this section">#</a></h2>
 
 <p>Use this image when:</p>
 <ul>
@@ -617,52 +629,111 @@ volumes:
   <li>You&#39;re on a PHP-FPM setup (not using Octane) &mdash; this image is specifically for Octane&#39;s long-running worker model.</li>
 </ul>
 
-<h2 id="image-on-docker-hub">The image on Docker Hub</h2>
+<h2 id="image-on-docker-hub">The image on Docker Hub<a class="h-anchor" href="#image-on-docker-hub" aria-label="Link to this section">#</a></h2>
 
 <p>The image is public and free to use:</p>
 
-<pre><code>docker pull roshankc1234/optimized-laravel-runtime:php8.5-swoole6.2.2-iouring</code></pre>
+<pre><code>docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring</code></pre>
 
 <p>Available tags:</p>
 <ul>
-  <li><code>php8.5-swoole6.2.2-iouring</code> &mdash; <strong>multi-arch manifest (amd64 + arm64)</strong>. This is the tag to use in production &mdash; Docker selects the right layer automatically for your host architecture.</li>
-  <li><code>php8.5-swoole6.2.2-iouring-arm64</code> &mdash; arm64 only (AWS Graviton, Apple M-series in CI, Ampere Altra). Use this if you want to explicitly pin to arm64 and skip the manifest lookup.</li>
+  <li><code>php8.5.12-swoole6.2.3-iouring</code> &mdash; <strong>multi-arch manifest (amd64 + arm64)</strong>. This is the tag to use in production &mdash; Docker selects the right layer automatically for your host architecture.</li>
+  <li><code>php8.5.12-swoole6.2.3-iouring-arm64</code> &mdash; arm64 only (AWS Graviton, Apple M-series in CI, Ampere Altra). Use this if you want to explicitly pin to arm64 and skip the manifest lookup.</li>
 </ul>
 
 <p style="margin-top:0.75rem"><strong>Which tag should you use?</strong> On Graviton or any arm64 host, either tag works &mdash; the manifest tag is simpler. If you&#39;re cross-building on x86 CI targeting arm64 production, use <code>--platform linux/arm64</code> with the manifest tag, or pull the dedicated arm64 tag directly.</p>
 
 <p>Full details, Dockerfile, and configuration examples: <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer">hub.docker.com/r/roshankc1234/optimized-laravel-runtime</a>.</p>
 
-<h2 id="takeaways">Key takeaways</h2>
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
 
 <ul>
   <li>io_uring reduces syscall overhead at high concurrency &mdash; benchmarks show 10&ndash;50% throughput improvement for I/O-heavy workloads vs epoll, with larger gains as connection count grows.</li>
-  <li>The official <code>phpswoole/swoole</code> image doesn&#39;t compile io_uring for broad compatibility reasons. This image rebuilds Swoole 6.2.2 with <code>--enable-iouring</code> and strips compilers from the runtime layer.</li>
+  <li>The official <code>phpswoole/swoole</code> image doesn&#39;t compile io_uring for broad compatibility reasons. This image rebuilds Swoole 6.2.3 with <code>--enable-iouring</code> and strips compilers from the runtime layer.</li>
   <li><strong>ARM64 is the preferred architecture.</strong> The image ships a multi-arch manifest (amd64 + arm64). On AWS Graviton3, io_uring + arm64 delivers the best throughput per dollar &mdash; Graviton3 is ~20&ndash;40% more cost-efficient than equivalent x86 EC2 while running io_uring at full capability on its 6.1 kernel.</li>
-  <li>Image includes PHP 8.5, Swoole 6.2.2, Nginx, Supervisor, and common extensions in a ~78MB Alpine base. Compressed size is the same for both architectures.</li>
+  <li>Image includes PHP 8.5, Swoole 6.2.3, Nginx, Supervisor, and common extensions in a ~78MB Alpine base. Compressed size is the same for both architectures.</li>
   <li>Requirements: Linux kernel &ge; 5.12, Docker with io_uring syscalls allowed. Amazon Linux 2023 (arm64 or x86), Ubuntu 22.04+, and Debian 12 all qualify.</li>
   <li>Verify with <code>php --ri swoole | grep uring</code>. If you hit a seccomp block, add <code>io_uring_setup</code>, <code>io_uring_enter</code>, and <code>io_uring_register</code> to your Docker seccomp allowlist.</li>
 </ul>
 
 <p>Questions, issues, or feedback on the image? <a href="/#contact">Reach out</a> &mdash; I actively maintain it and want to know what extensions or configuration options would make it more useful.</p>
 
-        </article>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a><time datetime="2026-11-04">November 4, 2026</time></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a><time datetime="2026-08-29">August 29, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#what-is-iouring">What io_uring actually is</a></li>
+          <li><a href="#arm64-preferred">Why ARM64 is the preferred architecture for this image</a></li>
+          <li><a href="#why-the-official-image-doesnt-have-it">Why the official phpswoole image doesn&#x27;t have io_uring</a></li>
+          <li><a href="#what-is-in-the-image">What&#x27;s inside the image</a></li>
+          <li><a href="#quick-start">Quick start: pull and verify</a></li>
+          <li><a href="#dockerfile">Dockerfile for your Laravel app</a></li>
+          <li><a href="#nginx-supervisor-config">Nginx and Supervisord configuration</a></li>
+          <li><a href="#docker-compose">docker-compose.yml for local development</a></li>
+          <li><a href="#kernel-requirements">Kernel requirements and cloud compatibility</a></li>
+          <li><a href="#what-is-not-included">What&#x27;s not included and why</a></li>
+          <li><a href="#when-to-use-this">When this image is the right choice</a></li>
+          <li><a href="#image-on-docker-hub">The image on Docker Hub</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
 
         <nav class="post-nav" aria-label="Post navigation">
           <div class="post-nav__link post-nav__prev">
             <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
-            <a class="post-nav__title" href="/blog/laravel-octane-swoole-concurrent-load">How We Use Laravel Octane + Swoole to Handle Concurrent Load</a>
+            <a class="post-nav__title" href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load</a>
           </div>
           <div class="post-nav__link post-nav__next">
             <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
-            <a class="post-nav__title" href="/blog/what-typephp-means-for-php-performance">What TypePHP Means for the Future of PHP Performance</a>
+            <a class="post-nav__title" href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a>
           </div>
         </nav>
 
         <footer class="page-footer">
           <p>&copy; <span data-copyright-year></span> Roshan Kc &middot; Kathmandu, Nepal</p>
           <p>
-            <a href="/blog">Writing archive</a>
+            <a href="/blog/">Writing archive</a>
             ·
             <a href="/sitemap">Sitemap</a>
             &middot;

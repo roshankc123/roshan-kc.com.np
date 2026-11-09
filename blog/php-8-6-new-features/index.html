@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="expanded">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PHP 8.6: New Features, Release Date and RFCs | Roshan Kc</title>
+  <meta name="description" content="PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\Duration, readonly defaults, Io\Poll and secure session defaults, with code examples.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/php-8-6-new-features/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/php-8-6-new-features/">
+  <meta property="og:title" content="PHP 8.6: Partial Function Application, clamp(), Duration and What&#x27;s Next">
+  <meta property="og:description" content="PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\Duration, readonly defaults, Io\Poll and secure session defaults, with code examples.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-09">
+  <meta property="article:modified_time" content="2026-11-09">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PHP 8.6: Partial Function Application, clamp(), Duration and What&#x27;s Next">
+  <meta name="twitter:description" content="PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\Duration, readonly defaults, Io\Poll and secure session defaults, with code examples.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PHP 8.6: New Features and the RFCs to Watch",
+  "description": "PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\\Duration, readonly defaults, Io\\Poll and secure session defaults, with code examples.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-09",
+  "dateModified": "2026-11-09",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/php-8-6-new-features/"
+  },
+  "keywords": "php 8.6, php 8.6 features, php 8.6 release date, partial function application php, php clamp, php rfc",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "RFC: Partial Function Application v2",
+      "url": "https://wiki.php.net/rfc/partial_function_application_v2"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "RFC: Readonly property defaults",
+      "url": "https://wiki.php.net/rfc/readonly_property_defaults"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PHP 8.6: New Features and the RFCs to Watch",
+      "item": "https://www.roshan-kc.com.np/blog/php-8-6-new-features/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="false" aria-label="Full width reading">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Presence</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>The Story</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Focus</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Connect</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Presence</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>The Story</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Focus</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Connect</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All notes</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">PHP · Releases</span>
+              <time datetime="2026-11-09">November 9, 2026</time>
+              <span>9 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">PHP 8.6: New Features and the RFCs to Watch</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> PHP 8.6 is scheduled for <strong>November 19, 2026</strong> (it's at RC5 as I write this). The headline features are <strong>partial function application</strong> with <code>?</code> placeholders, a native <strong><code>clamp()</code></strong>, a <strong><code>Time\Duration</code></strong> class, <strong>readonly property defaults</strong>, a <strong>native polling API</strong> (<code>Io\Poll</code>) and <strong>more secure session defaults</strong>. It's an incremental release: useful quality-of-life changes, no rewrite required.</p>
+
+<p>This is part of my series on <a href="/blog/php-in-2026-why-you-should-revisit-php/">where PHP stands in 2026</a>. Features below are taken from the RFCs marked <em>Implemented</em> for 8.6 on the PHP wiki. I'll update this post once the final release ships.</p>
+
+<h2 id="pfa">Partial function application: the headline feature<a class="h-anchor" href="#pfa" aria-label="Link to this section">#</a></h2>
+
+<p>Partial function application (PFA) lets you call a function with some arguments filled in and get back a closure that takes the rest. A <code>?</code> stands for exactly one argument and <code>...</code> stands for "all remaining arguments". The RFC passed 33–0.</p>
+
+<pre><code>// Before: a wrapper closure for every pre-filled argument
+$toSlug = fn(string $s): string =&gt; str_replace(' ', '-', $s);
+
+// PHP 8.6
+$toSlug = str_replace(' ', '-', ?);
+$toSlug('Hello World'); // "Hello-World"
+
+$lower = array_map(strtolower(...), $titles);  // first-class callable (8.1)
+$trimmed = array_map(trim(?, " \n"), $lines);  // partial application (8.6)</code></pre>
+
+<p>Where it really pays off is with the <a href="/blog/php-8-5-features-production/">pipe operator from PHP 8.5</a>. In 8.5 you had to wrap any multi-argument call in an arrow function. In 8.6 you don't, and the engine compiles a single-placeholder partial on the right of <code>|&gt;</code> into a direct call, so there's no closure overhead:</p>
+
+<pre><code>// PHP 8.5
+$slug = $title
+    |&gt; trim(...)
+    |&gt; (fn($s) =&gt; str_replace(' ', '-', $s))
+    |&gt; strtolower(...);
+
+// PHP 8.6
+$slug = $title
+    |&gt; trim(...)
+    |&gt; str_replace(' ', '-', ?)
+    |&gt; strtolower(...);</code></pre>
+
+<p>A few rules worth knowing:</p>
+<ul>
+  <li>Arguments you pass are evaluated when the partial is <em>created</em>, not when it's called.</li>
+  <li>The closure keeps the original parameter names, types and defaults.</li>
+  <li><code>new Foo(1, ?)</code> isn't supported; use a static factory method instead.</li>
+</ul>
+
+<h2 id="clamp">clamp()<a class="h-anchor" href="#clamp" aria-label="Link to this section">#</a></h2>
+
+<p>Every codebase has written <code>max($min, min($max, $value))</code> at some point, and gotten it backwards at least once. PHP 8.6 adds it natively:</p>
+
+<pre><code>clamp(101, min: 0, max: 100); // 100
+clamp(-1,  min: 0, max: 100); // 0</code></pre>
+
+<p>It works with any comparable values, including <code>DateTime</code> objects, and throws a <code>ValueError</code> if <code>$min</code> is greater than <code>$max</code>.</p>
+
+<h2 id="duration">The Duration class<a class="h-anchor" href="#duration" aria-label="Link to this section">#</a></h2>
+
+<p><code>Time\Duration</code> is an immutable, nanosecond-precision time span. That's useful for timeouts, retries and measuring elapsed time without juggling integers that might be seconds or might be milliseconds.</p>
+
+<pre><code>use Time\Duration;
+
+$timeout = Duration::fromSeconds(5);
+$backoff = Duration::fromMilliseconds(100)-&gt;multiplyBy(2 ** $attempt);
+
+if ($backoff &gt; $timeout) {
+    // give up
+}</code></pre>
+
+<h2 id="readonly-defaults">Readonly property defaults<a class="h-anchor" href="#readonly-defaults" aria-label="Link to this section">#</a></h2>
+
+<p>Readonly properties can finally have a default value. Before 8.6, this was a compile-time error:</p>
+
+<pre><code>final readonly class CreateBooksTable implements Migration
+{
+    public string $name = '2026_01_01_create_books_table';
+}</code></pre>
+
+<p>The default counts as the one allowed initialisation, so the constructor can't overwrite it. It passed 24–0.</p>
+
+<h2 id="poll">Io\Poll: a native polling API<a class="h-anchor" href="#poll" aria-label="Link to this section">#</a></h2>
+
+<p>The new <code>Io\Poll</code> namespace wraps each operating system's efficient event mechanism (epoll on Linux, kqueue on macOS/BSD, WSAPoll on Windows) behind one API. Application developers will rarely touch it directly. It matters because event loops and async libraries can stop relying on the decades-old <code>stream_select()</code>. More on this in <a href="/blog/php-async-fibers-coroutines/">PHP async in 2026</a>.</p>
+
+<h2 id="smaller">Smaller changes worth knowing<a class="h-anchor" href="#smaller" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Change</th><th style="padding:0.6rem 0.9rem;text-align:left">Why it matters</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Secure session defaults: <code>use_strict_mode=1</code>, <code>cookie_httponly=1</code>, <code>cookie_samesite=Lax</code></td><td style="padding:0.6rem 0.9rem">Safer native sessions out of the box. Laravel and Symfony manage their own cookies, so most framework apps won't notice.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem"><code>SortDirection</code> enum (<code>Ascending</code>, <code>Descending</code>)</td><td style="padding:0.6rem 0.9rem">A shared type so libraries stop inventing their own <code>'asc'</code>/<code>'desc'</code> strings.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem"><code>#[\Override]</code> on class constants</td><td style="padding:0.6rem 0.9rem">Catches typos and removed parent constants at compile time.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Enums can implement <code>__debugInfo()</code></td><td style="padding:0.6rem 0.9rem">Cleaner <code>var_dump()</code> output when debugging.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Function arguments shown in error messages</td><td style="padding:0.6rem 0.9rem">Faster debugging from logs.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem"><code>json_decode()</code> errors include the position</td><td style="padding:0.6rem 0.9rem">No more guessing where malformed JSON broke.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem"><code>trim()</code> strips form-feed (<code>\f</code>) by default</td><td style="padding:0.6rem 0.9rem">A minor behaviour change to watch for in tests.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Doc comments on function parameters, <code>grapheme_strrev()</code>, closure optimisations</td><td style="padding:0.6rem 0.9rem">Better tooling, correct Unicode string reversal, and faster closures.</td></tr>
+  </tbody>
+</table></div>
+
+<p>8.6 also deprecates returning values from <code>__construct()</code> and <code>__destruct()</code>, alongside a batch of smaller deprecations. Run your test suite with deprecations visible before upgrading.</p>
+
+<h2 id="rfcs-to-watch">RFCs to watch after 8.6<a class="h-anchor" href="#rfcs-to-watch" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><strong>Concurrency Support in the PHP Engine</strong> (under discussion): an engine-level coroutine core and pluggable scheduler extracted from the TrueAsync work. It's the most important long-term proposal for PHP right now.</li>
+  <li><strong>Pattern matching with an <code>is</code> keyword</strong> (under discussion): a single expression to check a value's type and shape, much like <code>instanceof</code> extended to array shapes and literal values.</li>
+  <li><strong>Partial application for <code>$this</code> methods</strong> (under discussion): extends PFA to instance methods.</li>
+  <li><strong>Generics:</strong> there's no live generics RFC. The most recent attempt (bound-erased generic types) was declined. PHPStan and Psalm remain the answer; see <a href="/blog/php-type-system-evolution/">PHP's type system</a>.</li>
+</ul>
+
+<h2 id="how-rfcs-work">How a feature gets into PHP<a class="h-anchor" href="#how-rfcs-work" aria-label="Link to this section">#</a></h2>
+
+<p>Every language change goes through an RFC on <a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">wiki.php.net</a>. It's discussed on the internals mailing list, then voted on by core contributors, and language changes need a two-thirds majority. Releases follow a fixed yearly cycle: alphas in summer, feature freeze in September, release candidates through autumn and general availability in late November. That predictability is underrated. You can plan upgrades a year ahead.</p>
+
+<h2 id="should-you-upgrade">Should you upgrade to 8.6?<a class="h-anchor" href="#should-you-upgrade" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><strong>New projects:</strong> start on 8.6 once your framework and key packages officially support it, usually within weeks.</li>
+  <li><strong>Existing apps on 8.4 or 8.5:</strong> no rush. Upgrade in Q1 after the first patch releases, with deprecations turned on in CI.</li>
+  <li><strong>Apps on 8.2 or older:</strong> 8.2's security support ends December 31, 2026. That's your real deadline, not 8.6. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li>PHP 8.6 is due November 19, 2026, and is an incremental, low-risk release.</li>
+  <li>Partial function application with <code>?</code> and <code>...</code> is the headline, and it makes the 8.5 pipe operator far more practical.</li>
+  <li><code>clamp()</code>, <code>Time\Duration</code>, readonly defaults and <code>Io\Poll</code> remove common boilerplate and lay groundwork for async.</li>
+  <li>Native async, pattern matching and generics are not in 8.6. Async is the proposal to watch.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+<ul>
+  <li><a href="https://wiki.php.net/rfc/partial_function_application_v2" target="_blank" rel="noopener noreferrer">RFC: Partial Function Application v2</a></li>
+  <li><a href="https://wiki.php.net/rfc/readonly_property_defaults" target="_blank" rel="noopener noreferrer">RFC: Readonly property defaults</a></li>
+  <li><a href="https://wiki.php.net/rfc/async_scheduler_abi" target="_blank" rel="noopener noreferrer">RFC: Concurrency Support in the PHP Engine</a></li>
+  <li><a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">PHP RFC index</a></li>
+  <li><a href="https://php.watch/versions/8.6" target="_blank" rel="noopener noreferrer">PHP.Watch: PHP 8.6</a> and <a href="https://laravel-news.com/php-8-6" target="_blank" rel="noopener noreferrer">Laravel News: What's new in PHP 8.6</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li aria-current="page"><span>PHP 8.6: New Features and the RFCs to Watch</span></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/hidden-cost-premature-microservices-monolith/">The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</a><time datetime="2026-09-01">September 1, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#pfa">Partial function application: the headline feature</a></li>
+          <li><a href="#clamp">clamp()</a></li>
+          <li><a href="#duration">The Duration class</a></li>
+          <li><a href="#readonly-defaults">Readonly property defaults</a></li>
+          <li><a href="#poll">Io\Poll: a native polling API</a></li>
+          <li><a href="#smaller">Smaller changes worth knowing</a></li>
+          <li><a href="#rfcs-to-watch">RFCs to watch after 8.6</a></li>
+          <li><a href="#how-rfcs-work">How a feature gets into PHP</a></li>
+          <li><a href="#should-you-upgrade">Should you upgrade to 8.6?</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why You Should Revisit PHP</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer">
+          <p>&copy; <span data-copyright-year></span> Roshan Kc · Kathmandu, Nepal</p>
+          <p>
+            <a href="/blog/">Writing archive</a>
+            ·
+            <a href="/sitemap">Sitemap</a>
+            ·
+            <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+          </p>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>16</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+ "slug": "php-runtime-vulnerabilities-history",
+ "date": "2026-10-29",
+ "read": 10,
+ "tag": "PHP · Security",
+ "title": "PHP Security Vulnerabilities: A History of Runtime CVEs | Roshan Kc",
+ "h1": "Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn't the First, and What They Have in Common",
+ "social": "Runtime-Level PHP Vulnerabilities: What CVE-2019-11043, CVE-2024-4577 and PHP2Shell Have in Common",
+ "short": "Runtime-Level PHP Vulnerabilities: What They Have in Common",
+ "desc": "From CVE-2019-11043 and the 2021 php-src backdoor to CVE-2024-4577 and PHP2Shell: how PHP runtime bugs worked, what they share, and how to harden your servers.",
+ "keywords": "php security vulnerabilities, is php secure, CVE-2024-4577, CVE-2019-11043, php-cgi vulnerability, php git backdoor 2021, PHP2Shell",
+ "prev": [
+  "/blog/php-8-5-features-production/",
+  "PHP 8.5 Features That Actually Matter in Production"
+ ],
+ "next": [
+  "/blog/php2shell-how-php-contained-critical-rce/",
+  "PHP2Shell: How the PHP Team Contained a Critical RCE"
+ ],
+ "citations": [
+  [
+   "git.php.net server compromised, move to GitHub",
+   "https://php.watch/articles/git-php-net-hack"
+  ],
+  [
+   "CVE-2024-4577 PHP-CGI argument injection",
+   "https://threatprotect.qualys.com/2024/06/10/php-cgi-argument-injection-vulnerability-cve-2024-4577/"
+  ]
+ ]
+}

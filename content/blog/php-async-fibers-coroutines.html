@@ -1,0 +1,90 @@
+<p><strong>Direct answer:</strong> PHP can do async today, just not with built-in <code>async</code>/<code>await</code> syntax. <strong>Fibers</strong> (PHP 8.1) give the language pausable functions. <strong>ReactPHP</strong> and <strong>AMPHP</strong> build event loops on top of them in pure PHP, and <strong>Swoole</strong> provides coroutines through an extension. PHP 8.6 adds a native polling API (<code>Io\Poll</code>), and an RFC for <strong>engine-level concurrency</strong> is under discussion. For real-time apps, PHP is viable now. It just takes more deliberate choices than Node.js.</p>
+
+<p>"PHP can't do async" is one of the most common reasons teams pick Node.js over PHP. It's half true. This post explains what exists today, what's coming, and how to decide. It's part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="why-hard">Why async is harder in PHP than in Node.js</h2>
+
+<p>Node.js was built around one event loop from day one, so every database driver and HTTP client is non-blocking by default. PHP was built around one request per process. Its standard functions (<code>file_get_contents()</code>, PDO, <code>sleep()</code>) block, and decades of libraries assume they can.</p>
+
+<p>So PHP async isn't only a syntax problem. Every I/O call has to cooperate with a scheduler, or it blocks everything else running in that process.</p>
+
+<h2 id="fibers">Fibers: the foundation (PHP 8.1)</h2>
+
+<p>A fiber is a function that can pause itself and be resumed later, keeping its full call stack. Fibers aren't parallelism, and they don't do I/O by themselves. They're a building block that lets libraries write async code that <em>looks</em> synchronous:</p>
+
+<pre><code>$fiber = new Fiber(function (): string {
+    $value = Fiber::suspend('waiting');   // pause here
+    return "resumed with {$value}";
+});
+
+$status = $fiber-&gt;start();        // "waiting"
+$fiber-&gt;resume('data');           // continues after suspend()</code></pre>
+
+<p>Application code rarely touches fibers directly. Their value is that libraries no longer need promise chains or generators everywhere.</p>
+
+<h2 id="options">The options today</h2>
+
+<table>
+  <thead><tr><th>Option</th><th>How it works</th><th>Best for</th><th>Trade-off</th></tr></thead>
+  <tbody>
+    <tr><td>ReactPHP</td><td>Pure-PHP event loop with promises. Long-established and widely used.</td><td>Socket servers, workers, concurrent HTTP calls</td><td>Needs ReactPHP-compatible libraries for I/O</td></tr>
+    <tr><td>AMPHP (v3)</td><td>Pure-PHP event loop built on fibers, so code reads like normal synchronous PHP</td><td>Concurrent clients and servers without a C extension</td><td>Same ecosystem constraint: blocking libraries still block</td></tr>
+    <tr><td>Swoole</td><td>C/C++ extension with coroutines and runtime hooks that make many standard functions non-blocking</td><td>High-concurrency HTTP and WebSocket servers, parallel I/O in a request, Laravel Octane</td><td>An extension to install and maintain, plus long-running-worker discipline</td></tr>
+    <tr><td>Queues and workers</td><td>Push slow work to background jobs (Laravel Horizon, Symfony Messenger)</td><td>Emails, exports, webhooks, anything users don't wait on</td><td>Not real-time, but solves most "we need async" problems</td></tr>
+  </tbody>
+</table>
+
+<p>The honest truth: most teams asking for async actually need <strong>queues</strong>. If the user doesn't wait for the result, put it in a job. Reach for an event loop when one request or connection genuinely needs to do several I/O operations at once, or hold thousands of connections open.</p>
+
+<h2 id="swoole-example">Concurrency inside a request</h2>
+
+<p>With Laravel Octane on Swoole, independent lookups run in parallel instead of one after another:</p>
+
+<pre><code>[$user, $orders, $notifications] = Octane::concurrently([
+    fn () =&gt; User::find($id),
+    fn () =&gt; Order::recentFor($id),
+    fn () =&gt; Notification::unreadCount($id),
+]);</code></pre>
+
+<p>Three 20 ms queries take about 20 ms instead of 60 ms. We use this pattern on dashboards; the full setup is in <a href="/blog/laravel-octane-swoole-concurrent-load/">how we use Octane + Swoole</a>, and the runtime trade-offs are in <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP runtimes explained</a>.</p>
+
+<h2 id="whats-coming">What's coming: native async in the engine</h2>
+
+<ul>
+  <li><strong>PHP 8.6: <code>Io\Poll</code>.</strong> A native polling API over epoll, kqueue and friends. Event loops can stop relying on <code>stream_select()</code>, which scales poorly. It's a quiet but important foundation. See <a href="/blog/php-8-6-new-features/">PHP 8.6 features</a>.</li>
+  <li><strong>RFC: Concurrency Support in the PHP Engine</strong> (under discussion). Extracted from the larger TrueAsync project, it proposes an engine-level coroutine core with a pluggable scheduler. With no scheduler loaded, PHP behaves exactly as it does today. It adds no new syntax; it's the plumbing that would let a standard async model exist across extensions.</li>
+  <li><strong>No <code>async</code>/<code>await</code> keywords</strong> are on the table yet. If engine-level concurrency lands, syntax and standard-library integration would come in later RFCs.</li>
+</ul>
+
+<p>My read: native async is a multi-release journey, not something to wait for. The tools that exist today are production-ready.</p>
+
+<h2 id="php-vs-node">PHP vs Node.js for real-time work</h2>
+
+<table>
+  <thead><tr><th>Need</th><th>PHP option</th><th>Node.js</th></tr></thead>
+  <tbody>
+    <tr><td>Background jobs</td><td>Excellent (Horizon, Messenger)</td><td>Good (BullMQ etc.)</td></tr>
+    <tr><td>WebSockets for app notifications</td><td>Good: Laravel Reverb, Swoole</td><td>Excellent</td></tr>
+    <tr><td>Parallel I/O in a request</td><td>Good with Swoole/Octane or AMPHP</td><td>Native</td></tr>
+    <tr><td>Thousands of long-lived connections</td><td>Possible with Swoole or ReactPHP</td><td>Native strength</td></tr>
+    <tr><td>Collaborative editors, streaming-heavy apps</td><td>Workable, but against the grain</td><td>Usually the better fit</td></tr>
+  </tbody>
+</table>
+
+<p>That matches what we concluded in <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>: PHP for the product, and a dedicated real-time service where the product is mostly real-time.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>PHP has no <code>async</code>/<code>await</code>, but fibers (8.1), ReactPHP, AMPHP and Swoole make async PHP production-ready today.</li>
+  <li>Most "we need async" problems are solved by queues. Use event loops when a request truly needs concurrent I/O.</li>
+  <li>PHP 8.6's <code>Io\Poll</code> and the engine-concurrency RFC are building the foundation for native async.</li>
+  <li>For heavily real-time products, Node.js is still the more natural fit. For most products, PHP plus a queue plus WebSockets is enough.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.php.net/manual/en/language.fibers.php" target="_blank" rel="noopener noreferrer">PHP manual: Fibers</a></li>
+  <li><a href="https://wiki.php.net/rfc/async_scheduler_abi" target="_blank" rel="noopener noreferrer">RFC: Concurrency Support in the PHP Engine</a></li>
+  <li><a href="https://amphp.org/" target="_blank" rel="noopener noreferrer">AMPHP</a> and <a href="https://reactphp.org/" target="_blank" rel="noopener noreferrer">ReactPHP</a></li>
+  <li><a href="https://laravel.com/docs/octane" target="_blank" rel="noopener noreferrer">Laravel Octane documentation</a></li>
+</ul>

@@ -1,0 +1,118 @@
+<p><strong>Direct answer:</strong> Yes, PHP is still relevant in 2026. It runs roughly 70% of websites whose server-side language is known (W3Techs, mid-2026), and today's PHP is fast, strictly typed and actively developed, with a major release every November. Most criticism of PHP describes PHP 5, a version that stopped receiving security fixes in 2018.</p>
+
+<p>I run engineering at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>, and most of our production systems are PHP. Hardly a month goes by without a client, a candidate or another founder asking some version of "isn't PHP dead?" This post is my long answer. It's also the hub for a series on where PHP is today and where it's going.</p>
+
+<h2 id="the-reputation">The reputation PHP earned, and why it's outdated</h2>
+
+<p>PHP's bad reputation was earned honestly. The PHP many developers remember from the 2000s had:</p>
+
+<ul>
+  <li>No real type system: <code>0 == "a"</code> was <code>true</code> (it's <code>false</code> since PHP 8), and functions accepted anything.</li>
+  <li><code>mysql_*</code> functions that made SQL injection the default outcome.</li>
+  <li>Inconsistent function names and argument orders (<code>strpos($haystack, $needle)</code> vs <code>array_search($needle, $haystack)</code>).</li>
+  <li>Slow execution, no package manager, and codebases where HTML, SQL and logic lived in the same file.</li>
+</ul>
+
+<p>All of that is true about PHP 5. Almost none of it describes PHP 8. The problem is that reputations update far more slowly than languages do.</p>
+
+<h2 id="timeline">How PHP changed: 2015 to 2026</h2>
+
+<table>
+  <thead><tr><th>Release</th><th>Year</th><th>What changed</th></tr></thead>
+  <tbody>
+    <tr><td>PHP 7.0</td><td>2015</td><td>New engine (PHPNG), roughly 2× faster than 5.6, scalar type declarations and return types</td></tr>
+    <tr><td>PHP 7.4</td><td>2019</td><td>Typed properties, arrow functions, preloading</td></tr>
+    <tr><td>PHP 8.0</td><td>2020</td><td>JIT compiler, union types, attributes, named arguments, <code>match</code>, nullsafe operator</td></tr>
+    <tr><td>PHP 8.1</td><td>2021</td><td>Enums, readonly properties, fibers (the base for async), <code>never</code> type</td></tr>
+    <tr><td>PHP 8.2</td><td>2022</td><td>Readonly classes, DNF types, standalone <code>true</code>/<code>false</code>/<code>null</code> types</td></tr>
+    <tr><td>PHP 8.3</td><td>2023</td><td>Typed class constants, <code>#[\Override]</code>, <code>json_validate()</code></td></tr>
+    <tr><td>PHP 8.4</td><td>2024</td><td>Property hooks, asymmetric visibility, lazy objects, an HTML5 DOM parser</td></tr>
+    <tr><td>PHP 8.5</td><td>2025</td><td>Pipe operator <code>|&gt;</code>, clone-with, a URI extension, <code>#[\NoDiscard]</code></td></tr>
+    <tr><td>PHP 8.6</td><td>Nov 2026</td><td>Partial function application, <code>clamp()</code>, a <code>Duration</code> class, a native polling API</td></tr>
+  </tbody>
+</table>
+
+<p>Look at that list again without the word "PHP" on it. Enums, union types, a pipe operator, property accessors, partial application: that's the feature set of a modern, opinionated language, delivered on a predictable yearly schedule.</p>
+
+<h2 id="five-things">Five things you probably need to update</h2>
+
+<h3>1. "PHP is slow"</h3>
+<p>PHP 7 roughly doubled performance over PHP 5. On top of that, long-running runtimes like Laravel Octane on Swoole or FrankenPHP keep the application booted in memory between requests, which removes framework bootstrap from every request. For typical web workloads, the database is the bottleneck far more often than PHP is. I cover the options in <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP runtimes explained</a>, and our production setup in <a href="/blog/laravel-octane-swoole-concurrent-load/">Laravel Octane + Swoole for concurrent load</a>.</p>
+
+<h3>2. "PHP has no type system"</h3>
+<p>Modern PHP has scalar, union, intersection and DNF types, enums, readonly classes and typed constants, enforced at runtime. Static analysers like PHPStan and Psalm add generics through docblocks and catch whole classes of bugs before deploy. The full story is in <a href="/blog/php-type-system-evolution/">how PHP's type system grew up</a>.</p>
+
+<h3>3. "PHP code is spaghetti"</h3>
+<p>Composer (2012) gave PHP one of the most usable package ecosystems around. PSR standards made libraries interoperable. Laravel and Symfony brought dependency injection, queues, migrations and testing as defaults. Bad PHP still exists, and so does bad code in every language.</p>
+
+<h3>4. "PHP can't do async or real-time"</h3>
+<p>Fibers arrived in PHP 8.1. Swoole, ReactPHP and AMPHP run event loops in production, and PHP 8.6 adds a native polling API. True engine-level async is still being designed, and I give an honest account of where it stands in <a href="/blog/php-async-fibers-coroutines/">PHP async in 2026</a>.</p>
+
+<h3>5. "PHP is insecure"</h3>
+<p>The language ships prepared statements, modern password hashing (<code>password_hash()</code>) and the Sodium crypto library in core. The runtime still has bugs, as October's <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell vulnerability</a> showed, but how the project handled it was a model of coordinated disclosure. The bigger risk is running an unsupported version: only 8.2 and later get security fixes today, and 8.2's support <strong>ends on December 31, 2026</strong>. I go through the long view in <a href="/blog/php-runtime-vulnerabilities-history/">PHP's runtime vulnerability history</a>.</p>
+
+<h2 id="who-uses-it">Who actually runs PHP</h2>
+
+<ul>
+  <li><strong>The long tail of the web:</strong> WordPress alone powers a large share of all websites, and Drupal, Magento and Moodle add many more.</li>
+  <li><strong>Large platforms:</strong> Wikipedia runs on PHP (MediaWiki). Facebook grew up on PHP and evolved it into Hack.</li>
+  <li><strong>Product companies and agencies:</strong> Laravel and Symfony power SaaS products, fintech back offices, marketplaces and internal tools all over the world, including the systems we build at MarginTop for clients running devices, payments and multi-tenant platforms.</li>
+</ul>
+
+<p>One honest caveat: W3Techs counts detected sites, not engineering teams or new projects. PHP's share of <em>new</em> startups is smaller than its share of the web. Both numbers are true, and they answer different questions.</p>
+
+<h2 id="why-revise">Why it matters to revise what you know</h2>
+
+<ul>
+  <li><strong>For engineers:</strong> if your mental model is PHP 5 or 7, you're writing more code than you need to. Property hooks, enums and the pipe operator remove whole categories of boilerplate.</li>
+  <li><strong>For CTOs and founders:</strong> stack decisions based on 2010 reputations are expensive. We wrote about this trade-off in <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>.</li>
+  <li><strong>For anyone running PHP in production:</strong> staying on old versions now has a hard cost. No security fixes, no performance gains, and a harder upgrade the longer you wait. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</li>
+</ul>
+
+<h2 id="where-it-falls-short">Where PHP still falls short</h2>
+
+<p>A fair picture includes the gaps:</p>
+
+<ul>
+  <li><strong>No native generics.</strong> Static analysers fill the gap, but the runtime doesn't enforce them.</li>
+  <li><strong>Async isn't first-class yet.</strong> You choose an extension or library; the core language doesn't have <code>async</code>/<code>await</code>.</li>
+  <li><strong>Legacy baggage.</strong> Some standard-library inconsistencies remain for backward compatibility.</li>
+  <li><strong>Perception.</strong> Hiring senior engineers who <em>want</em> to write PHP can be harder in some markets than the language deserves.</li>
+</ul>
+
+<h2 id="series">The series</h2>
+
+<p>This post is the hub. Each of these goes deeper:</p>
+
+<ul>
+  <li><a href="/blog/php-8-6-new-features/">PHP 8.6: what's new and the RFCs to watch</a></li>
+  <li><a href="/blog/php-8-5-features-production/">PHP 8.5 features that matter in production code</a></li>
+  <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property hooks and asymmetric visibility in PHP 8.4</a></li>
+  <li><a href="/blog/php-type-system-evolution/">How PHP's type system grew up</a></li>
+  <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP runtimes explained: FPM, Octane, FrankenPHP, Swoole, RoadRunner</a></li>
+  <li><a href="/blog/php-async-fibers-coroutines/">PHP async in 2026: fibers, coroutines and native async</a></li>
+  <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: how the PHP team contained a critical RCE</a></li>
+  <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-level PHP vulnerabilities and what they have in common</a></li>
+  <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a legacy PHP 7 app to PHP 8.5</a></li>
+  <li><a href="/blog/what-typephp-means-for-php-performance/">TypePHP and the future of PHP performance</a></li>
+</ul>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>PHP still powers roughly 70% of websites with a known server-side language, and it ships a new release every November.</li>
+  <li>Most criticism of PHP describes PHP 5. PHP 8 has strict types, enums, property hooks, a pipe operator and a JIT.</li>
+  <li>Performance is rarely PHP's problem today. Long-running runtimes like Octane and FrankenPHP remove bootstrap cost entirely.</li>
+  <li>The real risk is running an old version. Only PHP 8.2+ is supported, and 8.2's security support ends December 31, 2026.</li>
+  <li>PHP still lacks native generics and first-class async, so evaluate it honestly, not by reputation.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://w3techs.com/technologies/details/pl-PHP" target="_blank" rel="noopener noreferrer">W3Techs: usage statistics of PHP</a></li>
+  <li><a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">php.net: supported versions</a></li>
+  <li><a href="https://www.php.net/releases/8.5/en.php" target="_blank" rel="noopener noreferrer">php.net: PHP 8.5 release notes</a></li>
+  <li><a href="https://wiki.php.net/rfc" target="_blank" rel="noopener noreferrer">PHP RFC index</a></li>
+</ul>
+
+<p>Deciding whether PHP is right for your next product? <a href="/#contact">Get in touch</a>. We'll give you an honest answer, even if it's "use something else."</p>

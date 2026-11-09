@@ -1,0 +1,30 @@
+{
+ "slug": "php-8-6-new-features",
+ "date": "2026-11-09",
+ "read": 9,
+ "tag": "PHP · Releases",
+ "title": "PHP 8.6: New Features, Release Date and RFCs | Roshan Kc",
+ "h1": "PHP 8.6: New Features and the RFCs to Watch",
+ "social": "PHP 8.6: Partial Function Application, clamp(), Duration and What's Next",
+ "short": "PHP 8.6: New Features and the RFCs to Watch",
+ "desc": "PHP 8.6 ships November 19, 2026: partial function application, clamp(), Time\\Duration, readonly defaults, Io\\Poll and secure session defaults, with code examples.",
+ "keywords": "php 8.6, php 8.6 features, php 8.6 release date, partial function application php, php clamp, php rfc",
+ "prev": [
+  "/blog/php2shell-how-php-contained-critical-rce/",
+  "PHP2Shell: How the PHP Team Contained a Critical RCE"
+ ],
+ "next": [
+  "/blog/php-in-2026-why-you-should-revisit-php/",
+  "PHP in 2026: Why You Should Revisit PHP"
+ ],
+ "citations": [
+  [
+   "RFC: Partial Function Application v2",
+   "https://wiki.php.net/rfc/partial_function_application_v2"
+  ],
+  [
+   "RFC: Readonly property defaults",
+   "https://wiki.php.net/rfc/readonly_property_defaults"
+  ]
+ ]
+}

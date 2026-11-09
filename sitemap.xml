@@ -3,25 +3,25 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://www.roshan-kc.com.np/</loc>
-        <lastmod>2026-09-10</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog</loc>
-        <lastmod>2026-09-10</lastmod>
+        <loc>https://www.roshan-kc.com.np/blog/</loc>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/sitemap</loc>
-        <lastmod>2026-09-10</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/llms.txt</loc>
-        <lastmod>2026-09-05</lastmod>
+        <lastmod>2026-10-30</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
@@ -32,97 +32,163 @@
         <priority>0.4</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring</loc>
-        <lastmod>2026-09-07</lastmod>
+        <loc>https://www.roshan-kc.com.np/blog/php-8-6-new-features/</loc>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising</loc>
+        <loc>https://www.roshan-kc.com.np/blog/php-in-2026-why-you-should-revisit-php/</loc>
+        <lastmod>2026-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/</loc>
+        <lastmod>2026-11-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/upgrade-php-7-to-php-8-5-playbook/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-async-fibers-coroutines/</loc>
+        <lastmod>2026-11-05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/</loc>
+        <lastmod>2026-11-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-type-system-evolution/</loc>
+        <lastmod>2026-11-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-8-4-property-hooks-asymmetric-visibility/</loc>
+        <lastmod>2026-11-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-8-5-features-production/</loc>
+        <lastmod>2026-10-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-runtime-vulnerabilities-history/</loc>
+        <lastmod>2026-10-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php2shell-how-php-contained-critical-rce/</loc>
+        <lastmod>2026-10-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/optimized-laravel-docker-swoole-iouring/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/security-basics-startups-before-fundraising/</loc>
         <lastmod>2026-09-05</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build</loc>
+        <loc>https://www.roshan-kc.com.np/blog/engineering-principles-what-not-to-build/</loc>
         <lastmod>2026-09-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto</loc>
+        <loc>https://www.roshan-kc.com.np/blog/hiring-engineers-as-first-time-cto/</loc>
         <lastmod>2026-09-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity</loc>
+        <loc>https://www.roshan-kc.com.np/blog/how-ai-coding-tools-changed-engineering-velocity/</loc>
         <lastmod>2026-09-02</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith</loc>
+        <loc>https://www.roshan-kc.com.np/blog/hidden-cost-premature-microservices-monolith/</loc>
         <lastmod>2026-09-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house</loc>
+        <loc>https://www.roshan-kc.com.np/blog/build-vs-buy-framework-what-to-build-in-house/</loc>
         <lastmod>2026-08-31</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load</loc>
+        <loc>https://www.roshan-kc.com.np/blog/laravel-octane-swoole-concurrent-load/</loc>
         <lastmod>2026-08-30</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance</loc>
+        <loc>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</loc>
         <lastmod>2026-08-29</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack</loc>
+        <loc>https://www.roshan-kc.com.np/blog/business-logic-first-not-perfect-tech-stack/</loc>
         <lastmod>2026-08-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs</loc>
+        <loc>https://www.roshan-kc.com.np/blog/why-we-chose-laravel-over-nodejs/</loc>
         <lastmod>2026-08-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded</loc>
+        <loc>https://www.roshan-kc.com.np/blog/how-to-run-startup-tech-stack-free-until-funded/</loc>
         <lastmod>2026-08-26</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust</loc>
+        <loc>https://www.roshan-kc.com.np/blog/ship-fast-without-losing-client-trust/</loc>
         <lastmod>2026-08-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu</loc>
+        <loc>https://www.roshan-kc.com.np/blog/building-a-software-team-in-kathmandu/</loc>
         <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does</loc>
+        <loc>https://www.roshan-kc.com.np/blog/what-a-first-time-cto-actually-does/</loc>
         <lastmod>2026-04-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company</loc>
+        <loc>https://www.roshan-kc.com.np/blog/why-i-left-teaching-to-build-a-company/</loc>
         <lastmod>2026-03-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

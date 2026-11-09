@@ -116,7 +116,7 @@ const navObserver = new IntersectionObserver((entries) => {
     });
 }, { rootMargin: "-40% 0px -55% 0px" });
 navSections.forEach((section) => {
-    if (["home", "about", "focus", "writing", "contact"].includes(section.id)) {
+    if (["home", "about", "focus", "experience", "work", "stack", "writing", "contact"].includes(section.id)) {
         navObserver.observe(section);
     }
 });
@@ -147,6 +147,9 @@ const deckSlides = [
     { id: "home", label: "Presence" },
     { id: "about", label: "The Story" },
     { id: "focus", label: "Focus" },
+    { id: "experience", label: "Experience" },
+    { id: "work", label: "Work" },
+    { id: "stack", label: "Stack" },
     { id: "writing", label: "Writing" },
     { id: "faq", label: "FAQ" },
     { id: "contact", label: "Connect" }
@@ -179,7 +182,7 @@ const updateDeckChrome = (index) => {
 const goToDeck = (index, { updateHash = true } = {}) => {
     if (index < 0) return;
     if (index >= deckSlides.length) {
-        window.location.href = "/blog";
+        window.location.href = "/blog/";
         return;
     }
     const slide = deckSlides[index];
@@ -250,5 +253,45 @@ if (hashIndex >= 0) {
 } else {
     updateDeckChrome(0);
     syncDeckFromScroll();
+}
+
+/* CV sections — staggered reveal, count-up metrics, card spotlight */
+const cvRevealEls = document.querySelectorAll(".cv-reveal");
+
+const countUp = (el) => {
+    const target = Number(el.dataset.count);
+    const suffix = el.dataset.suffix || "";
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = `${Math.round(target * eased)}${suffix}`;
+        if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+};
+
+if (cvRevealEls.length && !prefersReducedMotion && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("cv-motion");
+    const cvObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-in");
+            entry.target.querySelectorAll("[data-count]").forEach(countUp);
+            observer.unobserve(entry.target);
+        });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    cvRevealEls.forEach((el) => cvObserver.observe(el));
+}
+
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    document.querySelectorAll(".cv-card").forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+            card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+        });
+    });
 }
 });

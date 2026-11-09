@@ -1,0 +1,30 @@
+{
+ "slug": "choose-tech-stack-ai-era-patch-velocity",
+ "date": "2026-11-07",
+ "read": 9,
+ "tag": "Engineering · Security",
+ "title": "How to Choose a Tech Stack in the AI Era: Patch Velocity | Roshan Kc",
+ "h1": "How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype",
+ "social": "How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype",
+ "short": "How to Choose a Tech Stack in the AI Era",
+ "desc": "Pick a tech stack for the team behind it, not hype or benchmarks. Why patch velocity matters now that AI finds bugs faster, plus a checklist for any stack.",
+ "keywords": "how to choose a tech stack, tech stack selection, patch velocity, AI vulnerability discovery, software supply chain security, startup tech stack",
+ "prev": [
+  "/blog/php-in-2026-why-you-should-revisit-php/",
+  "PHP in 2026: Why You Should Revisit PHP"
+ ],
+ "next": [
+  "/blog/upgrade-php-7-to-php-8-5-playbook/",
+  "Upgrading a Legacy PHP 7 App to PHP 8.5"
+ ],
+ "citations": [
+  [
+   "Google Project Zero: From Naptime to Big Sleep",
+   "https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html"
+  ],
+  [
+   "From Commit to Production: How a PHP Fix Actually Reaches You",
+   "https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/"
+  ]
+ ]
+}

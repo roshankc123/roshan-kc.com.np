@@ -1,0 +1,97 @@
+<p><strong>Direct answer:</strong> <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell</a> wasn't PHP's first runtime-level vulnerability. CVE-2019-11043 (PHP-FPM on nginx), the 2021 php-src backdoor attempt and CVE-2024-4577 (php-cgi on Windows) all hit PHP itself rather than application code. They share three patterns: <strong>memory-safety bugs in C</strong>, <strong>attacks that land before your application code runs</strong>, and <strong>state or configuration shared across requests</strong>. Each time, the fix came quickly. The damage happened on servers that patched late or ran unsupported versions.</p>
+
+<p>Most PHP security advice is about application code: SQL injection, XSS, unsafe uploads. That's still where most incidents happen. But every few years a bug in the runtime itself reminds everyone that a perfectly written Laravel app is only as safe as the PHP binary running it. This post is part of my <a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026 series</a>.</p>
+
+<h2 id="timeline">Four incidents, side by side</h2>
+
+<table>
+  <thead><tr><th>Incident</th><th>Year</th><th>Where the bug was</th><th>Fix and response</th></tr></thead>
+  <tbody>
+    <tr><td>CVE-2019-11043</td><td>2019</td><td>PHP-FPM, triggered by a common nginx configuration</td><td>Reported in September, patched in 7.1.33 / 7.2.24 / 7.3.11 in October. Exploited in the wild within days of the public exploit.</td></tr>
+    <tr><td>php-src backdoor attempt</td><td>2021</td><td>The project's own git server</td><td>Malicious commits caught and reverted within hours. The repository moved to GitHub the next day. No release ever contained the code.</td></tr>
+    <tr><td>CVE-2024-4577</td><td>2024</td><td>php-cgi on Windows, via character-encoding conversion</td><td>Reported May 7, patched June 6 in 8.3.8 / 8.2.20 / 8.1.29. Ransomware campaigns followed within days.</td></tr>
+    <tr><td>PHP2Shell (CVE-2026-109618/9)</td><td>2026</td><td>Core engine: out-of-memory handling and stale request state</td><td>Coordinated embargo, leak, and four branches patched on October 21. Listed as actively exploited five days later.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="cve-2019-11043">2019: CVE-2019-11043, PHP-FPM and nginx</h2>
+
+<p>A widely copied nginx configuration used <code>fastcgi_split_path_info</code> with a regular expression that a newline character (<code>%0a</code>) could break. With a crafted URL, PHP-FPM computed an empty <code>PATH_INFO</code> and a negative length, writing before the start of a buffer. That buffer underflow was turned into remote code execution.</p>
+
+<p><strong>What made it dangerous:</strong> the vulnerable config came from tutorials and hosting panels, so it was everywhere, and the attack worked before any application code ran. Nginx's own guidance was blunt: the bug was in PHP-FPM, so the only real fix was upgrading. Adding <code>try_files $fastcgi_script_name =404;</code> was the stopgap.</p>
+
+<h2 id="backdoor-2021">2021: the php-src backdoor attempt</h2>
+
+<p>On March 28, 2021, two commits appeared in php-src on the project's self-hosted <code>git.php.net</code> server, written to look like they came from Rasmus Lerdorf and Nikita Popov. They added code that would execute PHP sent in a specially named HTTP header, disguised as a typo fix. Core developers spotted and reverted them within hours. The attacker pushed again, and that commit was reverted too.</p>
+
+<p>The project's response is the part worth remembering. Maintainers decided that running their own git infrastructure was an unnecessary risk, and on March 29 the GitHub mirror became the canonical repository, with commit access tied to GitHub accounts and two-factor authentication. No PHP release ever shipped the backdoor. It's one of the clearest examples of an open-source project catching a supply-chain attack in time, because people actually read the commits.</p>
+
+<h2 id="cve-2024-4577">2024: CVE-2024-4577, php-cgi on Windows</h2>
+
+<p>Orange Tsai of DEVCORE found that Windows' "Best-Fit" character conversion could turn certain characters in a URL into a hyphen. That let attackers smuggle command-line arguments into <code>php-cgi</code>, bypassing the fix for a 2012 bug of the same kind (CVE-2012-1823). Any Windows server running PHP in CGI mode was exposed, including XAMPP's default setup.</p>
+
+<p>The fix shipped on June 6, 2024, about a month after private disclosure. Within days, the TellYouThePass ransomware group was exploiting unpatched servers. PHP 8.0 and older, already end-of-life, got no fix.</p>
+
+<h2 id="glibc">A related lesson: bugs underneath PHP</h2>
+
+<p>Also in 2024, a buffer overflow in glibc's <code>iconv()</code> (CVE-2024-2961) was shown to be exploitable through PHP's <code>php://filter</code> stream chains. The bug wasn't in PHP, but PHP provided a path to it. Patching PHP isn't enough. The operating system and its libraries are part of your runtime too, which is one more reason to rebuild container images regularly rather than only when PHP releases.</p>
+
+<h2 id="patterns">What these vulnerabilities have in common</h2>
+
+<h3>1. Memory safety in C</h3>
+<p>PHP's engine is written in C. Buffer underflows, use-after-free and half-initialised memory are the classic C failure modes, and CVE-2019-11043, PHP2Shell and the glibc bug are all exactly that. Your PHP code is memory-safe; the interpreter underneath it doesn't get that guarantee for free.</p>
+
+<h3>2. The attack lands before your code runs</h3>
+<p>CVE-2019-11043, CVE-2024-4577 and the worst PHP2Shell case on <code>mod_php</code> all exploited the layer between the web server and PHP: request parsing, path handling, command-line arguments, upload processing. Application-level defences such as validation, CSRF protection and framework middleware never get a chance to run.</p>
+
+<h3>3. Configuration and shared state</h3>
+<p>Each bug needed a specific setup: an nginx regex, CGI mode on Windows, per-directory INI settings, session upload progress. And PHP2Shell's stale-state bug lived in memory reused between requests in the same worker. That's increasingly relevant as more teams move to long-running runtimes, which I compare in <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP runtimes explained</a>.</p>
+
+<h3>4. The fix is fast; patching is slow</h3>
+<p>In every case PHP shipped a fix within weeks, and with PHP2Shell, within hours. The exploitation that followed hit servers that hadn't updated, and especially servers on end-of-life versions that never got a fix at all.</p>
+
+<h2 id="maturity">How PHP's security process has matured</h2>
+
+<ul>
+  <li><strong>Infrastructure:</strong> after 2021 the canonical source moved to GitHub, with security advisories published as GitHub Security Advisories (GHSA) alongside CVEs.</li>
+  <li><strong>Funding:</strong> since 2021, the PHP Foundation has paid core developers to work on the engine full-time, including security fixes and reviews.</li>
+  <li><strong>Coordination:</strong> PHP2Shell showed a full embargo process: early patches to distributions and LTS vendors, honest advisories, and a release pulled forward when details leaked.</li>
+  <li><strong>Predictable support:</strong> each branch gets two years of active support plus two years of security fixes, published on <a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">php.net/supported-versions</a>.</li>
+</ul>
+
+<h2 id="hardening">Hardening that limits the damage next time</h2>
+
+<p>You can't prevent the next runtime bug, but you can make it far less damaging:</p>
+
+<ol>
+  <li><strong>Stay on a supported version.</strong> Today that's PHP 8.2 or later, and 8.2 drops out on December 31, 2026. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a>.</li>
+  <li><strong>Make patching boring.</strong> One base image, reproducible builds, and a deploy you trust. That's what let us <a href="/blog/php2shell-how-php-contained-critical-rce/#what-we-did">patch everything within 24 hours during Dashain</a>.</li>
+  <li><strong>Run PHP as an unprivileged user</strong> with a read-only filesystem for application code.</li>
+  <li><strong>Block outbound network access</strong> from PHP servers unless it's needed. Most exploit chains download a second stage.</li>
+  <li><strong>Prevent PHP from spawning shells</strong> (<code>sh</code>, <code>curl</code>, <code>wget</code>) and alert when it tries.</li>
+  <li><strong>Avoid legacy setups:</strong> no <code>php-cgi</code> exposed to the web, no per-directory INI overrides you don't need, and minimal enabled extensions.</li>
+  <li><strong>Put a WAF in front.</strong> On disclosure day it buys you hours while you patch.</li>
+</ol>
+
+<p>For the application-level basics, see <a href="/blog/security-basics-startups-before-fundraising/">security basics every startup should get right</a>.</p>
+
+<h2 id="is-php-secure">So, is PHP secure?</h2>
+
+<p>As secure as any widely deployed runtime written in C, which means it has bugs, gets them fixed quickly, and is safe in practice when you stay on supported versions and patch promptly. Node.js, Python and Ruby have had serious runtime CVEs too. The difference between a footnote and an incident is almost always how long the vulnerable version stayed in production.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>PHP2Shell is the latest in a line of runtime-level bugs: CVE-2019-11043, the 2021 backdoor attempt and CVE-2024-4577.</li>
+  <li>Common patterns: C memory-safety bugs, attacks that land before application code runs, and configuration or state shared between requests.</li>
+  <li>PHP's fixes have arrived quickly every time. Exploitation hit late patchers and end-of-life versions.</li>
+  <li>The best defence is a supported version, fast reproducible rebuilds, least-privilege workers, and no unnecessary legacy setups.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.helpnetsecurity.com/2019/10/28/cve-2019-11043/" target="_blank" rel="noopener noreferrer">Help Net Security: CVE-2019-11043 actively exploited</a></li>
+  <li><a href="https://php.watch/articles/git-php-net-hack" target="_blank" rel="noopener noreferrer">PHP.Watch: git.php.net compromised, move to GitHub</a></li>
+  <li><a href="https://thehackernews.com/2024/06/new-php-vulnerability-exposes-windows.html" target="_blank" rel="noopener noreferrer">The Hacker News: CVE-2024-4577</a></li>
+  <li><a href="https://threatprotect.qualys.com/2024/06/10/php-cgi-argument-injection-vulnerability-cve-2024-4577/" target="_blank" rel="noopener noreferrer">Qualys: PHP-CGI argument injection (CVE-2024-4577)</a></li>
+  <li><a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">Exakat: How a PHP fix actually reaches you</a></li>
+</ul>

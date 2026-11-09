@@ -334,3 +334,443 @@ html[data-sidebar="collapsed"] main#main-content {
 .story-rail .font-mono-label + p {
   margin-top: 0;
 }
+
+/* —— CV sections: experience, selected work, stack —— */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* Metrics */
+.cv-metrics {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-width: 68rem;
+}
+
+.cv-metrics li {
+  position: relative;
+  padding: 1.1rem 1.25rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  overflow: hidden;
+}
+
+.cv-metrics li::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sapphire), rgba(21, 70, 232, 0));
+}
+
+.cv-metrics strong {
+  display: block;
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  line-height: 1.05;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.cv-metrics span {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--mist);
+}
+
+/* Timeline */
+.cv-timeline {
+  position: relative;
+  margin-top: 3.5rem;
+  max-width: 68rem;
+  list-style: none;
+}
+
+.cv-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 0.6rem;
+  bottom: 1rem;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--sapphire) 0%, rgba(21, 70, 232, 0.25) 60%, var(--line) 100%);
+  transform-origin: top;
+}
+
+.cv-timeline > li {
+  position: relative;
+  display: grid;
+  gap: 0.4rem 2.5rem;
+  padding: 0 0 2.75rem 2.25rem;
+}
+
+.cv-timeline > li:last-child { padding-bottom: 0; }
+
+.cv-timeline > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--sapphire);
+  box-shadow: 0 0 0 5px rgba(21, 70, 232, 0.1);
+}
+
+.cv-timeline__when {
+  color: var(--sapphire);
+  padding-top: 0.35rem;
+}
+
+.cv-timeline__org {
+  margin-top: 0.35rem;
+  color: var(--mist);
+  font-weight: 700;
+}
+
+.cv-list {
+  margin-top: 1rem;
+  padding-left: 1.1rem;
+  list-style: disc;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.cv-list li + li { margin-top: 0.5rem; }
+
+.cv-list li::marker { color: var(--sapphire); }
+
+.cv-list b { color: var(--ink); }
+
+/* Selected work — fluid grid: 1 col phone, 2 laptop, 3 wide / collapsed sidebar */
+.cv-work {
+  margin-top: 3.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  max-width: 100rem;
+}
+
+.cv-card {
+  --mx: 50%;
+  --my: 0%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.35rem 1.35rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(11, 18, 32, 0.03);
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    box-shadow 0.45s var(--ease-out-expo),
+    border-color 0.3s ease;
+}
+
+/* Accent bar that sweeps in on hover */
+.cv-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sapphire), #6b8cff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease-out-expo);
+}
+
+/* Cursor-following spotlight */
+.cv-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(21, 70, 232, 0.07), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.cv-card__kicker {
+  color: var(--sapphire);
+  margin-bottom: 0.75rem;
+}
+
+.cv-card h3 {
+  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+  line-height: 1.25;
+}
+
+.cv-card__lead {
+  margin-top: 0.7rem;
+  color: var(--mist);
+  line-height: 1.6;
+}
+
+.cv-card .cv-list {
+  font-size: 0.95rem;
+  margin-bottom: 1.35rem;
+}
+
+.cv-card .cv-tags {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--line);
+}
+
+.cv-card--feature {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%);
+}
+
+@media (min-width: 900px) {
+  .cv-card { padding: 1.85rem 1.75rem 1.6rem; }
+
+  .cv-card--feature {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.8fr) 2fr;
+    gap: 0 3rem;
+    align-items: start;
+  }
+
+  .cv-card--feature > .cv-card__kicker,
+  .cv-card--feature > h3,
+  .cv-card--feature > .cv-card__lead { grid-column: 1; }
+
+  .cv-card--feature > .cv-list {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    margin-top: 0;
+    columns: 2;
+    column-gap: 2.5rem;
+  }
+
+  .cv-card--feature > .cv-list li { break-inside: avoid; }
+
+  .cv-card--feature > .cv-tags {
+    grid-column: 1;
+    margin-top: 1.25rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cv-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(21, 70, 232, 0.28);
+    box-shadow: 0 2px 6px rgba(11, 18, 32, 0.04), 0 22px 44px -12px rgba(21, 70, 232, 0.18);
+  }
+
+  .cv-card:hover::before { transform: scaleX(1); }
+
+  .cv-card:hover::after { opacity: 1; }
+
+  .cv-tags span {
+    transition: transform 0.25s var(--ease-spring), background 0.2s ease, color 0.2s ease;
+  }
+
+  .cv-tags span:hover,
+  .cv-stack dd span:hover {
+    transform: translateY(-2px);
+    background: var(--sapphire);
+    color: #fff;
+  }
+}
+
+/* Tags */
+.cv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cv-tags span,
+.cv-stack dd span {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(21, 70, 232, 0.06);
+  color: var(--sapphire-deep);
+  border: 1px solid rgba(21, 70, 232, 0.12);
+}
+
+.cv-tags--lg span {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+}
+
+/* Stack — panels in a fluid grid */
+.cv-stack {
+  margin-top: 3rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+  max-width: 100rem;
+}
+
+.cv-stack > div {
+  padding: 1.1rem 1.25rem 1.2rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.cv-stack > div:hover { border-color: rgba(21, 70, 232, 0.28); }
+
+.cv-stack dt {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sapphire);
+  margin-bottom: 0.75rem;
+}
+
+.cv-stack dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cv-stack dd span {
+  transition: transform 0.25s var(--ease-spring), background 0.2s ease, color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .cv-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 768px) {
+  .cv-timeline > li { grid-template-columns: 8.5rem 1fr; }
+}
+
+/* —— Motion (JS adds .cv-motion only when motion is allowed) —— */
+.cv-motion .cv-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  transition:
+    opacity 0.7s ease,
+    transform 0.9s var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.cv-motion .cv-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Once revealed, hand transform back to the hover transition */
+.cv-motion .cv-card.cv-reveal.is-in {
+  transition:
+    opacity 0.7s ease,
+    transform 0.45s var(--ease-out-expo),
+    box-shadow 0.45s var(--ease-out-expo),
+    border-color 0.3s ease;
+  transition-delay: 0s;
+}
+
+.cv-motion .cv-timeline::before {
+  transform: scaleY(0);
+  transition: transform 1.6s var(--ease-out-expo) 0.15s;
+}
+
+.cv-motion .cv-timeline.is-in::before { transform: scaleY(1); }
+
+.cv-motion .cv-timeline > li::before {
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-spring);
+  transition-delay: calc(0.3s + var(--i, 0) * 0.25s);
+}
+
+.cv-motion .cv-timeline.is-in > li::before { transform: scale(1); }
+
+/* CV sections get more room than the reading-width sections */
+@media (min-width: 1280px) {
+  #experience.home-section,
+  #work.home-section,
+  #stack.home-section {
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html[data-sidebar="collapsed"] #experience.home-section > *,
+  html[data-sidebar="collapsed"] #work.home-section > *,
+  html[data-sidebar="collapsed"] #stack.home-section > * {
+    max-width: 90rem;
+  }
+}
+
+/* Closing CTA card — keeps the 2- and 3-column grids even */
+.cv-card--cta {
+  justify-content: center;
+  background: linear-gradient(145deg, var(--sapphire) 0%, var(--sapphire-deep) 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.cv-card--cta::before { background: rgba(255, 255, 255, 0.6); }
+
+.cv-card--cta::after {
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.16), transparent 45%);
+}
+
+.cv-card--cta .cv-card__kicker { color: rgba(255, 255, 255, 0.75); }
+
+.cv-card--cta h3 { color: #fff; }
+
+.cv-card--cta .cv-card__lead { color: rgba(255, 255, 255, 0.82); }
+
+.cv-cta__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.cv-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--sapphire-deep);
+  font-weight: 700;
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+
+.cv-cta__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.35);
+}
+
+.cv-cta__link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.cv-cta__link:hover { text-decoration-color: #fff; }
+
+.cv-card--cta :focus-visible { outline-color: #fff; }

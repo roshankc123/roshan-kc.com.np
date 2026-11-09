@@ -1,0 +1,109 @@
+<p><strong>Direct answer:</strong> Don't choose a tech stack for hype or benchmark scores. Choose it for <strong>the people behind it</strong>: a committed core team, a predictable release and support schedule, a proven security process, and a record of shipping fixes fast when something major breaks. In the AI era, vulnerabilities are being found faster than ever, so the speed of patches, fixes and coordination, which I call <strong>patch velocity</strong>, matters more than raw performance.</p>
+
+<p>I've been part of plenty of stack debates as a CTO at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a>. Most of them argue about the wrong things: which framework is trending, which runtime wins a synthetic benchmark. After October 2026, I think about this question differently. This post explains why.</p>
+
+<h2 id="hype-and-benchmarks">Why hype and benchmarks are the wrong starting point</h2>
+
+<ul>
+  <li><strong>Hype fades; maintenance doesn't.</strong> The framework everyone is excited about this year may lose its maintainers in three. Your product will still need security patches in year five.</li>
+  <li><strong>Benchmarks measure the wrong bottleneck.</strong> Most business applications spend their time in the database, the network and third-party APIs, not the language runtime. A 2× faster runtime rarely makes a 2× faster product. We explained this in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first, not the perfect stack</a>.</li>
+  <li><strong>Performance is fixable later; abandonment isn't.</strong> You can add caching, queues or a faster runtime to a well-maintained stack. You can't add a security team to an abandoned one.</li>
+</ul>
+
+<h2 id="ai-changed">What AI changed about security</h2>
+
+<p>Vulnerability research used to be slow, expensive and specialist work. That's no longer true:</p>
+
+<ul>
+  <li>In 2024, Google's Big Sleep agent found an exploitable memory-safety bug in SQLite, one of the most heavily tested codebases in the world, before it reached a release.</li>
+  <li>DARPA's AI Cyber Challenge showed autonomous systems finding and patching real vulnerabilities in widely used open-source software.</li>
+  <li>At least one of the research teams behind <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell</a>, two critical bugs in PHP's core engine disclosed in October 2026, used AI models as part of discovery and remediation, according to Google Cloud's write-up.</li>
+  <li>Maintainers report the other side too: a flood of AI-generated bug reports, many of them false positives, that still have to be triaged.</li>
+</ul>
+
+<p>The consequence: <strong>discovery is no longer the bottleneck. Patching is.</strong> Old, quiet code is getting fresh eyes, and attackers have the same tools defenders do. When a critical bug lands, what matters is how quickly the fix gets from the maintainers to your production servers.</p>
+
+<h2 id="patch-velocity">Patch velocity: the metric that matters now</h2>
+
+<p>Patch velocity is the time between "a vulnerability is known" and "your production systems are fixed". It has two halves:</p>
+
+<ol>
+  <li><strong>Upstream velocity:</strong> how fast the stack's maintainers confirm, fix, release and coordinate with distributions, cloud providers and security vendors.</li>
+  <li><strong>Your velocity:</strong> how fast your team can rebuild, test and deploy the fix.</li>
+</ol>
+
+<p>You control the second half. You <em>choose</em> the first half when you pick a stack.</p>
+
+<h2 id="case-study">Case study: PHP2Shell</h2>
+
+<p>PHP2Shell is a good example of strong upstream velocity:</p>
+
+<ul>
+  <li>Researchers reported privately, and the PHP security team developed fixes under embargo.</li>
+  <li>Linux distributions and LTS vendors got the patches early.</li>
+  <li>When details leaked a day before the planned disclosure, the team released immediately: four supported branches patched on the same day.</li>
+  <li>Cloudflare and Google shipped protections the same day, and the advisories were honest about what was confirmed and what was only suspected.</li>
+</ul>
+
+<p>As dams at Exakat put it in his <a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">analysis of how a PHP fix reaches production</a>, "It is quiet coordination, and it worked." On our side, a containerised setup let us patch every project within 24 hours, on the main day of Dashain. Neither half alone would have been enough.</p>
+
+<p>The counter-example from the same incident: teams on PHP 8.1 and older got no official fix. A stack is only as safe as the <em>supported</em> version you're actually running.</p>
+
+<h2 id="checklist">How to evaluate a stack: a checklist</h2>
+
+<table>
+  <thead><tr><th>Question</th><th>Good sign</th><th>Red flag</th></tr></thead>
+  <tbody>
+    <tr><td>Who maintains it?</td><td>A funded foundation or company, with several paid core maintainers</td><td>One volunteer, or a company whose business no longer depends on it</td></tr>
+    <tr><td>Is there a published support policy?</td><td>Clear dates for bug-fix and security support per version</td><td>"Use the latest", with no end-of-life dates</td></tr>
+    <tr><td>Is there a security process?</td><td>A security contact, private reporting, advisories with CVEs</td><td>Security issues reported in public GitHub issues</td></tr>
+    <tr><td>How did they handle their last critical bug?</td><td>Days, coordinated with distros and vendors, clear advisory</td><td>Weeks of silence, or a fix only in an unreleased branch</td></tr>
+    <tr><td>Is the release cadence predictable?</td><td>A fixed yearly or regular schedule you can plan upgrades around</td><td>Irregular big-bang releases with breaking changes</td></tr>
+    <tr><td>How deep is the dependency tree?</td><td>A rich standard library and a few well-maintained packages</td><td>Hundreds of transitive micro-packages from unknown maintainers</td></tr>
+    <tr><td>Can you hire for it?</td><td>A large talent pool and plenty of documentation</td><td>A handful of experts, mostly in other time zones</td></tr>
+  </tbody>
+</table>
+
+<p>Apply this to every layer you depend on: the language, the framework, the database, your container base image and your hosting provider.</p>
+
+<h2 id="how-stacks-compare">How mainstream stacks score</h2>
+
+<p>The good news is that most mainstream stacks pass. PHP has the PHP Foundation, paid core developers, a fixed November release cycle and published end-of-life dates. Node.js has the OpenJS Foundation, a security working group and scheduled security releases. Python has the PSF and a security response team. Go, Java and .NET are backed by large companies with formal security programs. Frameworks like Laravel, Symfony, Django and Rails publish support windows and security policies.</p>
+
+<p>The risk is rarely the language. It's the long tail: the small library nobody remembers adding, the abandoned admin-panel plugin, the trendy framework whose maintainers moved on. That's where patch velocity drops to zero.</p>
+
+<h2 id="why-we-chose">Why this is how we chose our stack</h2>
+
+<p>When we chose Laravel and PHP at MarginTop, the reasons were hiring, delivery speed and ecosystem maturity, as I wrote in <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>. In hindsight, the most valuable property turned out to be the one we talked about least: a mature, committed team upstream, with a security process that works under pressure.</p>
+
+<h2 id="your-half">Make your half fast too</h2>
+
+<p>Choosing a stack with good upstream velocity is only half the job:</p>
+
+<ul>
+  <li><strong>Stay on supported versions,</strong> and schedule upgrades every year. See the <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">PHP upgrade playbook</a>.</li>
+  <li><strong>Use one base image</strong> and reproducible builds, so a patch becomes a rebuild instead of a hunt.</li>
+  <li><strong>Automate dependency alerts</strong> (Dependabot, Renovate, <code>composer audit</code>, <code>npm audit</code>), and act on the critical ones within days.</li>
+  <li><strong>Keep the dependency tree small.</strong> Every package is a team whose patch velocity you now depend on. Our <a href="/blog/build-vs-buy-framework-what-to-build-in-house/">build vs buy framework</a> covers this.</li>
+  <li><strong>Practise.</strong> If you've never rebuilt and redeployed everything in a few hours, you won't manage it on the night it matters.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways</h2>
+<ul>
+  <li>Don't choose a stack for hype or benchmarks. Choose it for the committed team, support policy and security process behind it.</li>
+  <li>AI has made vulnerability discovery faster and cheaper, so the bottleneck is now patching.</li>
+  <li>Patch velocity has two halves: upstream (the maintainers) and yours (your build and deploy pipeline). You choose the first when you pick a stack.</li>
+  <li>PHP2Shell showed both halves working: coordinated upstream fixes in hours, and downstream teams patching within a day.</li>
+  <li>The real risk usually lives in the long tail of small, unmaintained dependencies, so keep that tail short.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html" target="_blank" rel="noopener noreferrer">Google Project Zero: From Naptime to Big Sleep</a></li>
+  <li><a href="https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619" target="_blank" rel="noopener noreferrer">Google Cloud: Responding to core PHP vulnerabilities</a></li>
+  <li><a href="https://www.exakat.io/from-commit-to-production-how-a-php-fix-actually-reaches-you/" target="_blank" rel="noopener">Exakat: From Commit to Production</a></li>
+  <li><a href="https://fossforce.com/2026/10/fresh-eyes-on-old-code-ai-and-open-source-security/" target="_blank" rel="noopener noreferrer">FOSS Force: Fresh eyes on old code, AI and open source security</a></li>
+  <li><a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener noreferrer">php.net: Supported versions</a></li>
+</ul>
+
+<p>Choosing a stack for a new product, or worried about the one you have? <a href="/#contact">Get in touch</a>. We'll help you look past the hype.</p>
