@@ -1,0 +1,12 @@
+{
+ "slug": "laravel-octane-swoole-concurrent-load",
+ "date": "2026-08-30",
+ "read": 11,
+ "tag": "Laravel · Performance",
+ "title": "Laravel Octane with Swoole: Handling Concurrent Load | Roshan Kc",
+ "h1": "How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App",
+ "social": "Laravel Octane with Swoole: How We Handle Concurrent Load",
+ "short": "Laravel Octane with Swoole: How We Handle Concurrent Load",
+ "desc": "Laravel Octane + Swoole vs PHP-FPM in production: 3–10× throughput, Octane::concurrently, memory leaks, state resets and graceful reloads, no rewrite needed.",
+ "keywords": "Laravel Octane, Swoole, concurrent load, Octane concurrently"
+}

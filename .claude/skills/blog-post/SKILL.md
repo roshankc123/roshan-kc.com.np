@@ -43,14 +43,14 @@ Structure (match existing posts):
 Voice: plain, direct, specific, first person where real. Sentence case headings. No hype, no
 filler, no "in today's fast-paced world". Short paragraphs. Explain jargon once.
 
-## 4. Metadata (content/blog/<slug>.json)
+## 4. Metadata (content/blog/<slug>.json, body in content/blog/<slug>.html)
 
 ```json
 {"slug": "kebab-case-with-main-keyword", "date": "YYYY-MM-DD", "read": 9,
  "tag": "PHP · Security", "title": "≤ 60 chars incl. ' | Roshan Kc'",
  "h1": "Full headline", "social": "og/twitter title", "short": "Short name",
  "desc": "140–160 chars, contains the main query, says what the reader gets",
- "keywords": "comma, separated", "prev": ["/blog/…/", "Title"], "next": ["/blog/…/", "Title"],
+ "keywords": "comma, separated",
  "citations": [["Source name", "https://…"]]}
 ```
 
@@ -60,18 +60,18 @@ when updating content later.
 ## 5. Publish
 
 ```bash
-python3 scripts/blog/new_post.py content/blog/<slug>.json   # body: content/blog/<slug>.html
-python3 scripts/seo/audit.py --quiet                         # must be 0 FAIL
-bash scripts/build.sh
+python3 scripts/site/build.py          # builds every post + listing from content/ and templates/
+python3 scripts/seo/audit.py --quiet   # must be 0 FAIL
+bash scripts/build.sh                  # copies the public site into dist/
 ```
 
-`new_post.py` builds the page from the site template (head, schema, breadcrumbs, nav), adds it
-to the blog index, feed.xml, sitemap.xml, sitemap.html, llms.txt and the `BLOG_POSTS` list in
-`js/shell.js` (newest first), then runs `enhance.py` (TOC, anchors, series, author, related).
-Re-running with the same JSON regenerates the page in place.
+`build.py` renders each post from `templates/post.html`, sets previous/next by date, and
+regenerates the blog index, feed.xml, the post entries of sitemap.xml, sitemap.html, llms.txt and
+`BLOG_POSTS` in `js/shell.js` (newest first). It then runs `enhance.py` for the TOC, anchors,
+series, author and related blocks. Never hand-edit `blog/*/index.html`: edit the content file or
+the template and rebuild. Changing a post's `date` re-orders everything automatically.
 
-If a post's date changes, the listings must be re-ordered by date (blog index cards, feed
-items, sitemap entries, `BLOG_POSTS`) and prev/next links updated.
+After deploying, submit changed URLs to search engines with IndexNow (see the seo-audit skill).
 
 Then preview it (see the site-design-system skill for screenshots) and tell the user which
 first-person lines and facts to double-check.

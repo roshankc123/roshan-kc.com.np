@@ -60,9 +60,11 @@ Never add a second accent colour. White (`#fff`) is used for boxes sitting on `-
 The blog sidebar and mobile drawer links are synced from `NAV` in `scripts/blog/enhance.py` so
 they always match the homepage. When a homepage section is added or renamed, update `NAV` too.
 
-Generated blocks (TOC, series, author, related, index chips) are written by
-`scripts/blog/enhance.py` between `<!--enh:...-->` markers. Change the script, never hand-edit
-those blocks; `scripts/build.sh` re-runs it.
+Blog pages are generated: `templates/post.html` and `templates/blog-index.html` hold the page
+skeleton, `content/blog/` the posts, and `scripts/site/build.py` renders them. The TOC, series,
+author, related and index-chip blocks come from `scripts/blog/enhance.py` (between
+`<!--enh:...-->` markers). Change templates or scripts, never the generated HTML; `scripts/build.sh`
+re-runs everything.
 
 ## Rules
 

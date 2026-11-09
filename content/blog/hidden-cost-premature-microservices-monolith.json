@@ -1,0 +1,12 @@
+{
+ "slug": "hidden-cost-premature-microservices-monolith",
+ "date": "2026-09-01",
+ "read": 10,
+ "tag": "Architecture · Laravel",
+ "title": "Hidden Cost of Premature Microservices | Roshan Kc",
+ "h1": "The Hidden Cost of Premature Microservices (And Why We're Still a Monolith)",
+ "social": "The Hidden Cost of Premature Microservices (And Why We're Still a Monolith)",
+ "short": "The Hidden Cost of Premature Microservices (And Why We're Still a Monolith)",
+ "desc": "Why MarginTop still ships a modular Laravel monolith — the hidden costs of premature microservices and when splitting actually makes sense.",
+ "keywords": "premature microservices, modular monolith, Laravel monolith"
+}

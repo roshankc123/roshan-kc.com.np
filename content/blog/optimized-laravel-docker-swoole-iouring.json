@@ -1,0 +1,13 @@
+{
+ "slug": "optimized-laravel-docker-swoole-iouring",
+ "date": "2026-09-07",
+ "read": 12,
+ "tag": "Docker · Laravel · Performance",
+ "title": "Laravel Docker Image: PHP 8.5 + Swoole + io_uring | Roshan Kc",
+ "h1": "I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here's Why It Exists)",
+ "social": "Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring",
+ "short": "Optimized Laravel Docker Image: PHP 8.5 + Swoole + io_uring",
+ "desc": "Free Docker image for Laravel Octane: PHP 8.5.12 + Swoole 6.2.3 built with io_uring, multi-arch (amd64 + arm64), Nginx and Supervisor. Patched for PHP2Shell.",
+ "keywords": "Laravel Docker, Swoole io_uring, Laravel Octane Docker, PHP 8.5 Docker, optimized Laravel runtime, ARM64 Laravel Docker, Graviton Laravel, Swoole ARM64, io_uring ARM64",
+ "modified": "2026-11-09"
+}

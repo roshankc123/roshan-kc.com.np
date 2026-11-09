@@ -1,0 +1,458 @@
+<p style="border-left:4px solid var(--sapphire);background:var(--wash);padding:0.9rem 1.1rem;margin:0 0 1.5rem"><strong>Security update (October 22, 2026):</strong> the image was rebuilt on <strong>PHP 8.5.12</strong> to fix <a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell (CVE-2026-109618 and CVE-2026-109619)</a>. Use <code>php8.5.12-swoole6.2.3-iouring</code>. The older <code>php8.5-swoole6.2.2-iouring</code> tag is built on an unpatched PHP and should not be used.</p>
+
+<p><strong>Direct answer:</strong> The official <code>phpswoole/swoole</code> Docker image does not compile <strong>io_uring</strong> support &mdash; a Linux kernel async I/O mechanism that meaningfully reduces syscall overhead for high-concurrency Swoole servers. I built and published <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer"><code>roshankc1234/optimized-laravel-runtime</code></a> to fix that: PHP 8.5 + Swoole 6.2.3 rebuilt from source with <code>--enable-iouring</code>, Nginx, Supervisor, and common PHP extensions &mdash; in a lean ~78MB Alpine image anyone can use as a Laravel Octane base.</p>
+
+<p>The image is <strong>multi-arch</strong>: it supports both <code>linux/amd64</code> and <code>linux/arm64</code>. If you have a choice, <strong>run it on ARM64</strong> (AWS Graviton, Apple Silicon in CI, Ampere Altra). io_uring on ARM64 delivers excellent throughput, and Graviton3 instances typically offer 20&ndash;40% better price/performance than equivalent x86 EC2 instances &mdash; pairing io_uring with arm64 is the highest-leverage configuration for most Laravel API workloads.</p>
+
+<p>This post explains what io_uring is, why ARM64 is the preferred target, what&#39;s inside the image, and how to wire it into your Laravel app in 15 minutes.</p>
+
+<h2 id="what-is-iouring">What io_uring actually is</h2>
+
+<p>io_uring is a Linux kernel interface for asynchronous I/O introduced by Jens Axboe in kernel 5.1 (2019) and substantially improved in 5.6 and 5.10. Before io_uring, the dominant async I/O mechanism in high-performance servers was <strong>epoll</strong> &mdash; an event notification mechanism that tells you when a file descriptor is ready for I/O, but still requires separate <code>read()</code>/<code>write()</code> syscalls to actually perform the operation.</p>
+
+<p>io_uring fundamentally changes the model with two ring buffers shared between userspace and the kernel &mdash; a submission queue (SQ) and a completion queue (CQ). Your program drops I/O requests into the SQ; the kernel processes them and places results in the CQ; your program reads completions. The key advantage: <strong>multiple I/O operations can be submitted and completed with a single syscall</strong>, or even with zero syscalls when the kernel can process completions without being interrupted.</p>
+
+<p>For a Swoole HTTP server handling thousands of concurrent connections, the numbers matter:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Mechanism</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">I/O model</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Syscall overhead</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Kernel-userspace transitions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>epoll (classic)</strong></td>
+      <td style="padding:0.6rem 0.9rem">Notify-then-read: two phases per operation</td>
+      <td style="padding:0.6rem 0.9rem">One syscall per event wait + one per read/write</td>
+      <td style="padding:0.6rem 0.9rem">2 per I/O operation minimum</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>io_uring (this image)</strong></td>
+      <td style="padding:0.6rem 0.9rem">Submit-and-complete via ring buffers</td>
+      <td style="padding:0.6rem 0.9rem">Single <code>io_uring_enter</code> for N operations; zero-syscall in SQPOLL mode</td>
+      <td style="padding:0.6rem 0.9rem">Near-zero in SQPOLL; fraction of epoll under load</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>Real-world benchmarks on io_uring vs epoll for web server workloads (from the <a href="https://kernel.dk/io_uring.pdf" target="_blank" rel="noopener noreferrer">original Axboe paper</a> and subsequent benchmarks) show throughput improvements in the range of 10&ndash;50% for I/O-intensive workloads at high concurrency, with larger gains appearing as connection counts increase. Cloudflare has published data showing io_uring-based servers outperforming epoll-based equivalents by 15&ndash;30% on their edge workloads. The gains are workload-dependent &mdash; a PHP app spending most of its time in the database will see less improvement than a file-serving or network-proxying workload.</p>
+
+<h2 id="arm64-preferred">Why ARM64 is the preferred architecture for this image</h2>
+
+<p>Both amd64 and arm64 are supported and tested. But if you&#39;re deploying on AWS and haven&#39;t already switched to Graviton, now is a good time to consider it &mdash; and io_uring makes the case even stronger.</p>
+
+<p>Here&#39;s the combined argument for ARM64 + io_uring:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Factor</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">amd64 (x86_64)</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">arm64 (Graviton / Ampere)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>io_uring support</strong></td>
+      <td style="padding:0.6rem 0.9rem">Full (kernel &ge; 5.12)</td>
+      <td style="padding:0.6rem 0.9rem">Full (kernel &ge; 5.12, AL2023 ships 6.1)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Price/performance vs equivalent x86</strong></td>
+      <td style="padding:0.6rem 0.9rem">Baseline</td>
+      <td style="padding:0.6rem 0.9rem">~20&ndash;40% better (AWS Graviton3 vs Intel/AMD EC2)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Throughput/watt</strong></td>
+      <td style="padding:0.6rem 0.9rem">Good</td>
+      <td style="padding:0.6rem 0.9rem">Significantly better &mdash; relevant for sustained high-concurrency Swoole workloads</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Docker multi-arch image</strong></td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Included in manifest</td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Included in manifest (also available as dedicated arm64 tag)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem"><strong>Swoole 6.2.3 build</strong></td>
+      <td style="padding:0.6rem 0.9rem">Compiled and tested</td>
+      <td style="padding:0.6rem 0.9rem">Compiled and tested; io_uring verified on AL2023 arm64</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem"><strong>Recommended for production</strong></td>
+      <td style="padding:0.6rem 0.9rem">Yes &mdash; especially if you&#39;re already on x86</td>
+      <td style="padding:0.6rem 0.9rem"><strong>Preferred</strong> &mdash; best throughput per dollar with io_uring</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>AWS Graviton3 (C7g, M7g, R7g families) runs Amazon Linux 2023 with a 6.1 kernel by default. Pull the multi-arch image and Docker will automatically select the arm64 layer on Graviton. You don&#39;t need to specify the platform flag unless you&#39;re cross-compiling locally on an x86 machine:</p>
+
+<pre><code># On Graviton: Docker automatically picks arm64 layer
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
+
+# Force arm64 explicitly (e.g. cross-compile on x86 CI):
+docker pull --platform linux/arm64 roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
+
+# Dedicated arm64-only tag (same image, no manifest lookup overhead):
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring-arm64</code></pre>
+
+<h2 id="why-the-official-image-doesnt-have-it">Why the official phpswoole image doesn&#39;t have io_uring</h2>
+
+<p>The <a href="https://hub.docker.com/r/phpswoole/swoole" target="_blank" rel="noopener noreferrer">official <code>phpswoole/swoole</code></a> images compile Swoole with a standard set of flags. As of Swoole 6.x, <code>--enable-iouring</code> is an opt-in compile flag &mdash; it&#39;s not included in the standard build because:</p>
+
+<ul>
+  <li>io_uring requires Linux kernel &ge; 5.1 (the official image targets wider compatibility, including older kernels)</li>
+  <li>Full io_uring functionality (particularly SQPOLL mode) requires <code>CAP_SYS_NICE</code> or similar kernel permissions that not all Docker environments grant by default</li>
+  <li>The seccomp profile Docker applies by default blocks some <code>io_uring_*</code> syscalls, which would cause silent fallback or errors for users who don&#39;t know to configure it</li>
+</ul>
+
+<p>These are all legitimate reasons not to include it by default. But if you&#39;re running on a modern Linux host (kernel 5.12+, which covers Amazon Linux 2023, Ubuntu 22.04+, and most current cloud images), you&#39;re leaving performance on the table by not using io_uring.</p>
+
+<h2 id="what-is-in-the-image">What&#39;s inside the image</h2>
+
+<p>The image is built in two stages on an Alpine base:</p>
+
+<ol>
+  <li><strong>Build stage:</strong> Full compiler toolchain (gcc, g++, make, autoconf) + Swoole source code compiled with <code>--enable-iouring</code> and other performance flags.</li>
+  <li><strong>Runtime stage:</strong> Only the compiled Swoole extension and its runtime dependencies. No compilers, no build tools. This is what keeps the image lean.</li>
+</ol>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Component</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Version / detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">PHP</td>
+      <td style="padding:0.6rem 0.9rem">8.5.12 (Alpine)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Swoole</td>
+      <td style="padding:0.6rem 0.9rem">6.2.3, compiled with <code>--enable-iouring</code></td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Web server</td>
+      <td style="padding:0.6rem 0.9rem">Nginx (reverse proxy in front of Swoole)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Process manager</td>
+      <td style="padding:0.6rem 0.9rem">Supervisor (manages Nginx + Octane workers)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">PHP extensions</td>
+      <td style="padding:0.6rem 0.9rem"><code>pdo_pgsql</code>, <code>redis</code>, <code>gd</code> (jpeg/png/webp/avif), <code>zip</code>, <code>exif</code>, <code>pcntl</code></td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">PHP memory limit</td>
+      <td style="padding:0.6rem 0.9rem">512M</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">PHP upload/POST limit</td>
+      <td style="padding:0.6rem 0.9rem">100M</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">max_execution_time</td>
+      <td style="padding:0.6rem 0.9rem">300s</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Architectures</td>
+      <td style="padding:0.6rem 0.9rem"><code>linux/amd64</code> and <code>linux/arm64</code> (multi-arch manifest)</td>
+    </tr>
+    <tr style="background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Compressed image size</td>
+      <td style="padding:0.6rem 0.9rem">~78MB</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>What&#39;s <em>not</em> in the image: Composer, git, or application code. This is a <strong>base runtime</strong> &mdash; you copy your application on top of it. That&#39;s intentional: keeping build-time tools out of the runtime image is a security and size best practice.</p>
+
+<h2 id="quick-start">Quick start: pull and verify</h2>
+
+<p>The multi-arch manifest means <code>docker pull</code> automatically picks the right layer for your host:</p>
+
+<pre><code># Works on both x86 and Graviton/ARM &mdash; Docker selects the right layer
+docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
+
+# Verify io_uring compiled correctly
+docker run --rm roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring \
+  php --ri swoole | grep -i uring</code></pre>
+
+<p>You should see:</p>
+
+<pre><code>io_uring =&gt; enabled</code></pre>
+
+<p>Also check which architecture Docker selected on your host:</p>
+
+<pre><code>docker run --rm roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring \
+  uname -m
+# aarch64  &rarr; you are on arm64 (Graviton, M-series, Ampere)
+# x86_64   &rarr; you are on amd64</code></pre>
+
+<p>If instead you see <code>Create io_uring failed</code> in Swoole logs at runtime, the image compiled correctly but Docker&#39;s seccomp profile is blocking the <code>io_uring_*</code> syscalls. Two ways to fix it:</p>
+
+<pre><code># Option 1: Disable seccomp (development/trusted environments only)
+docker run --security-opt seccomp=unconfined ...
+
+# Option 2: Allow only io_uring syscalls (production-appropriate)
+# Add to your docker-compose.yml:
+security_opt:
+  - seccomp=./seccomp-iouring.json</code></pre>
+
+<p>A minimal seccomp profile that adds io_uring syscalls to Docker&#39;s default allowlist is straightforward to create &mdash; I&#39;ll link a reference profile below. The key syscalls to allow are <code>io_uring_setup</code>, <code>io_uring_enter</code>, and <code>io_uring_register</code>.</p>
+
+<h2 id="dockerfile">Dockerfile for your Laravel app</h2>
+
+<p>Here&#39;s a production-ready Dockerfile that uses the image as a base:</p>
+
+<pre><code>FROM roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
+
+WORKDIR /var/www
+
+# Copy application code
+COPY --chown=www-data:www-data . .
+
+# Install PHP dependencies (Composer must be available in your build stage)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Optimize Laravel for production
+RUN php artisan config:cache \
+    &amp;&amp; php artisan route:cache \
+    &amp;&amp; php artisan view:cache
+
+# Copy Nginx and Supervisord config
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]</code></pre>
+
+<p>A multi-stage version (recommended for production to keep Composer out of the final image):</p>
+
+<pre><code># Stage 1: Install dependencies
+FROM composer:2 AS deps
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Stage 2: Runtime
+FROM roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring
+
+WORKDIR /var/www
+COPY --chown=www-data:www-data . .
+COPY --from=deps /app/vendor ./vendor
+
+RUN php artisan config:cache \
+    &amp;&amp; php artisan route:cache \
+    &amp;&amp; php artisan view:cache
+
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+EXPOSE 80
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]</code></pre>
+
+<h2 id="nginx-supervisor-config">Nginx and Supervisord configuration</h2>
+
+<p>Nginx proxies incoming HTTP traffic to Octane&#39;s Swoole server running on port 8000 internally. The key Nginx block:</p>
+
+<pre><code>server {
+    listen 80;
+    server_name _;
+
+    root /var/www/public;
+    index index.php;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 60s;
+        proxy_read_timeout 300s;
+    }
+}</code></pre>
+
+<p>Supervisord manages both Nginx and the Octane worker process, restarting either if they die:</p>
+
+<pre><code>[supervisord]
+nodaemon=true
+logfile=/dev/stdout
+logfile_maxbytes=0
+
+[program:nginx]
+command=/usr/sbin/nginx -g "daemon off;"
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+[program:octane]
+command=php /var/www/artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --workers=4
+directory=/var/www
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0</code></pre>
+
+<p>Tune <code>--workers</code> to your CPU count. A common starting point is <code>2 &times; CPU cores</code> for I/O-bound Laravel apps. Use <code>--task-workers</code> separately if you want dedicated task workers.</p>
+
+<h2 id="docker-compose">docker-compose.yml for local development</h2>
+
+<pre><code>version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    security_opt:
+      - seccomp=./docker/seccomp-iouring.json
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+
+volumes:
+  pgdata:</code></pre>
+
+<h2 id="kernel-requirements">Kernel requirements and cloud compatibility</h2>
+
+<p>io_uring requires Linux kernel &ge; 5.1. The SQPOLL feature (zero-syscall mode) requires &ge; 5.11. For production, I recommend &ge; 5.12. Here&#39;s what that means for common cloud environments:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)">
+      <th style="padding:0.6rem 0.9rem;text-align:left">Platform / OS</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">Typical kernel</th>
+      <th style="padding:0.6rem 0.9rem;text-align:left">io_uring compatible?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Amazon Linux 2023</td>
+      <td style="padding:0.6rem 0.9rem">6.1</td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Yes (recommended)</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Ubuntu 22.04 LTS</td>
+      <td style="padding:0.6rem 0.9rem">5.15</td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Yes</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Ubuntu 24.04 LTS</td>
+      <td style="padding:0.6rem 0.9rem">6.8</td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Yes</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">Debian 12 (Bookworm)</td>
+      <td style="padding:0.6rem 0.9rem">6.1</td>
+      <td style="padding:0.6rem 0.9rem">&#x2705; Yes</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Amazon Linux 2</td>
+      <td style="padding:0.6rem 0.9rem">4.14 / 5.10</td>
+      <td style="padding:0.6rem 0.9rem">&#x26A0;&#xFE0F; 5.10 builds work; SQPOLL limited</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)">
+      <td style="padding:0.6rem 0.9rem">macOS (Docker Desktop)</td>
+      <td style="padding:0.6rem 0.9rem">Linux VM (varies)</td>
+      <td style="padding:0.6rem 0.9rem">&#x26A0;&#xFE0F; May need <code>seccomp=unconfined</code> for dev</td>
+    </tr>
+    <tr style="background:var(--rule)">
+      <td style="padding:0.6rem 0.9rem">Windows WSL2</td>
+      <td style="padding:0.6rem 0.9rem">5.15+ (recent builds)</td>
+      <td style="padding:0.6rem 0.9rem">&#x26A0;&#xFE0F; Works but seccomp config needed</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>Check your kernel version with <code>uname -r</code>. If you&#39;re on a kernel that supports io_uring but Swoole logs a failure, check <code>sysctl kernel.io_uring_disabled</code> &mdash; a value of <code>2</code> means io_uring is disabled system-wide by the host. Values <code>0</code> (enabled) or <code>1</code> (requires a privilege) are fine for Docker workloads.</p>
+
+<h2 id="what-is-not-included">What&#39;s not included and why</h2>
+
+<p>The image intentionally excludes Composer, git, and application source code. The reasoning:</p>
+
+<ul>
+  <li><strong>Security surface.</strong> Composer and git are build tools; they have no business being in a production runtime image. If an attacker gains code execution in the container, having a package manager available makes lateral movement significantly easier.</li>
+  <li><strong>Image size.</strong> Excluding build tools keeps the compressed image around 78MB. A comparable image with Composer, git, and build tooling is typically 200&ndash;400MB compressed.</li>
+  <li><strong>Layer caching.</strong> Multi-stage builds let you cache dependency installation separately from application code. A code change in your app doesn&#39;t invalidate the vendor directory layer.</li>
+</ul>
+
+<h2 id="when-to-use-this">When this image is the right choice</h2>
+
+<p>Use this image when:</p>
+<ul>
+  <li>You&#39;re running Laravel Octane with the Swoole server driver.</li>
+  <li>Your host runs Linux kernel &ge; 5.12 (most modern cloud environments do).</li>
+  <li>You want io_uring I/O optimization without compiling Swoole yourself.</li>
+  <li>You want an Alpine-based runtime with Nginx and Supervisor already wired up.</li>
+  <li><strong>Ideal:</strong> You&#39;re deploying to AWS Graviton (arm64) &mdash; io_uring + arm64 gives you the best throughput per dollar of any configuration this image supports.</li>
+</ul>
+
+<p>Skip this image if:</p>
+<ul>
+  <li>You&#39;re running Octane with RoadRunner (different server driver entirely).</li>
+  <li>Your production host is on an older kernel that doesn&#39;t support io_uring well.</li>
+  <li>You need PHP extensions not included in the image and prefer to extend your own base.</li>
+  <li>You&#39;re on a PHP-FPM setup (not using Octane) &mdash; this image is specifically for Octane&#39;s long-running worker model.</li>
+</ul>
+
+<h2 id="image-on-docker-hub">The image on Docker Hub</h2>
+
+<p>The image is public and free to use:</p>
+
+<pre><code>docker pull roshankc1234/optimized-laravel-runtime:php8.5.12-swoole6.2.3-iouring</code></pre>
+
+<p>Available tags:</p>
+<ul>
+  <li><code>php8.5.12-swoole6.2.3-iouring</code> &mdash; <strong>multi-arch manifest (amd64 + arm64)</strong>. This is the tag to use in production &mdash; Docker selects the right layer automatically for your host architecture.</li>
+  <li><code>php8.5.12-swoole6.2.3-iouring-arm64</code> &mdash; arm64 only (AWS Graviton, Apple M-series in CI, Ampere Altra). Use this if you want to explicitly pin to arm64 and skip the manifest lookup.</li>
+</ul>
+
+<p style="margin-top:0.75rem"><strong>Which tag should you use?</strong> On Graviton or any arm64 host, either tag works &mdash; the manifest tag is simpler. If you&#39;re cross-building on x86 CI targeting arm64 production, use <code>--platform linux/arm64</code> with the manifest tag, or pull the dedicated arm64 tag directly.</p>
+
+<p>Full details, Dockerfile, and configuration examples: <a href="https://hub.docker.com/r/roshankc1234/optimized-laravel-runtime" target="_blank" rel="noopener noreferrer">hub.docker.com/r/roshankc1234/optimized-laravel-runtime</a>.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>io_uring reduces syscall overhead at high concurrency &mdash; benchmarks show 10&ndash;50% throughput improvement for I/O-heavy workloads vs epoll, with larger gains as connection count grows.</li>
+  <li>The official <code>phpswoole/swoole</code> image doesn&#39;t compile io_uring for broad compatibility reasons. This image rebuilds Swoole 6.2.3 with <code>--enable-iouring</code> and strips compilers from the runtime layer.</li>
+  <li><strong>ARM64 is the preferred architecture.</strong> The image ships a multi-arch manifest (amd64 + arm64). On AWS Graviton3, io_uring + arm64 delivers the best throughput per dollar &mdash; Graviton3 is ~20&ndash;40% more cost-efficient than equivalent x86 EC2 while running io_uring at full capability on its 6.1 kernel.</li>
+  <li>Image includes PHP 8.5, Swoole 6.2.3, Nginx, Supervisor, and common extensions in a ~78MB Alpine base. Compressed size is the same for both architectures.</li>
+  <li>Requirements: Linux kernel &ge; 5.12, Docker with io_uring syscalls allowed. Amazon Linux 2023 (arm64 or x86), Ubuntu 22.04+, and Debian 12 all qualify.</li>
+  <li>Verify with <code>php --ri swoole | grep uring</code>. If you hit a seccomp block, add <code>io_uring_setup</code>, <code>io_uring_enter</code>, and <code>io_uring_register</code> to your Docker seccomp allowlist.</li>
+</ul>
+
+<p>Questions, issues, or feedback on the image? <a href="/#contact">Reach out</a> &mdash; I actively maintain it and want to know what extensions or configuration options would make it more useful.</p>

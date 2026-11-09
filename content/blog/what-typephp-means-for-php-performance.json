@@ -1,0 +1,12 @@
+{
+ "slug": "what-typephp-means-for-php-performance",
+ "date": "2026-08-29",
+ "read": 9,
+ "tag": "PHP · Performance",
+ "title": "TypePHP Explained: Swoole's PHP AOT Compiler | Roshan Kc",
+ "h1": "What TypePHP Means for the Future of PHP Performance",
+ "social": "TypePHP Explained: Swoole's PHP AOT Compiler and What It Means for Laravel",
+ "short": "TypePHP Explained: Swoole's PHP AOT Compiler and What It Means for Laravel",
+ "desc": "What is TypePHP? Swoole's AOT compiler turns typed PHP into C++ and native code. How it compares to JIT and HHVM, Laravel support, and whether to bet on it.",
+ "keywords": "TypePHP, Swoole AOT, PHP performance, PHP to C++"
+}
