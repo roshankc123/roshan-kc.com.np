@@ -786,3 +786,11 @@ html[data-sidebar="collapsed"] main#main-content {
 }
 .stack-subhead { margin: 3rem 0 1rem; }
 .home-writing-more { margin-top: 2rem; }
+.home-writing-more .text-link {
+  display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px;
+  font-weight: 700; color: var(--sapphire); text-decoration: none;
+}
+.home-writing-more .text-link span { transition: transform var(--transition); }
+.home-writing-more .text-link:hover { color: var(--sapphire-deep); text-decoration: underline; text-underline-offset: 4px; }
+.home-writing-more .text-link:hover span { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .home-writing-more .text-link span { transition: none; } }

@@ -150,7 +150,7 @@ const deckSlides = [
     { id: "experience", label: "Experience" },
     { id: "work", label: "Work" },
     { id: "stack", label: "Tech stack" },
-    { id: "writing", label: "Writing" },
+    { id: "writing", label: "Posts" },
     { id: "faq", label: "FAQ" },
     { id: "contact", label: "Contact" }
 ];

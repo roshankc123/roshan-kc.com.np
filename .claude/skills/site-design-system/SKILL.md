@@ -80,8 +80,8 @@ re-runs everything.
 
 ## Headings and copy
 
-- Section titles are plain and user-facing: "About me", "Values I hold", "Experience", "Selected work",
-  "Tech stack", "Latest writing", "Get in touch". No clever or self-referential titles
+- Section titles are plain and user-facing: "About me", "Values I hold", "Experience", "Top domains I’ve worked in",
+  "Tech stack I’ve worked with", "Posts", "Get in touch". No clever or self-referential titles
   ("The CV, without the PDF", "Notes from the founder seat").
 - No label above a title and no tagline under it. The title is followed directly by content.
 - Card titles say what the thing is ("EV charging and sensor integrations"), not a mood
