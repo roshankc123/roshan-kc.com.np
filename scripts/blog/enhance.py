@@ -63,7 +63,7 @@ STOP = set("a an the and or of for to in on with how why what we our your is are
 
 
 # Sidebar + drawer navigation, kept identical to the homepage (index.html).
-NAV = [("/#home", "Home"), ("/#about", "About"), ("/#focus", "What I bring"), ("/#experience", "Experience"),
+NAV = [("/#home", "Home"), ("/#about", "About"), ("/#focus", "Values I hold"), ("/#experience", "Experience"),
        ("/#work", "Work"), ("/#stack", "Tech stack"), ("/blog/", "Blog"), ("/#contact", "Contact")]
 
 

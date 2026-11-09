@@ -146,7 +146,7 @@ toggleBtns.forEach((btn) => {
 const deckSlides = [
     { id: "home", label: "Home" },
     { id: "about", label: "About" },
-    { id: "focus", label: "What I bring" },
+    { id: "focus", label: "Values I hold" },
     { id: "experience", label: "Experience" },
     { id: "work", label: "Work" },
     { id: "stack", label: "Tech stack" },

@@ -785,3 +785,4 @@ html[data-sidebar="collapsed"] main#main-content {
   color: var(--ink);
 }
 .stack-subhead { margin: 3rem 0 1rem; }
+.home-writing-more { margin-top: 2rem; }
