@@ -62,3 +62,13 @@ Report findings as numbers from the export, not impressions alone.
 - Internal links: every post links to 3+ related posts. The enhancer also adds a series box and
   related posts automatically.
 - After a deploy, request indexing for changed URLs in Search Console. Re-check CTR after 3–4 weeks.
+
+## 6. IndexNow (Bing, Yandex, Seznam, Naver, Yep)
+
+- Key file: `/cecf42ed10c14e03a85b4f593fb8aa9b.txt` at the site root (copied into dist by
+  `scripts/build.sh`). The key is public by design.
+- `npm run deploy` submits automatically after `wrangler deploy`; manually: `npm run indexnow`
+  (new or changed URLs from sitemap.xml since the last run, tracked in the git-ignored
+  `.indexnow-state.json`), `--all` for everything, `--dry-run` to preview, or pass URLs.
+- It refuses to submit until the key file is live, so deploy first. Google ignores IndexNow:
+  request indexing in Search Console for important pages.

@@ -33,3 +33,6 @@ npx --yes wrangler pages deploy dist \
   --project-name "$CF_PAGES_PROJECT" \
   --branch "${CF_PAGES_BRANCH:-main}" \
   --commit-dirty=true
+
+# Tell IndexNow engines (Bing and others) which URLs changed
+python3 -I scripts/seo/indexnow.py || echo "IndexNow submission failed; run: npm run indexnow"

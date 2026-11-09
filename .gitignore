@@ -22,3 +22,6 @@ dist/
 
 # Python
 __pycache__/
+
+# IndexNow: last submitted lastmod per URL (per machine)
+.indexnow-state.json

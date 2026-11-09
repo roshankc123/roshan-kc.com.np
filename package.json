@@ -7,8 +7,9 @@
     "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css css/home.css > css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:css && bash scripts/build.sh",
-    "deploy": "bash scripts/build.sh && python3 -I scripts/seo/audit.py --quiet && wrangler deploy",
-    "preview": "wrangler dev"
+    "deploy": "bash scripts/build.sh && python3 -I scripts/seo/audit.py --quiet && wrangler deploy && python3 -I scripts/seo/indexnow.py",
+    "preview": "wrangler dev",
+    "indexnow": "python3 -I scripts/seo/indexnow.py"
   },
   "repository": {
     "type": "git",
