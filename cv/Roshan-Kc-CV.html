@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roshan Kc — CV</title>
+  <meta name="description" content="Printable CV of Roshan Kc, Co-Founder and CTO of MarginTop Solutions: experience, selected engineering work, tech stack and education.">
+  <meta name="robots" content="noindex, follow">
+  <style>
+    @font-face {
+      font-family: "Atkinson Hyperlegible";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("../fonts/atkinson-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Atkinson Hyperlegible";
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url("../fonts/atkinson-700.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("../fonts/jetbrains-mono-500.woff2") format("woff2");
+    }
+
+    /* Site tokens — roshan-kc.com.np */
+    :root {
+      --ink: #0b1220;
+      --ink-soft: #243044;
+      --mist: #5c6b7e;
+      --line: #e2e6ec;
+      --paper: #fafbfc;
+      --sapphire: #1546e8;
+      --sapphire-deep: #0f35b5;
+      --tint: #eef2fd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    html, body {
+      width: 210mm;
+      font-family: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+      color: var(--ink-soft);
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      overflow: hidden;
+      padding: 13mm 14mm 11mm;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #f4f7fc 0%, #ffffff 40mm);
+      break-after: page;
+    }
+
+    .sheet:last-child { break-after: auto; }
+
+    .sheet.cont {
+      background: #fff;
+    }
+
+    .mono {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 500;
+    }
+
+    /* —— Header —— */
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: end;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .identity h1 {
+      font-size: 27pt;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 0.98;
+    }
+
+    .identity .role {
+      margin-top: 7px;
+      font-size: 11pt;
+      font-weight: 700;
+      color: var(--sapphire);
+      letter-spacing: -0.01em;
+    }
+
+    .identity .sub {
+      margin-top: 4px;
+      font-size: 9pt;
+      color: var(--mist);
+      max-width: 30rem;
+      line-height: 1.4;
+    }
+
+    .contact {
+      text-align: right;
+      font-size: 8pt;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .contact .loc {
+      font-size: 6.8pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sapphire);
+      margin-bottom: 4px;
+    }
+
+    .contact .soc { color: var(--mist); }
+
+    /* Running header on page 2 */
+    .runhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .runhead strong {
+      font-size: 13pt;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .runhead span {
+      font-size: 6.8pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+
+    /* —— Sections —— */
+    section { margin-bottom: 13px; }
+
+    .label {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 6.9pt;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sapphire);
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .summary {
+      font-size: 9.2pt;
+      line-height: 1.52;
+      color: var(--ink-soft);
+    }
+
+    .summary b { color: var(--ink); }
+
+    /* Metrics strip */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .metric {
+      padding: 7px 10px;
+      border-left: 2px solid var(--sapphire);
+      background: var(--tint);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 12.5pt;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .metric span {
+      font-size: 7.2pt;
+      color: var(--mist);
+      line-height: 1.25;
+    }
+
+    /* Tech stack */
+    .stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 18px;
+      padding: 9px 13px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .stack .row {
+      display: grid;
+      grid-template-columns: 23mm 1fr;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: 7.9pt;
+      line-height: 1.4;
+    }
+
+    .stack .row:nth-last-child(-n+2) { border-bottom: 0; }
+
+    .stack dt {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .stack dd { color: var(--ink-soft); }
+
+    /* Experience */
+    .job + .job {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px solid var(--line);
+    }
+
+    .job-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .job-top h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.015em;
+    }
+
+    time {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 6.9pt;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mist);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .org {
+      font-size: 8.4pt;
+      color: var(--mist);
+      margin: 1px 0 6px;
+    }
+
+    .org em {
+      font-style: normal;
+      color: var(--sapphire-deep);
+      font-weight: 700;
+    }
+
+    .job ul { margin: 0 0 0 14px; }
+
+    .job li {
+      font-size: 8.5pt;
+      line-height: 1.45;
+      margin-bottom: 3.5px;
+      color: var(--ink-soft);
+    }
+
+    .job li b { color: var(--ink); }
+
+    .job li::marker { color: var(--sapphire); }
+
+    /* Selected work cards (page 2) */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .card {
+      padding: 9px 11px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .card.wide { grid-column: 1 / -1; }
+
+    .card h4 {
+      font-size: 9.2pt;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .card .tech {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 500;
+      font-size: 6.5pt;
+      letter-spacing: 0.02em;
+      color: var(--sapphire-deep);
+      margin: 2px 0 5px;
+      line-height: 1.4;
+    }
+
+    .card ul { margin-left: 12px; }
+
+    .card li {
+      font-size: 7.9pt;
+      line-height: 1.42;
+      margin-bottom: 2px;
+    }
+
+    .card li::marker { color: var(--sapphire); }
+
+    .card.wide ul {
+      columns: 2;
+      column-gap: 20px;
+    }
+
+    .card.wide li { break-inside: avoid; }
+
+    /* Domains */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 5px;
+    }
+
+    .chips span {
+      font-size: 7.4pt;
+      padding: 2.5px 8px;
+      border: 1px solid #cdd8f7;
+      background: #f6f8fe;
+      color: var(--sapphire-deep);
+      border-radius: 999px;
+    }
+
+    /* Bottom grid */
+    .bottom {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      margin-top: auto;
+      padding-top: 11px;
+      border-top: 1px solid var(--line);
+    }
+
+    .edu strong {
+      display: block;
+      font-size: 9.3pt;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .edu .meta {
+      font-size: 8pt;
+      color: var(--mist);
+      margin-top: 1px;
+    }
+
+    .edu ul { margin: 5px 0 0 12px; }
+
+    .edu li {
+      font-size: 7.9pt;
+      line-height: 1.4;
+      color: var(--ink-soft);
+      margin-bottom: 2px;
+    }
+
+    .edu li::marker { color: var(--sapphire); }
+
+    .extra {
+      margin-top: 7px;
+      font-size: 7.8pt;
+      color: var(--mist);
+      line-height: 1.5;
+    }
+
+    .extra b { color: var(--ink); }
+
+    .writing li {
+      list-style: none;
+      font-size: 7.9pt;
+      line-height: 1.34;
+      color: var(--ink-soft);
+      padding-left: 10px;
+      position: relative;
+      margin-bottom: 3.5px;
+    }
+
+    .writing li::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--sapphire);
+      position: absolute;
+      left: 0;
+      top: 0.45em;
+    }
+
+    .writing .more {
+      margin-top: 5px;
+      font-size: 7.5pt;
+      color: var(--mist);
+    }
+
+    .writing .more a {
+      color: var(--sapphire);
+      font-weight: 700;
+    }
+
+    @media screen {
+      body {
+        width: auto;
+        min-height: 100vh;
+        background: #dce3ee;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 28px 16px;
+      }
+      .sheet {
+        box-shadow: 0 18px 48px rgba(11, 18, 32, 0.14);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ——————————————— Page 1 ——————————————— -->
+  <div class="sheet">
+    <header>
+      <div class="identity">
+        <h1>Roshan Kc</h1>
+        <p class="role">Co-Founder &amp; CTO, MarginTop Solutions</p>
+        <p class="sub">Computer engineer building device-connected, AI-assisted and enterprise software — from BLE, robots and biometric hardware up to cloud infrastructure.</p>
+      </div>
+      <div class="contact">
+        <p class="loc mono">Kathmandu, Nepal</p>
+        <p><a href="tel:+9779814148108">+977 981-4148108</a></p>
+        <p><a href="mailto:kcroshan566@gmail.com">kcroshan566@gmail.com</a></p>
+        <p><a href="https://www.roshan-kc.com.np/">roshan-kc.com.np</a></p>
+        <p class="soc"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a">LinkedIn</a> · <a href="https://github.com/roshankc123">GitHub</a> · <a href="https://medium.com/@kcroshan566">Medium</a></p>
+      </div>
+    </header>
+
+    <section>
+      <p class="label">Profile</p>
+      <p class="summary">
+        Hands-on CTO who sets the technical direction for a <b>16-person engineering team</b> and still ships code across the stack. My sweet spot is where <b>software meets physical devices</b>: ROS robots, Bluetooth mesh wearables, biometric terminals, EV chargers and printers. Around that I build the platforms they need — multi-tenant SaaS backends, mobile apps, real-time multiplayer, LLM and data pipelines, media streaming — and the DevOps that keeps them running.
+      </p>
+      <div class="metrics">
+        <div class="metric"><strong>10+</strong><span>enterprise systems delivered</span></div>
+        <div class="metric"><strong>16</strong><span>engineers led &amp; hired</span></div>
+        <div class="metric"><strong>10+</strong><span>industries served</span></div>
+        <div class="metric"><strong>Web · Mobile · IoT</strong><span>end-to-end ownership</span></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">Tech stack</p>
+      <dl class="stack">
+        <div class="row"><dt>Languages</dt><dd>PHP, TypeScript / JavaScript, Python, Dart, C / C++, SQL, Bash</dd></div>
+        <div class="row"><dt>IoT &amp; protocols</dt><dd>ROS 2 (rosbridge, Gazebo), BLE Mesh (Nordic nRF, DFU), MQTT, OCPP, ZKTeco ADMS / Push SDK, serial / ZMODEM, ESC/POS</dd></div>
+        <div class="row"><dt>Backend</dt><dd>Laravel (Octane + Swoole, Horizon, Reverb), Node.js / Express, FastAPI, Flask, REST, WebSockets</dd></div>
+        <div class="row"><dt>Real-time</dt><dd>WebRTC P2P, STUN / TURN, WebSockets, Cloudflare Workers / PartyServer, Web Push</dd></div>
+        <div class="row"><dt>Frontend</dt><dd>React, Next.js, Vite, Tailwind CSS, Three.js, Konva, Blockly, PWA</dd></div>
+        <div class="row"><dt>AI &amp; data</dt><dd>OpenAI &amp; Gemini APIs, embeddings / pgvector, speech-to-text, LLM pipelines, Apify scraping, pandas, OptaPlanner</dd></div>
+        <div class="row"><dt>Mobile &amp; desktop</dt><dd>Flutter (BLE, Riverpod, FFI / NDK, native audio), Capacitor, Electron, Android TV, Python desktop</dd></div>
+        <div class="row"><dt>Databases</dt><dd>PostgreSQL, MySQL, MongoDB, Redis, Supabase, PowerSync, SQLite</dd></div>
+        <div class="row"><dt>Payments &amp; growth</dt><dd>Stripe, Apple Pay, RevenueCat, PhonePe, Fonepay, AdMob, PostHog</dd></div>
+        <div class="row"><dt>Cloud &amp; DevOps</dt><dd>AWS, Azure (Functions, Blob, Key Vault), GCP, Docker, Coolify, GitHub Actions, Cloudflare, OTA updates, JMeter</dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <p class="label">Experience</p>
+
+      <article class="job">
+        <div class="job-top">
+          <h3>Co-Founder &amp; Chief Technology Officer</h3>
+          <time>2023 – Present</time>
+        </div>
+        <p class="org"><em>MarginTop Solutions</em> · Kathmandu, Nepal · software partner for startups and enterprises</p>
+        <ul>
+          <li><b>Technical direction</b> — own architecture, stack choices and code standards for every engagement: in-house Laravel / React / Flutter boilerplates, RBAC, linting, reviews and a monolith-first rule.</li>
+          <li><b>Hardware-facing products</b> — led robot control software, clinical-wearable apps, biometric access control and EV-charger integrations, writing the protocol layers myself (details overleaf).</li>
+          <li><b>Platforms &amp; data</b> — architected a multi-tenant SaaS, fintech order books, ERPs and CRMs, and LLM-driven recommendation and media pipelines.</li>
+          <li><b>Infrastructure</b> — run containerised deployments on Coolify across AWS, Azure and GCP, with GitHub Actions CI, self-hosted STUN / TURN and Supabase, and JMeter load testing.</li>
+          <li><b>Team &amp; business</b> — grew the company from fully remote to a Kathmandu office of 16. Lead hiring and intern mentoring, and moved from third-party sourcing to direct clients.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-top">
+          <h3>Freelance Engineer &amp; Higher-Secondary Teacher</h3>
+          <time>2023</time>
+        </div>
+        <p class="org">Independent · Nepal</p>
+        <ul>
+          <li>Taught computer science while delivering freelance web projects with a co-founder. A funded client asked us to incorporate, and that became MarginTop Solutions. I also designed Python courses for school students.</li>
+        </ul>
+      </article>
+    </section>
+    <section>
+      <p class="label">Domains</p>
+      <div class="chips">
+        <span>Robotics &amp; automation</span>
+        <span>HealthTech, clinical &amp; rehab care</span>
+        <span>Fintech &amp; capital markets</span>
+        <span>Biometrics &amp; access control</span>
+        <span>EV charging</span>
+        <span>EdTech &amp; school ERP</span>
+        <span>Marketplaces &amp; recommendations</span>
+        <span>Media streaming &amp; AI dubbing</span>
+        <span>Gaming</span>
+        <span>Travel &amp; booking</span>
+        <span>Recruitment &amp; CRM</span>
+        <span>Commodity pricing</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ——————————————— Page 2 ——————————————— -->
+  <div class="sheet cont">
+    <div class="runhead">
+      <strong>Roshan Kc</strong>
+      <span class="mono">Selected work · page 2</span>
+    </div>
+
+    <section>
+      <p class="label">Selected engineering work</p>
+      <div class="cards">
+        <div class="card wide">
+          <h4>Autonomous mobile-robot control suite</h4>
+          <p class="tech">ROS 2 · roslib · React / TypeScript · Konva · Blockly · Electron · Flutter · Python · Gazebo</p>
+          <ul>
+            <li>Web control app for industrial AMRs with live map rendering, mapping and navigation modes, routes, waypoints, restricted zones, joystick teleop and run stats.</li>
+            <li>Visual Blockly programming with custom robot blocks, so operators can build missions without writing code.</li>
+            <li>Leading its migration to a DDD + Clean Architecture modular codebase in TypeScript, using a strangler pattern.</li>
+            <li>Electron desktop configurator for the robot controller over USB serial, with custom ZMODEM / XMODEM file transfer, YAML configs, i18n and auto-update.</li>
+            <li>Flutter provisioning app plus Ubuntu-side Python services (hotspot creator, Wi-Fi scanner API) to put robots on site networks.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Connected clinical wearable</h4>
+          <p class="tech">Flutter · BLE Mesh (nRF) · DFU · Supabase · PowerSync · Docker</p>
+          <ul>
+            <li>Companion apps for a therapy device: mesh provisioning, opcodes, firmware updates and long-running background sessions.</li>
+            <li>Offline-first data sync with self-hosted Supabase + PowerSync, plus a Laravel / React admin.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Biometric access &amp; EV charging</h4>
+          <p class="tech">ZKTeco ADMS / Push SDK · fingerprint SDKs · OCPP · Node.js · React</p>
+          <ul>
+            <li>Device-management backend that speaks the terminals' HTTP push protocol (commands, attendance logs, enrolment) with mobile and tablet apps.</li>
+            <li>OCPP integration so the platform can manage and monitor EV chargers.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>AI &amp; data pipelines</h4>
+          <p class="tech">Python · OpenAI / Gemini · pgvector · Apify · FastAPI · Next.js</p>
+          <ul>
+            <li>Marketplace deal engine: scrape → LLM extraction → fair-value scoring → embedding match against buyer profiles.</li>
+            <li>Speech-to-text, context-aware LLM dubbing and auto-generated knowledge bases.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Platforms, media &amp; infrastructure</h4>
+          <p class="tech">Laravel Octane · PostgreSQL · Redis · FFmpeg / HLS · S3 · Azure Functions</p>
+          <ul>
+            <li>Multi-tenant SaaS with a database per tenant and subdomain routing. Fintech order book with DB-level audit trails.</li>
+            <li>Adaptive HLS transcoding pipeline, and Azure Functions log analytics for compliance reporting.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">Independent products</p>
+      <div class="cards">
+        <div class="card">
+          <h4>Real-time 3D sports games</h4>
+          <p class="tech">Three.js · Next.js · WebRTC · Cloudflare Workers · Capacitor · Jest</p>
+          <ul>
+            <li>Custom physics engine (spin / Magnus effect, drag, bounce) and a CPU opponent for table tennis and badminton.</li>
+            <li>P2P multiplayer over WebRTC, with TURN credentials, leaderboards and telemetry served from the edge.</li>
+            <li>Shipped to iOS and Android with OTA updates, PostHog analytics and a motion-design system.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Universal printer app</h4>
+          <p class="tech">Flutter · Bluetooth LE / Classic · mDNS · ESC/POS · RevenueCat</p>
+          <ul>
+            <li>One adaptive app for Android, iOS, Windows, macOS and Linux that discovers and prints to thermal, receipt and label printers.</li>
+            <li>Connects over BLE, Wi-Fi and USB, with subscriptions and ads for monetisation.</li>
+          </ul>
+        </div>
+        <div class="card wide">
+          <h4>Other builds</h4>
+          <ul>
+            <li>API-testing platform: OpenAPI import, dependency-aware test chains, RBAC (TypeScript, Express, MongoDB).</li>
+            <li>Hearing-assist app: real-time audio DSP in C through Dart FFI and Oboe.</li>
+            <li>Route and schedule optimisation with OptaPlanner and constraint solvers.</li>
+            <li>Study-abroad advisor: scraping and LLM knowledge pipeline into a Next.js site.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="bottom">
+      <div>
+        <p class="label">Education</p>
+        <div class="edu">
+          <strong>Bachelor of Computer Engineering</strong>
+          <p class="meta">IOE, Pashchimanchal Campus, Pokhara · 2018 – 2023</p>
+          <ul>
+            <li>Robotics Club: built the club website on a Google Sheets-backed CMS.</li>
+            <li>Hackathons: AI smart-farm monitor, CNN emotion-recognition app.</li>
+            <li>Started the MarginTop brand through college programs and competitions.</li>
+          </ul>
+        </div>
+        <p class="extra"><b>Languages</b> · Nepali, English, Hindi<br><b>Interests</b> · Swimming, running, cycling · video editing, graphic design</p>
+      </div>
+      <div class="writing">
+        <p class="label">Selected writing</p>
+        <ul>
+          <li>Laravel Octane + Swoole for Concurrent Load</li>
+          <li>The Hidden Cost of Premature Microservices</li>
+          <li>Security Basics Before Fundraising</li>
+          <li>Hiring Engineers as a First-Time CTO</li>
+          <li>How AI Coding Tools Changed Our Velocity</li>
+        </ul>
+        <p class="more">More at <a href="https://www.roshan-kc.com.np/blog/">roshan-kc.com.np/blog/</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

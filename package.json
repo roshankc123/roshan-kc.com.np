@@ -5,7 +5,10 @@
   "main": "script.js",
   "scripts": {
     "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css css/home.css > css/app.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:css && bash scripts/build.sh",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,7 @@
   "homepage": "https://github.com/roshankc123/roshan-kc.com.np#readme",
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "wrangler": "^4.156.0"
   }
 }

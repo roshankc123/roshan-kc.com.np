@@ -1,0 +1,11 @@
+# Legacy .html URLs → canonical trailing-slash URLs
+/blog.html          /blog/          301
+/blog/:slug.html    /blog/:slug/    301
+
+# Old résumé URL still ranks in Google (Search Console, Nov 2026) → current CV
+/pdf/RoshanKcResume.pdf   /cv/Roshan-Kc-CV.pdf   301
+/pdf/*                    /cv/Roshan-Kc-CV.pdf   301
+
+# Slash-less post URLs are indexed; send them permanently (301, not 307) to the canonical
+/blog/:slug         /blog/:slug/    301
+/blog               /blog/          301

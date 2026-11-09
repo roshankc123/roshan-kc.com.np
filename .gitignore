@@ -4,3 +4,21 @@ react.html
 temp.html
 
 node_modules/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Cloudflare / build output
+.wrangler/
+dist/
+
+# macOS
+.DS_Store
+
+.dev.vars*
+!.dev.vars.example
+
+# Python
+__pycache__/
