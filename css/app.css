@@ -1301,6 +1301,43 @@ img, video, iframe, svg {
 
 /* Long URLs in articles wrap instead of pushing past the screen edge */
 .prose a { overflow-wrap: anywhere; }
+
+/* Footer: brand + socials, then copyright + links */
+.site-footer {
+  display: block !important;
+  margin-top: 3rem;
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+  border-top: 1px solid var(--line);
+  color: var(--mist);
+  font-size: 0.925rem;
+}
+.site-footer p { margin: 0; }
+.sf-top, .sf-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+.sf-name { color: var(--ink); font-weight: 700; font-size: 1.05rem; }
+.sf-meta { margin-top: 0.25rem !important; }
+.site-footer .footer-social { width: auto; gap: 0.25rem; }
+.site-footer .footer-social .social-link { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.sf-bottom {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+}
+.sf-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.sf-links a { color: var(--mist); text-decoration: none; }
+.sf-links a:hover { color: var(--sapphire); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 639px) {
+  .sf-top, .sf-bottom { flex-direction: column; align-items: flex-start; }
+  .site-footer .footer-social { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); width: 100%; max-width: 22rem; margin-left: -0.5rem; gap: 0; }
+  .site-footer .footer-social .social-link { width: 100%; min-width: 0; height: 40px; }
+}
 /* Homepage-only layout / motion — shared chrome lives in site.css */
 
 .main-content-area {
