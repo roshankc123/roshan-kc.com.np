@@ -79,7 +79,8 @@ def sync_nav(s):
 
 
 def strip_blocks(s):
-    s = re.sub(r"<!--enh:(\w+):start-->.*?<!--enh:\1:end-->", "", s, flags=re.S)
+    # eat the whitespace each block was inserted with, so repeated runs are byte-identical
+    s = re.sub(r"\n*<!--enh:(\w+):start-->.*?<!--enh:\1:end-->\n?", "", s, flags=re.S)
     s = s.replace('<!--enh:shell-open--><div class="post-shell">', "")
     s = s.replace("</div><!--enh:shell-close-->", "")
     s = re.sub(r'<a class="h-anchor"[^>]*>#</a>', "", s)

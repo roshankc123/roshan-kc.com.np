@@ -1,13 +1,13 @@
 {
   "name": "roshan-kc.com.np",
   "version": "1.0.0",
-  "description": "**Personal site and blog of [Roshan Kc](https://www.roshan-kc.com.np/) — Cofounder & CTO of [MarginTop Solutions](https://www.margintopsolutions.com/), Kathmandu, Nepal.**",
-  "main": "script.js",
+  "description": "**Personal site and blog of [Roshan Kc](https://www.roshan-kc.com.np/) \u2014 Cofounder & CTO of [MarginTop Solutions](https://www.margintopsolutions.com/), Kathmandu, Nepal.**",
+  "main": "index.html",
   "scripts": {
     "build:css": "tailwindcss -i ./css/tailwind-input.css -o ./css/utilities.css --minify && cat css/utilities.css css/site.css css/home.css > css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:css && bash scripts/build.sh",
-    "deploy": "wrangler deploy",
+    "deploy": "bash scripts/build.sh && python3 -I scripts/seo/audit.py --quiet && wrangler deploy",
     "preview": "wrangler dev"
   },
   "repository": {
