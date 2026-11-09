@@ -100,26 +100,30 @@ if (!prefersReducedMotion) {
     });
 }
 
-const navSections = document.querySelectorAll("main section[id]");
+/* Sidebar highlight follows scroll position: the section whose top has passed 40% of the
+   viewport is current; Posts maps to Blog, FAQ to Contact, and the page bottom is Contact. */
+const navSections = [...document.querySelectorAll("main section[id]")];
 const navLinks = document.querySelectorAll("#desktop-nav-links a");
-const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            const id = entry.target.getAttribute("id");
-            navLinks.forEach((link) => {
-                link.removeAttribute("aria-current");
-                if (link.getAttribute("href") === `#${id}`) {
-                    link.setAttribute("aria-current", "page");
-                }
-            });
-        }
+const NAV_FOR = { home: "#home", about: "#about", focus: "#focus", experience: "#experience", work: "#work",
+    stack: "#stack", writing: "/blog/", faq: "#contact", contact: "#contact" };
+let navCurrent = "";
+const syncNav = () => {
+    let id = navSections[0]?.id;
+    const line = innerHeight * 0.4;
+    for (const sec of navSections) if (sec.getBoundingClientRect().top <= line) id = sec.id;
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) id = "contact";
+    const href = NAV_FOR[id] || "";
+    if (href === navCurrent) return;
+    navCurrent = href;
+    navLinks.forEach((link) => {
+        if (link.getAttribute("href") === href) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
     });
-}, { rootMargin: "-40% 0px -55% 0px" });
-navSections.forEach((section) => {
-    if (["home", "about", "focus", "experience", "work", "stack", "writing", "contact"].includes(section.id)) {
-        navObserver.observe(section);
-    }
-});
+};
+let navTick = 0;
+addEventListener("scroll", () => { cancelAnimationFrame(navTick); navTick = requestAnimationFrame(syncNav); }, { passive: true });
+addEventListener("resize", syncNav);
+syncNav();
 
 const STORAGE_KEY = "rk-sidebar-collapsed";
 const toggleBtns = document.querySelectorAll("[data-sidebar-toggle]");
@@ -127,14 +131,14 @@ const setCollapsed = (collapsed, { persist = true } = {}) => {
     document.documentElement.setAttribute("data-sidebar", collapsed ? "collapsed" : "expanded");
     toggleBtns.forEach((btn) => {
         btn.setAttribute("aria-pressed", collapsed ? "true" : "false");
-        btn.setAttribute("aria-label", collapsed ? "Exit full width" : "Full width reading");
+        btn.setAttribute("aria-label", collapsed ? "Show sidebar" : "Hide sidebar");
     });
     if (persist) {
         try { localStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0"); } catch (_) {}
     }
 };
-let initialCollapsed = false;
-try { initialCollapsed = localStorage.getItem(STORAGE_KEY) === "1"; } catch (_) {}
+let initialCollapsed = true; /* full width by default; the sidebar opens from the toggle */
+try { const v = localStorage.getItem(STORAGE_KEY); if (v !== null) initialCollapsed = v === "1"; } catch (_) {}
 setCollapsed(initialCollapsed, { persist: false });
 toggleBtns.forEach((btn) => {
     btn.addEventListener("click", () => {

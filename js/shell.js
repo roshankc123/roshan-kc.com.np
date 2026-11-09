@@ -74,7 +74,7 @@
     document.documentElement.setAttribute("data-sidebar", collapsed ? "collapsed" : "expanded");
     toggleBtns.forEach((btn) => {
       btn.setAttribute("aria-pressed", collapsed ? "true" : "false");
-      btn.setAttribute("aria-label", collapsed ? "Exit full width" : "Full width reading");
+      btn.setAttribute("aria-label", collapsed ? "Show sidebar" : "Hide sidebar");
     });
     if (persist) {
       try {
@@ -85,11 +85,12 @@
     }
   };
 
-  let initial = false;
+  let initial = true; // full width by default; the sidebar opens from the toggle
   try {
-    initial = localStorage.getItem(STORAGE_KEY) === "1";
+    const v = localStorage.getItem(STORAGE_KEY);
+    if (v !== null) initial = v === "1";
   } catch (_) {
-    initial = false;
+    initial = true;
   }
   setCollapsed(initial, { persist: false });
 

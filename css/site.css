@@ -466,16 +466,17 @@ html[data-sidebar="collapsed"] main#main-content.main-content-area {
   }
 }
 
-.sidebar-toggle .icon-close {
+/* open sidebar: a cross hides it; full width: the sidebar icon brings it back */
+.sidebar-toggle .icon-expand {
   display: none;
 }
 
 html[data-sidebar="collapsed"] .sidebar-toggle .icon-expand {
-  display: none;
+  display: block;
 }
 
 html[data-sidebar="collapsed"] .sidebar-toggle .icon-close {
-  display: block;
+  display: none;
 }
 
 html[data-sidebar="collapsed"] .main-inner {
@@ -1277,3 +1278,15 @@ img, video, iframe, svg {
   font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "calt" 0;
 }
+
+/* Social profiles repeated in the page footer (the sidebar is hidden by default) */
+.footer-social {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+  width: 100%;
+}
+.footer-social .social-link { color: var(--mist); }
