@@ -63,8 +63,8 @@ STOP = set("a an the and or of for to in on with how why what we our your is are
 
 
 # Sidebar + drawer navigation, kept identical to the homepage (index.html).
-NAV = [("/#home", "Presence"), ("/#about", "The Story"), ("/#focus", "Focus"), ("/#experience", "Experience"),
-       ("/#work", "Work"), ("/#stack", "Stack"), ("/blog/", "Blog"), ("/#contact", "Connect")]
+NAV = [("/#home", "Home"), ("/#about", "About"), ("/#focus", "What I bring"), ("/#experience", "Experience"),
+       ("/#work", "Work"), ("/#stack", "Tech stack"), ("/blog/", "Blog"), ("/#contact", "Contact")]
 
 
 def sync_nav(s):
@@ -247,7 +247,6 @@ def enhance_index(posts):
     n_series = sum(s_ in posts for s_ in SERIES)
     feature = f'''<!--enh:index:start-->
         <section class="series-feature" aria-labelledby="series-feature-title">
-          <p class="series-feature__kicker">A {n_series}-part series</p>
           <h2 id="series-feature-title"><a href="/blog/{SERIES_HUB}/">{E(SERIES_NAME)}</a></h2>
           <p>{E("Where PHP actually stands today: the new releases, the type system, runtimes and async, how the PHP team handled PHP2Shell, and how to upgrade safely.")}</p>
           <a class="series-feature__cta" href="/blog/{SERIES_HUB}/">Start with {E(hub["title"]) if hub else "the overview"}</a>

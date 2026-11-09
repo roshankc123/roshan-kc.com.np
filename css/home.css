@@ -774,3 +774,14 @@ html[data-sidebar="collapsed"] main#main-content {
 .cv-cta__link:hover { text-decoration-color: #fff; }
 
 .cv-card--cta :focus-visible { outline-color: #fff; }
+
+/* Section subheadings inside the story and stack (replaces the small caps labels) */
+.story-subhead {
+  margin: 2.25rem 0 0.25rem;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.stack-subhead { margin: 3rem 0 1rem; }

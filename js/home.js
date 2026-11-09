@@ -144,15 +144,15 @@ toggleBtns.forEach((btn) => {
 });
 
 const deckSlides = [
-    { id: "home", label: "Presence" },
-    { id: "about", label: "The Story" },
-    { id: "focus", label: "Focus" },
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "focus", label: "What I bring" },
     { id: "experience", label: "Experience" },
     { id: "work", label: "Work" },
-    { id: "stack", label: "Stack" },
+    { id: "stack", label: "Tech stack" },
     { id: "writing", label: "Writing" },
     { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Connect" }
+    { id: "contact", label: "Contact" }
 ];
 const deckPrev = document.querySelector("[data-deck-prev]");
 const deckNext = document.querySelector("[data-deck-next]");

@@ -78,6 +78,16 @@ re-runs everything.
    `cat css/utilities.css css/site.css css/home.css > css/app.css` (the homepage loads app.css),
    or `npm run build:css` when Tailwind classes changed.
 
+## Headings and copy
+
+- Section titles are plain and user-facing: "About me", "Experience", "Selected work",
+  "Tech stack", "Latest writing", "Get in touch". No clever or self-referential titles
+  ("The CV, without the PDF", "Notes from the founder seat").
+- No label above a title and no tagline under it. The title is followed directly by content.
+- Card titles say what the thing is ("EV charging and sensor integrations"), not a mood
+  ("Talking to chargers and sensors"). No numbered or category labels above them.
+- Nav labels match the section titles.
+
 ## Check your work
 
 1. `bash scripts/build.sh` then serve: `cd dist && python3 -m http.server 8765`.

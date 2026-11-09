@@ -109,7 +109,7 @@ def jsonld(m):
 
 def post_nav(prev, nxt):
     def link(cls, label, p):
-        href, title = (f"/blog/{p['slug']}/", p.get("short") or p["h1"]) if p else ("/blog/", "All notes")
+        href, title = (f"/blog/{p['slug']}/", p.get("short") or p["h1"]) if p else ("/blog/", "All posts")
         return f'''          <div class="post-nav__link post-nav__{cls}">
             <span class="font-mono-label" style="color:var(--sapphire)">{label}</span>
             <a class="post-nav__title" href="{href}">{E(title)}</a>
