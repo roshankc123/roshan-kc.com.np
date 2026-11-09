@@ -675,5 +675,18 @@
       </div>
     </div>
   </div>
+  <style>
+    @media screen and (max-width: 860px) { html, body { width: auto; } body { padding-left: 8px !important; padding-right: 8px !important; } }
+  </style>
+  <script>
+    /* fit A4 sheets to narrow screens (print is unaffected) */
+    (function () {
+      var fit = function () {
+        var z = Math.min(1, (document.documentElement.clientWidth - 40) / 794);
+        document.querySelectorAll(".sheet").forEach(function (s) { s.style.zoom = z < 1 ? String(z) : ""; });
+      };
+      fit(); window.addEventListener("resize", fit);
+    })();
+  </script>
 </body>
 </html>

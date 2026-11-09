@@ -1290,3 +1290,13 @@ img, video, iframe, svg {
   width: 100%;
 }
 .footer-social .social-link { color: var(--mist); }
+
+/* Phones and tablets: the floating section pill covered text and the open menu; the menu
+   button already gives navigation, so the pill is desktop-only */
+@media (max-width: 1023px) {
+  .deck-dock { display: none; }
+  body { padding-bottom: var(--safe-bottom); }
+}
+
+/* Long URLs in articles wrap instead of pushing past the screen edge */
+.prose a { overflow-wrap: anywhere; }

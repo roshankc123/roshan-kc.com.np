@@ -92,7 +92,9 @@ if (!prefersReducedMotion) {
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.12 });
+    /* threshold 0: a section taller than the screen (Work on a phone is ~8,000px) can never be
+       12% visible, so it would stay invisible; reveal as soon as it enters the lower 90% instead */
+    }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
     sections.forEach((section) => sectionObserver.observe(section));
 } else {
     document.querySelectorAll(".fade-in-section, .stagger-reveal-container").forEach((el) => {
@@ -285,7 +287,7 @@ if (cvRevealEls.length && !prefersReducedMotion && "IntersectionObserver" in win
             entry.target.querySelectorAll("[data-count]").forEach(countUp);
             observer.unobserve(entry.target);
         });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0 });
     cvRevealEls.forEach((el) => cvObserver.observe(el));
 }
 
