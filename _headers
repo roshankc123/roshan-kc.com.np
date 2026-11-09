@@ -11,12 +11,12 @@
 /llms.txt
   Content-Type: text/plain; charset=utf-8
 
-# Unversioned file names: cache for a day, serve stale while revalidating for a week
+# CSS/JS in dist/ are fingerprinted by scripts/site/optimize.py: a change gets a new name
 /css/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /js/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=31536000, immutable
 
 /images/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
