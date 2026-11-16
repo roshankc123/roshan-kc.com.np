@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>FrankenPHP vs Swoole for Laravel Octane | Roshan Kc</title>
+  <meta name="description" content="FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/">
+  <meta property="og:title" content="FrankenPHP vs Swoole: Threads vs Coroutines for Laravel Octane">
+  <meta property="og:description" content="FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-16">
+  <meta property="article:modified_time" content="2026-11-16">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FrankenPHP vs Swoole: Threads vs Coroutines for Laravel Octane">
+  <meta name="twitter:description" content="FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FrankenPHP vs Swoole: Which Should You Run Laravel On?",
+  "description": "FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/"
+  },
+  "keywords": "frankenphp vs swoole, swoole vs frankenphp, laravel octane frankenphp, laravel octane swoole, octane driver comparison, php app server",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "about": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "FrankenPHP",
+      "url": "https://frankenphp.dev/",
+      "applicationCategory": "DeveloperApplication"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Swoole",
+      "url": "https://www.swoole.com/",
+      "applicationCategory": "DeveloperApplication"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "FrankenPHP docs: configuration",
+      "url": "https://frankenphp.dev/docs/config/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "FrankenPHP docs: known issues",
+      "url": "https://frankenphp.dev/docs/known-issues/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "FrankenPHP releases",
+      "url": "https://github.com/php/frankenphp/releases"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Swoole releases",
+      "url": "https://github.com/swoole/swoole-src/releases"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Laravel Octane documentation",
+      "url": "https://laravel.com/docs/octane"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "FrankenPHP vs Swoole: Which Should You Run Laravel On?",
+      "item": "https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is FrankenPHP faster than Swoole?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no universal winner; both remove per-request boot cost in worker mode. Swoole has the edge when requests wait on several slow I/O calls, because coroutines let one worker overlap them. Benchmark your own endpoints."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Laravel Octane support FrankenPHP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Octane supports FrankenPHP, Swoole and RoadRunner. Some Octane features, such as concurrent tasks, Octane Cache and Tables, require Swoole."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can FrankenPHP do WebSockets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not as a native WebSocket server. FrankenPHP ships a built-in Mercure hub for real-time updates over server-sent events. For native WebSockets, Swoole is the usual choice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which PHP extensions don't work with FrankenPHP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FrankenPHP's known-issues page lists imap, newrelic and pcov as unsupported because they are not thread-safe, and notes instability with datadog profiling and Imagick's OpenMP threading."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">Laravel · Performance</span>
+              <time datetime="2026-11-16">November 16, 2026</time>
+              <span>5 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">FrankenPHP vs Swoole: Which Should You Run Laravel On?</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> FrankenPHP is a PHP app server built on Go and Caddy that runs PHP in threads, with automatic HTTPS, HTTP/3 and an easy path from classic mode to worker mode. Swoole is a C++ PHP extension that adds an event loop and coroutines, so one worker can wait on many I/O calls at once. For a typical Laravel app, FrankenPHP is the simpler choice. Pick Swoole when you need WebSockets, in-process concurrency or Octane's Swoole-only features.</p>
+
+<p>At MarginTop we run Laravel Octane on Swoole in production and maintain our own <a href="/blog/optimized-laravel-docker-swoole-iouring/">Swoole + io_uring Docker image</a>, so I'm not neutral here, and I'll say where FrankenPHP is the better call anyway. My <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">five-way runtime comparison</a> covers FPM and RoadRunner too. This post is just the head-to-head people keep searching for.</p>
+
+<h2 id="what-they-are">What FrankenPHP and Swoole actually are<a class="h-anchor" href="#what-they-are" aria-label="Link to this section">#</a></h2>
+
+<p><strong>FrankenPHP</strong> is a web server, not an extension. Created by Kévin Dunglas, it embeds PHP inside <a href="https://caddyserver.com/" target="_blank" rel="noopener noreferrer">Caddy</a>, so one binary gives you the web server, TLS certificates, HTTP/2 and HTTP/3, early hints and a Mercure real-time hub. The PHP Foundation took it under its wing in May 2025, and it now lives at <code>github.com/php/frankenphp</code>.</p>
+
+<p><strong>Swoole</strong> is a PHP extension written in C and C++. It gives PHP its own event loop, an HTTP and WebSocket server, and coroutines: lightweight tasks that pause while they wait on a database or an HTTP call and let other tasks run. Swoole 6 added multithreading on top of its long-standing process model.</p>
+
+<p>Both can run your app as long-lived workers that boot Laravel once and serve many requests, and both are supported Laravel Octane drivers.</p>
+
+<h2 id="comparison">FrankenPHP vs Swoole side by side<a class="h-anchor" href="#comparison" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left"></th><th style="padding:0.6rem 0.9rem;text-align:left">FrankenPHP</th><th style="padding:0.6rem 0.9rem;text-align:left">Swoole</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Type</td><td style="padding:0.6rem 0.9rem">App server (Go + Caddy) with PHP embedded</td><td style="padding:0.6rem 0.9rem">PHP extension (C/C++)</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Concurrency model</td><td style="padding:0.6rem 0.9rem">PHP threads; one request per thread at a time</td><td style="padding:0.6rem 0.9rem">Event loop + coroutines; many in-flight I/O waits per worker</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Modes</td><td style="padding:0.6rem 0.9rem">Classic (FPM-like) or worker mode</td><td style="padding:0.6rem 0.9rem">Always long-running</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">HTTPS, HTTP/3</td><td style="padding:0.6rem 0.9rem">Built in, automatic certificates</td><td style="padding:0.6rem 0.9rem">Usually behind nginx or a load balancer</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">WebSockets / real-time</td><td style="padding:0.6rem 0.9rem">Via the built-in Mercure hub (server-sent events)</td><td style="padding:0.6rem 0.9rem">Native WebSocket server</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Octane extras</td><td style="padding:0.6rem 0.9rem">Core Octane features</td><td style="padding:0.6rem 0.9rem">Plus <code>Octane::concurrently()</code>, Octane Cache, Swoole Tables, ticks</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Extension compatibility</td><td style="padding:0.6rem 0.9rem">Needs thread-safe extensions; imap, newrelic and pcov are listed as unsupported</td><td style="padding:0.6rem 0.9rem">Code and clients must be coroutine-safe when hooks are on</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Backing</td><td style="padding:0.6rem 0.9rem">PHP Foundation</td><td style="padding:0.6rem 0.9rem">Swoole team</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Latest release (Nov 2026)</td><td style="padding:0.6rem 0.9rem">v1.13.5 (Nov 5)</td><td style="padding:0.6rem 0.9rem">v6.2.5 (Nov 7)</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="the-real-difference">The real difference: threads vs coroutines<a class="h-anchor" href="#the-real-difference" aria-label="Link to this section">#</a></h2>
+
+<p>This one design choice explains almost everything else.</p>
+
+<p>In FrankenPHP's worker mode, each PHP thread handles one request at a time. If a request waits 200 ms on an external API, that thread waits too. You get concurrency by having more threads (the default is twice your CPU count, and <code>max_threads</code> can scale up automatically).</p>
+
+<p>In Swoole, a worker that's waiting on I/O yields, and the same worker picks up other work. Inside a single request you can fire three API calls at once:</p>
+
+<pre><code>[$user, $orders, $limits] = Octane::concurrently([
+    fn () =&gt; Http::get("$crm/users/$id")-&gt;json(),
+    fn () =&gt; Order::where('user_id', $id)-&gt;latest()-&gt;take(20)-&gt;get(),
+    fn () =&gt; Http::get("$billing/limits/$id")-&gt;json(),
+]);</code></pre>
+
+<p>That call is Swoole-only in Octane. If your endpoints fan out to several slow services, or you hold thousands of WebSocket connections, Swoole's model is a real advantage. If your endpoints are "query the database, render JSON", the difference mostly disappears and FrankenPHP's simpler setup wins.</p>
+
+<h2 id="operations">Operations: what you live with day to day<a class="h-anchor" href="#operations" aria-label="Link to this section">#</a></h2>
+
+<p><strong>FrankenPHP is easier to run.</strong> One binary or Docker image, automatic certificates, a Caddyfile instead of nginx plus FPM pools, and a file watcher for development. You can start in classic mode and turn on worker mode later.</p>
+
+<p><strong>Swoole asks more of you.</strong> You'll usually put nginx or a load balancer in front, tune worker counts, and make sure every library you use behaves inside coroutines. In return you get the most control over how PHP handles concurrency.</p>
+
+<p>Two caveats from FrankenPHP's known-issues page are worth knowing before you migrate. Since PHP 8.2.35, 8.3.36, 8.4.27 and 8.5.12, hitting the hard memory limit can stop the whole FrankenPHP server, not just one worker, so run it under a supervisor that restarts it. And ImageMagick's OpenMP threads conflict with FrankenPHP's, so disable Imagick threading if you process images.</p>
+
+<p>Both projects ship security fixes often. FrankenPHP's v1.13.4 and v1.13.5 (October and November 2026) fixed 7 and 17 vulnerabilities respectively; Swoole's v6.2.5 included an upload-handling security fix. Whichever you choose, you now own patching a web server, not just PHP. That's the <a href="/blog/choose-tech-stack-ai-era-patch-velocity/">patch velocity</a> argument in practice.</p>
+
+<h2 id="which-to-choose">Which should you choose?<a class="h-anchor" href="#which-to-choose" aria-label="Link to this section">#</a></h2>
+
+<ol>
+  <li><strong>New Laravel app, normal CRUD and APIs:</strong> FrankenPHP with Octane. Fewer moving parts.</li>
+  <li><strong>Moving off nginx + PHP-FPM gradually:</strong> FrankenPHP in classic mode first. See <a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM</a>.</li>
+  <li><strong>WebSockets, IoT devices, long-lived connections:</strong> Swoole.</li>
+  <li><strong>Endpoints that call several slow services:</strong> Swoole, for <code>Octane::concurrently()</code>.</li>
+  <li><strong>You depend on New Relic, imap or pcov in production:</strong> not FrankenPHP, for now.</li>
+  <li><strong>Small team, nobody wants to learn coroutine safety:</strong> FrankenPHP.</li>
+</ol>
+
+<p>My own default is Swoole, even for a standard SaaS backend. Many of the systems we build talk to devices and hold connections open, but the bigger reason is that once a team has learned coroutine-safe habits, Swoole costs little extra and you never hit a ceiling. When a product later needs WebSockets, parallel API calls or in-memory tables, they're already there, with no runtime migration. FrankenPHP is the easier start if your team has never run long-lived PHP and wants the fewest moving parts.</p>
+
+<p>Whatever you pick, the long-running rules are identical: no request data in static properties or singletons, recycle workers with a max-requests limit, and restart workers on every deploy.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="is-frankenphp-faster-than-swoole">Is FrankenPHP faster than Swoole?<a class="h-anchor" href="#is-frankenphp-faster-than-swoole" aria-label="Link to this section">#</a></h3>
+<p>There is no universal winner; both remove per-request boot cost in worker mode. Swoole has the edge when requests wait on several slow I/O calls, because coroutines let one worker overlap them. Benchmark your own endpoints.</p>
+
+<h3 id="does-laravel-octane-support-frankenphp">Does Laravel Octane support FrankenPHP?<a class="h-anchor" href="#does-laravel-octane-support-frankenphp" aria-label="Link to this section">#</a></h3>
+<p>Yes. Octane supports FrankenPHP, Swoole and RoadRunner. Some Octane features, such as concurrent tasks, Octane Cache and Tables, require Swoole.</p>
+
+<h3 id="can-frankenphp-do-websockets">Can FrankenPHP do WebSockets?<a class="h-anchor" href="#can-frankenphp-do-websockets" aria-label="Link to this section">#</a></h3>
+<p>Not as a native WebSocket server. FrankenPHP ships a built-in Mercure hub for real-time updates over server-sent events. For native WebSockets, Swoole is the usual choice.</p>
+
+<h3 id="which-php-extensions-don-t-work-with-frankenphp">Which PHP extensions don&#x27;t work with FrankenPHP?<a class="h-anchor" href="#which-php-extensions-don-t-work-with-frankenphp" aria-label="Link to this section">#</a></h3>
+<p>FrankenPHP&#x27;s known-issues page lists imap, newrelic and pcov as unsupported because they are not thread-safe, and notes instability with datadog profiling and Imagick&#x27;s OpenMP threading.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>FrankenPHP is a Go/Caddy app server running PHP in threads; Swoole is a C++ extension adding an event loop and coroutines.</li>
+  <li>Threads vs coroutines is the core difference: Swoole can overlap I/O inside one worker and one request; FrankenPHP scales by adding threads.</li>
+  <li>FrankenPHP wins on simplicity: built-in HTTPS and HTTP/3, classic mode as a stepping stone, PHP Foundation backing.</li>
+  <li>Swoole wins for WebSockets, fan-out endpoints and Octane's Swoole-only features.</li>
+  <li>Check extension compatibility (imap, newrelic, pcov, Imagick threading) before moving to FrankenPHP.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://frankenphp.dev/docs/config/" target="_blank" rel="noopener noreferrer">FrankenPHP docs: configuration</a> and <a href="https://frankenphp.dev/docs/known-issues/" target="_blank" rel="noopener noreferrer">known issues</a></li>
+  <li><a href="https://github.com/php/frankenphp/releases" target="_blank" rel="noopener noreferrer">FrankenPHP releases</a></li>
+  <li><a href="https://github.com/swoole/swoole-src/releases" target="_blank" rel="noopener noreferrer">Swoole releases</a></li>
+  <li><a href="https://laravel.com/docs/octane" target="_blank" rel="noopener noreferrer">Laravel Octane documentation</a></li>
+</ul>
+
+<p>Deciding on a runtime for a Laravel product? <a href="/#contact">Get in touch</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li aria-current="page"><span>FrankenPHP vs Swoole: Which Should You Run Laravel On?</span></li>
+            <li><a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM: Should You Switch in 2026?</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP: What &quot;Native PHP&quot; Actually Means in 2026</a></li>
+            <li><a href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? A PHP Compiler With No VM and No Zend Engine</a></li>
+            <li><a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</a></li>
+            <li><a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</a></li>
+            <li><a href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?</a></li>
+            <li><a href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/why-we-chose-laravel-over-nodejs/">Why We Chose Laravel Over Node.js for Our Stack</a><time datetime="2026-08-27">August 27, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#what-they-are">What FrankenPHP and Swoole actually are</a></li>
+          <li><a href="#comparison">FrankenPHP vs Swoole side by side</a></li>
+          <li><a href="#the-real-difference">The real difference: threads vs coroutines</a></li>
+          <li><a href="#operations">Operations: what you live with day to day</a></li>
+          <li><a href="#which-to-choose">Which should you choose?</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

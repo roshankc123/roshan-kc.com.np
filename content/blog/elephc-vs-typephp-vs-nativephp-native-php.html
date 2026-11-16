@@ -1,0 +1,74 @@
+<p><strong>Direct answer:</strong> elephc and TypePHP are <em>compilers</em>: they turn typed PHP into machine code to make CPU-heavy code faster. NativePHP is an <em>app framework</em>: it bundles the normal PHP runtime inside iOS, Android and desktop apps so Laravel developers can ship client apps. If you want an app, use NativePHP. If you want speed, look at elephc or TypePHP, and for most web apps, try Octane or FrankenPHP first.</p>
+
+<p>"Native PHP" now means two unrelated things, and they get mixed up constantly. That's understandable: all three projects took off in 2026 and all three put "PHP" and "native" in the same sentence. This is the hub for a short series. It explains the split, compares the three in one table, and links to deeper posts on each.</p>
+
+<h2 id="two-meanings">The two meanings of "native PHP"</h2>
+
+<p><strong>Meaning 1: PHP compiled to native code.</strong> Your PHP source becomes a machine-code binary, a shared library or a PHP extension, with no interpreter loop at runtime. That's <a href="/blog/what-is-elephc-php-native-compiler/">elephc</a> and <a href="/blog/what-typephp-means-for-php-performance/">TypePHP</a>. The goal is performance and portability.</p>
+
+<p><strong>Meaning 2: PHP running inside a native app.</strong> Your PHP stays PHP, interpreted by a real PHP engine, but that engine lives inside an iOS, Android or desktop app with native UI and device APIs. That's <a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP</a>. The goal is reach: one Laravel codebase on phones and desktops.</p>
+
+<p>Once you see that split, the "which is better" question mostly goes away. They don't compete.</p>
+
+<h2 id="comparison">elephc vs TypePHP vs NativePHP at a glance</h2>
+
+<table>
+  <thead><tr><th></th><th>elephc</th><th>TypePHP</th><th>NativePHP</th></tr></thead>
+  <tbody>
+    <tr><td>What it is</td><td>AOT compiler: PHP → assembly</td><td>AOT compiler: PHP → C++ → native</td><td>App framework that embeds PHP in native shells</td></tr>
+    <tr><td>Made by</td><td>Illegal Studio</td><td>Swoole team</td><td>NativePHP (Laravel ecosystem)</td></tr>
+    <tr><td>Runs on Zend Engine?</td><td>No. Small custom runtime</td><td>Partly. Links against libphp via PHPX</td><td>Yes. A full PHP 8.4 runtime on mobile</td></tr>
+    <tr><td>Main use</td><td>CLI tools, compiled PHP extensions, compute-heavy modules, iOS libraries</td><td>CPU-bound backend code, Swoole workers, PHP extensions</td><td>iOS, Android, macOS, Windows and Linux apps</td></tr>
+    <tr><td>Laravel</td><td>Keep Laravel on PHP; compile isolated modules</td><td>Keep Laravel on PHP; compile typed hot paths</td><td>Full Laravel on the device: Eloquent, Blade, Livewire</td></tr>
+    <tr><td>UI</td><td>None (C FFI lets you call libraries like SDL)</td><td>None</td><td>SwiftUI and Jetpack Compose via SuperNative, or web view</td></tr>
+    <tr><td>Licence</td><td>MIT</td><td>GPL-3.0</td><td>MIT core (v3+), paid premium plugins</td></tr>
+    <tr><td>Maturity (Nov 2026)</td><td>Experimental, v0.27.8</td><td>Experimental, active development</td><td>Stable: Mobile v4, Desktop v2</td></tr>
+  </tbody>
+</table>
+
+<h2 id="which-one">Which one do you need?</h2>
+
+<ol>
+  <li><strong>"Our clients want a mobile app and we're a Laravel shop."</strong> NativePHP. Read <a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP in 2026</a> for the trade-offs against Flutter and React Native.</li>
+  <li><strong>"Our web app is slow."</strong> None of them, at first. Profile. Most slow Laravel apps are slow because of queries and per-request boot. <a href="/blog/laravel-octane-swoole-concurrent-load/">Octane with Swoole</a> or <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">FrankenPHP</a> is the proven fix.</li>
+  <li><strong>"One function is CPU-bound and we've already optimised it."</strong> That's when an AOT compiler earns a look. Compile that module as an extension with elephc or TypePHP. See <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a>.</li>
+  <li><strong>"I want to ship a CLI tool as one binary."</strong> elephc.</li>
+  <li><strong>"We run Swoole or Hypervel in production."</strong> Watch TypePHP; it's built by the same team for that world.</li>
+</ol>
+
+<h2 id="together">Can you use them together?</h2>
+
+<p>In principle, yes, and this is the most interesting idea in the whole space. elephc can cross-compile PHP into iOS ARM64 static libraries. NativePHP apps are Swift and Kotlin shells around PHP. A compiled PHP library called from a NativePHP plugin would give you native-speed PHP for one hot routine and Laravel for everything else, on a phone.</p>
+
+<p>I haven't found a published, working example of that combination. Treat it as a possibility, not a recipe. The simpler pairing works today: elephc or TypePHP compile a PHP extension for your <em>server</em>, and NativePHP ships the <em>client</em>.</p>
+
+<h2 id="common-mistakes">Common misconceptions</h2>
+
+<ul>
+  <li><strong>"NativePHP compiles PHP."</strong> It doesn't. Your PHP is interpreted on the device. Only the UI is native.</li>
+  <li><strong>"TypePHP or elephc will make my Laravel app 8× faster."</strong> Not today. Both compile a typed subset, and framework code is full of dynamic behaviour they can't compile. Published speedups come from CPU-bound benchmark scripts.</li>
+  <li><strong>"AOT replaces the JIT."</strong> They solve related problems in different places. The JIT (PHP 8.0+) optimises hot code inside the running engine; AOT compiles before the program runs. You can run a compiled extension inside a JIT-enabled PHP.</li>
+  <li><strong>"This is HHVM again."</strong> Partly. HHVM showed PHP could be compiled and also that ecosystem compatibility decides adoption. I go into that in <a href="/blog/future-of-native-php-aot-compilers-nativephp/">the future of native PHP</a>.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>"Native PHP" means two things: compiling PHP to machine code (elephc, TypePHP) and embedding PHP in native apps (NativePHP).</li>
+  <li>NativePHP is the stable, production choice for Laravel developers building iOS, Android and desktop apps.</li>
+  <li>elephc and TypePHP are experimental AOT compilers for typed, CPU-bound code. Use them for isolated modules, not whole frameworks.</li>
+  <li>For a slow web app, start with profiling and Octane or FrankenPHP, not a compiler.</li>
+  <li>The tools can coexist: compile a hot server module, ship the client with NativePHP.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">illegalstudio/elephc</a> and <a href="https://elephc.dev" target="_blank" rel="noopener noreferrer">elephc.dev</a></li>
+  <li><a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">swoole/typephp</a></li>
+  <li><a href="https://nativephp.com/" target="_blank" rel="noopener noreferrer">NativePHP</a> and its <a href="https://nativephp.com/docs/mobile/4/architecture/embedded-php" target="_blank" rel="noopener noreferrer">embedded PHP docs</a></li>
+  <li><a href="https://laravel-news.com/nativephp-v4-supernative" target="_blank" rel="noopener noreferrer">Laravel News: NativePHP v4 SuperNative</a></li>
+  <li><a href="https://laravel-news.com/typephp-compile-php-native-binaries" target="_blank" rel="noopener noreferrer">Laravel News: TypePHP</a></li>
+</ul>
+
+<p>Not sure which of these fits your product? <a href="/#contact">Ask me</a>.</p>

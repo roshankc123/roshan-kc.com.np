@@ -1,0 +1,81 @@
+<p><strong>Direct answer:</strong> In the AI era, choosing between PHP, Node.js, Python or Go matters much less than it used to, because AI assistants write competent code in every mainstream language and can translate between them in minutes. What still matters is everything around the language: your team, the framework's conventions, hosting and operations, how quickly the ecosystem ships security patches, and whether you understand the business you're building for. Pick the stack your team can run well, and spend the energy you saved on the product.</p>
+
+<p>I've written <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>, so you might expect a PHP cheerleading post. It isn't one. "PHP vs Node" arguments made sense when switching languages meant months of retraining and rewriting. In 2026 the language is the cheapest part of the decision, and spending a week arguing about it is a week not spent on things that actually decide whether a product works.</p>
+
+<h2 id="why-less">Why the language matters less now</h2>
+
+<p><strong>Syntax got cheap.</strong> The biggest cost of a language used to be fluency: knowing the standard library, idioms and gotchas. AI assistants carry that knowledge for every mainstream language. A good PHP developer can be productive in TypeScript in days instead of months, with an assistant explaining the idioms as they go.</p>
+
+<p><strong>Translation got cheap.</strong> Porting a well-tested module from one language to another used to be a project. Now it's often an afternoon plus a careful review. That lowers the cost of being "wrong" about your stack. I made a version of this argument in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first</a>: stack regret is recoverable; domain regret is not.</p>
+
+<p><strong>Everyone's using the same tools.</strong> In the 2025 Stack Overflow Developer Survey, 84% of developers said they use or plan to use AI tools. The productivity edge one language community used to have over another is being flattened.</p>
+
+<h2 id="what-still-matters">What still matters (more than the language)</h2>
+
+<table>
+  <thead><tr><th>Factor</th><th>Why it still matters</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Your team</td><td>The people who'll debug it at 2 a.m. need to know it deeply, AI or not</td><td>A strong Laravel team will out-ship a mediocre Node team, and vice versa</td></tr>
+    <tr><td>Framework conventions</td><td>Opinionated frameworks make both humans and AI produce predictable code</td><td>Laravel, Rails and Django vs assembling your own Express stack</td></tr>
+    <tr><td>Runtime model</td><td>Real differences in concurrency and memory behaviour</td><td>Node's event loop vs PHP's per-request model (or <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">long-running PHP runtimes</a>)</td></tr>
+    <tr><td>Operations</td><td>Hosting, deploys, monitoring and cost are where stacks actually differ</td><td>Managed PHP hosting is everywhere; some stacks need more DIY</td></tr>
+    <tr><td>Patch velocity</td><td>AI finds vulnerabilities faster, so ecosystems must patch faster</td><td>See <a href="/blog/choose-tech-stack-ai-era-patch-velocity/">choosing a stack by patch velocity</a></td></tr>
+    <tr><td>Hiring market</td><td>Local talent pools still differ by language</td><td>PHP runs about 68% of websites with a known server-side language (W3Techs, Nov 2026)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="ai-twist">The twist: AI rewards boring, typed, conventional code</h2>
+
+<p>Here's my view, and it's the part most "AI makes languages irrelevant" takes miss. AI doesn't make <em>all</em> choices equal. It makes <strong>mainstream</strong> choices more equal and makes <strong>unusual</strong> choices more expensive.</p>
+
+<ul>
+  <li><strong>Mainstream languages and frameworks</strong> have huge amounts of public code, so assistants are good at them. An obscure framework gets weaker suggestions and more confident mistakes.</li>
+  <li><strong>Strong conventions</strong> mean there's one obvious place for each thing. AI-generated code then fits the codebase instead of inventing a new pattern per file.</li>
+  <li><strong>Types</strong> give both the assistant and the reviewer something to check against. Typed PHP, TypeScript and typed Python all catch a class of AI mistakes before they run.</li>
+</ul>
+
+<p>That matters because review is now the bottleneck. The same Stack Overflow survey found more developers distrust the accuracy of AI output (46%) than trust it (33%). METR's 2025 study found experienced developers were 19% <em>slower</em> with AI tools on their own mature projects, while believing they were faster. If AI writes more of the code, the stack that's easiest to <em>review</em> wins, and readability depends far more on conventions and types than on PHP vs JavaScript.</p>
+
+<h2 id="when-it-matters">When the language genuinely still matters</h2>
+
+<p>"Barely matters" isn't "never matters". Pick deliberately when:</p>
+
+<ul>
+  <li><strong>Raw CPU performance or tight latency</strong> is the product: Go, Rust or C++ still win, though <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">native PHP compilers</a> are narrowing the gap for hot paths.</li>
+  <li><strong>You're doing ML or data science</strong>: Python's ecosystem is the default for good reason.</li>
+  <li><strong>The frontend and backend share a lot of logic</strong>: one language (TypeScript) across both can genuinely help.</li>
+  <li><strong>Massive real-time connection counts</strong>: Node, Go, Elixir, or PHP with Swoole. Not plain PHP-FPM.</li>
+  <li><strong>A specific platform demands it</strong>: Swift for deep iOS work, Kotlin for Android (though <a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP</a> now covers a lot of app use cases in PHP).</li>
+</ul>
+
+<h2 id="decision-rule">A decision rule for 2026</h2>
+
+<ol>
+  <li>Start with what your team already knows well.</li>
+  <li>Prefer a mainstream, opinionated framework over assembling your own.</li>
+  <li>Check the ecosystem's security patch track record and your hosting options.</li>
+  <li>Only override all of that if one of the "genuinely matters" cases above applies.</li>
+  <li>Then stop debating and put the time into understanding the business rules. That's where products actually fail.</li>
+</ol>
+
+<p>For us that answer was Laravel. For a TypeScript-heavy team it might be Node with NestJS. Both are fine. Neither will save a product that solves the wrong problem.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>AI made syntax and translation cheap, so PHP vs Node vs Python is a much smaller decision than it was.</li>
+  <li>Team skill, framework conventions, operations, patch velocity and hiring matter more than the language itself.</li>
+  <li>AI favours mainstream, typed, conventional code, because that's what it writes and reviews best.</li>
+  <li>Language still matters for CPU-bound work, ML, shared front/back-end code, huge real-time loads and platform-specific apps.</li>
+  <li>Pick what your team runs well, then spend your energy on the business logic.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/" target="_blank" rel="noopener noreferrer">Stack Overflow: 2025 Developer Survey results</a></li>
+  <li><a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener noreferrer">METR: Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a></li>
+  <li><a href="https://w3techs.com/technologies/overview/programming_language" target="_blank" rel="noopener noreferrer">W3Techs: usage of server-side programming languages</a> (November 16, 2026)</li>
+</ul>
+
+<p>Stuck in a stack debate? <a href="/#contact">Let's talk it through</a>.</p>

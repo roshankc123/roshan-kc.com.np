@@ -1,0 +1,76 @@
+{
+ "slug": "elephc-vs-typephp-vs-nativephp-native-php",
+ "date": "2026-11-15",
+ "read": 5,
+ "tag": "PHP · Modern PHP",
+ "title": "elephc vs TypePHP vs NativePHP Explained | Roshan Kc",
+ "h1": "elephc vs TypePHP vs NativePHP: What \"Native PHP\" Actually Means in 2026",
+ "social": "elephc vs TypePHP vs NativePHP: Compilers vs App Runtimes, Explained",
+ "short": "elephc vs TypePHP vs NativePHP",
+ "desc": "elephc vs TypePHP vs NativePHP: two AOT compilers and one app framework. What each does, a side-by-side table, and which native PHP tool fits your problem.",
+ "keywords": "elephc vs typephp vs nativephp, native php, nativephp, typephp, elephc, php compiler, php mobile app, php aot",
+ "citations": [
+  [
+   "illegalstudio/elephc on GitHub",
+   "https://github.com/illegalstudio/elephc"
+  ],
+  [
+   "swoole/typephp on GitHub",
+   "https://github.com/swoole/typephp"
+  ],
+  [
+   "NativePHP",
+   "https://nativephp.com/"
+  ],
+  [
+   "NativePHP Mobile v4: Embedded PHP",
+   "https://nativephp.com/docs/mobile/4/architecture/embedded-php"
+  ],
+  [
+   "Laravel News: NativePHP v4 SuperNative",
+   "https://laravel-news.com/nativephp-v4-supernative"
+  ],
+  [
+   "Laravel News: TypePHP",
+   "https://laravel-news.com/typephp-compile-php-native-binaries"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "elephc",
+   "url": "https://elephc.dev",
+   "applicationCategory": "DeveloperApplication"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "TypePHP",
+   "url": "https://github.com/swoole/typephp",
+   "applicationCategory": "DeveloperApplication"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "NativePHP",
+   "url": "https://nativephp.com/",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "What is the difference between NativePHP and TypePHP?",
+   "TypePHP is an ahead-of-time compiler that turns typed PHP into C++ and then native code for speed. NativePHP is an app framework that embeds the normal PHP runtime in iOS, Android and desktop apps. One makes PHP faster; the other puts PHP in apps."
+  ],
+  [
+   "Is NativePHP a compiler?",
+   "No. NativePHP ships a real PHP interpreter inside the app. Your PHP code is interpreted on the device; with SuperNative, only the UI is rendered natively."
+  ],
+  [
+   "Which native PHP tool is production ready?",
+   "As of November 2026, NativePHP (Mobile v4, Desktop v2) is the stable one. elephc (v0.27.8) and TypePHP are experimental compilers best used for isolated modules."
+  ],
+  [
+   "Will elephc or TypePHP speed up my Laravel app?",
+   "Not as a whole. Both compile a typed subset of PHP, and framework code is too dynamic. Profile first, use Octane or FrankenPHP for boot and concurrency, and compile only a proven CPU-bound module."
+  ]
+ ]
+}

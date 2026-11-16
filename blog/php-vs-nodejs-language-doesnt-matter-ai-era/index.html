@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PHP vs Node.js: Why Language Barely Matters Now | Roshan Kc</title>
+  <meta name="description" content="PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/">
+  <meta property="og:title" content="PHP vs Node.js vs Python: Why the Language Barely Matters Anymore">
+  <meta property="og:description" content="PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-16">
+  <meta property="article:modified_time" content="2026-11-16">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PHP vs Node.js vs Python: Why the Language Barely Matters Anymore">
+  <meta name="twitter:description" content="PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PHP vs Node.js vs Python: Why the Language Barely Matters in the AI Era",
+  "description": "PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/"
+  },
+  "keywords": "php vs node.js, php vs nodejs 2026, does programming language matter ai, best backend language 2026, php vs python, tech stack ai era",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "Stack Overflow 2025 Developer Survey results",
+      "url": "https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "METR: Early-2025 AI and experienced open-source developer productivity",
+      "url": "https://arxiv.org/abs/2507.09089"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "W3Techs: usage of server-side programming languages",
+      "url": "https://w3techs.com/technologies/overview/programming_language"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PHP vs Node.js vs Python: Why the Language Barely Matters in the AI Era",
+      "item": "https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is PHP or Node.js better in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Neither is better in general. Both have mature frameworks, large ecosystems and good AI support. Choose the one your team runs well; pick Node if you want one language across frontend and backend, PHP with Laravel if you want strong batteries-included conventions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the programming language matter with AI coding tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Much less than before. AI writes competent code in every mainstream language and can translate between them. Team skill, framework conventions, operations and security patching now matter more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which languages does AI write best?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mainstream languages and frameworks with lots of public code, such as PHP, JavaScript and TypeScript, Python, Java and Go. Typed code and strong framework conventions also make AI output easier to review."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does choosing a language still matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For CPU-bound or latency-critical systems, machine learning, sharing code across frontend and backend, very large real-time connection counts, and platform-specific mobile work."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">Engineering · AI</span>
+              <time datetime="2026-11-16">November 16, 2026</time>
+              <span>5 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">PHP vs Node.js vs Python: Why the Language Barely Matters in the AI Era</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> In the AI era, choosing between PHP, Node.js, Python or Go matters much less than it used to, because AI assistants write competent code in every mainstream language and can translate between them in minutes. What still matters is everything around the language: your team, the framework's conventions, hosting and operations, how quickly the ecosystem ships security patches, and whether you understand the business you're building for. Pick the stack your team can run well, and spend the energy you saved on the product.</p>
+
+<p>I've written <a href="/blog/why-we-chose-laravel-over-nodejs/">why we chose Laravel over Node.js</a>, so you might expect a PHP cheerleading post. It isn't one. "PHP vs Node" arguments made sense when switching languages meant months of retraining and rewriting. In 2026 the language is the cheapest part of the decision, and spending a week arguing about it is a week not spent on things that actually decide whether a product works.</p>
+
+<h2 id="why-less">Why the language matters less now<a class="h-anchor" href="#why-less" aria-label="Link to this section">#</a></h2>
+
+<p><strong>Syntax got cheap.</strong> The biggest cost of a language used to be fluency: knowing the standard library, idioms and gotchas. AI assistants carry that knowledge for every mainstream language. A good PHP developer can be productive in TypeScript in days instead of months, with an assistant explaining the idioms as they go.</p>
+
+<p><strong>Translation got cheap.</strong> Porting a well-tested module from one language to another used to be a project. Now it's often an afternoon plus a careful review. That lowers the cost of being "wrong" about your stack. I made a version of this argument in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first</a>: stack regret is recoverable; domain regret is not.</p>
+
+<p><strong>Everyone's using the same tools.</strong> In the 2025 Stack Overflow Developer Survey, 84% of developers said they use or plan to use AI tools. The productivity edge one language community used to have over another is being flattened.</p>
+
+<h2 id="what-still-matters">What still matters (more than the language)<a class="h-anchor" href="#what-still-matters" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Factor</th><th style="padding:0.6rem 0.9rem;text-align:left">Why it still matters</th><th style="padding:0.6rem 0.9rem;text-align:left">Example</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Your team</td><td style="padding:0.6rem 0.9rem">The people who'll debug it at 2 a.m. need to know it deeply, AI or not</td><td style="padding:0.6rem 0.9rem">A strong Laravel team will out-ship a mediocre Node team, and vice versa</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Framework conventions</td><td style="padding:0.6rem 0.9rem">Opinionated frameworks make both humans and AI produce predictable code</td><td style="padding:0.6rem 0.9rem">Laravel, Rails and Django vs assembling your own Express stack</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Runtime model</td><td style="padding:0.6rem 0.9rem">Real differences in concurrency and memory behaviour</td><td style="padding:0.6rem 0.9rem">Node's event loop vs PHP's per-request model (or <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">long-running PHP runtimes</a>)</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Operations</td><td style="padding:0.6rem 0.9rem">Hosting, deploys, monitoring and cost are where stacks actually differ</td><td style="padding:0.6rem 0.9rem">Managed PHP hosting is everywhere; some stacks need more DIY</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Patch velocity</td><td style="padding:0.6rem 0.9rem">AI finds vulnerabilities faster, so ecosystems must patch faster</td><td style="padding:0.6rem 0.9rem">See <a href="/blog/choose-tech-stack-ai-era-patch-velocity/">choosing a stack by patch velocity</a></td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Hiring market</td><td style="padding:0.6rem 0.9rem">Local talent pools still differ by language</td><td style="padding:0.6rem 0.9rem">PHP runs about 68% of websites with a known server-side language (W3Techs, Nov 2026)</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="ai-twist">The twist: AI rewards boring, typed, conventional code<a class="h-anchor" href="#ai-twist" aria-label="Link to this section">#</a></h2>
+
+<p>Here's my view, and it's the part most "AI makes languages irrelevant" takes miss. AI doesn't make <em>all</em> choices equal. It makes <strong>mainstream</strong> choices more equal and makes <strong>unusual</strong> choices more expensive.</p>
+
+<ul>
+  <li><strong>Mainstream languages and frameworks</strong> have huge amounts of public code, so assistants are good at them. An obscure framework gets weaker suggestions and more confident mistakes.</li>
+  <li><strong>Strong conventions</strong> mean there's one obvious place for each thing. AI-generated code then fits the codebase instead of inventing a new pattern per file.</li>
+  <li><strong>Types</strong> give both the assistant and the reviewer something to check against. Typed PHP, TypeScript and typed Python all catch a class of AI mistakes before they run.</li>
+</ul>
+
+<p>That matters because review is now the bottleneck. The same Stack Overflow survey found more developers distrust the accuracy of AI output (46%) than trust it (33%). METR's 2025 study found experienced developers were 19% <em>slower</em> with AI tools on their own mature projects, while believing they were faster. If AI writes more of the code, the stack that's easiest to <em>review</em> wins, and readability depends far more on conventions and types than on PHP vs JavaScript.</p>
+
+<h2 id="when-it-matters">When the language genuinely still matters<a class="h-anchor" href="#when-it-matters" aria-label="Link to this section">#</a></h2>
+
+<p>"Barely matters" isn't "never matters". Pick deliberately when:</p>
+
+<ul>
+  <li><strong>Raw CPU performance or tight latency</strong> is the product: Go, Rust or C++ still win, though <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">native PHP compilers</a> are narrowing the gap for hot paths.</li>
+  <li><strong>You're doing ML or data science</strong>: Python's ecosystem is the default for good reason.</li>
+  <li><strong>The frontend and backend share a lot of logic</strong>: one language (TypeScript) across both can genuinely help.</li>
+  <li><strong>Massive real-time connection counts</strong>: Node, Go, Elixir, or PHP with Swoole. Not plain PHP-FPM.</li>
+  <li><strong>A specific platform demands it</strong>: Swift for deep iOS work, Kotlin for Android (though <a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP</a> now covers a lot of app use cases in PHP).</li>
+</ul>
+
+<h2 id="decision-rule">A decision rule for 2026<a class="h-anchor" href="#decision-rule" aria-label="Link to this section">#</a></h2>
+
+<ol>
+  <li>Start with what your team already knows well.</li>
+  <li>Prefer a mainstream, opinionated framework over assembling your own.</li>
+  <li>Check the ecosystem's security patch track record and your hosting options.</li>
+  <li>Only override all of that if one of the "genuinely matters" cases above applies.</li>
+  <li>Then stop debating and put the time into understanding the business rules. That's where products actually fail.</li>
+</ol>
+
+<p>For us that answer was Laravel. For a TypeScript-heavy team it might be Node with NestJS. Both are fine. Neither will save a product that solves the wrong problem.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="is-php-or-node-js-better-in-2026">Is PHP or Node.js better in 2026?<a class="h-anchor" href="#is-php-or-node-js-better-in-2026" aria-label="Link to this section">#</a></h3>
+<p>Neither is better in general. Both have mature frameworks, large ecosystems and good AI support. Choose the one your team runs well; pick Node if you want one language across frontend and backend, PHP with Laravel if you want strong batteries-included conventions.</p>
+
+<h3 id="does-the-programming-language-matter-with-ai-coding-tools">Does the programming language matter with AI coding tools?<a class="h-anchor" href="#does-the-programming-language-matter-with-ai-coding-tools" aria-label="Link to this section">#</a></h3>
+<p>Much less than before. AI writes competent code in every mainstream language and can translate between them. Team skill, framework conventions, operations and security patching now matter more.</p>
+
+<h3 id="which-languages-does-ai-write-best">Which languages does AI write best?<a class="h-anchor" href="#which-languages-does-ai-write-best" aria-label="Link to this section">#</a></h3>
+<p>Mainstream languages and frameworks with lots of public code, such as PHP, JavaScript and TypeScript, Python, Java and Go. Typed code and strong framework conventions also make AI output easier to review.</p>
+
+<h3 id="when-does-choosing-a-language-still-matter">When does choosing a language still matter?<a class="h-anchor" href="#when-does-choosing-a-language-still-matter" aria-label="Link to this section">#</a></h3>
+<p>For CPU-bound or latency-critical systems, machine learning, sharing code across frontend and backend, very large real-time connection counts, and platform-specific mobile work.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>AI made syntax and translation cheap, so PHP vs Node vs Python is a much smaller decision than it was.</li>
+  <li>Team skill, framework conventions, operations, patch velocity and hiring matter more than the language itself.</li>
+  <li>AI favours mainstream, typed, conventional code, because that's what it writes and reviews best.</li>
+  <li>Language still matters for CPU-bound work, ML, shared front/back-end code, huge real-time loads and platform-specific apps.</li>
+  <li>Pick what your team runs well, then spend your energy on the business logic.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/" target="_blank" rel="noopener noreferrer">Stack Overflow: 2025 Developer Survey results</a></li>
+  <li><a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener noreferrer">METR: Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a></li>
+  <li><a href="https://w3techs.com/technologies/overview/programming_language" target="_blank" rel="noopener noreferrer">W3Techs: usage of server-side programming languages</a> (November 16, 2026)</li>
+</ul>
+
+<p>Stuck in a stack debate? <a href="/#contact">Let's talk it through</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a><time datetime="2026-11-07">November 7, 2026</time></li>
+            <li><a href="/blog/what-is-coding-velocity-how-to-measure/">What Is Coding Velocity, and How Do You Measure It Without Gaming It?</a><time datetime="2026-11-16">November 16, 2026</time></li>
+            <li><a href="/blog/why-we-chose-laravel-over-nodejs/">Why We Chose Laravel Over Node.js for Our Stack</a><time datetime="2026-08-27">August 27, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#why-less">Why the language matters less now</a></li>
+          <li><a href="#what-still-matters">What still matters (more than the language)</a></li>
+          <li><a href="#ai-twist">The twist: AI rewards boring, typed, conventional code</a></li>
+          <li><a href="#when-it-matters">When the language genuinely still matters</a></li>
+          <li><a href="#decision-rule">A decision rule for 2026</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo Explained</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/keep-code-quality-during-major-rewrite/">Code Quality During a Major Rewrite</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

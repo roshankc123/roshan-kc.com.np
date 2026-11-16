@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Keeping Code Quality High in a Major Rewrite | Roshan Kc</title>
+  <meta name="description" content="How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/">
+  <meta property="og:title" content="Rewrites Without Regret: Keeping Quality and Velocity High">
+  <meta property="og:description" content="How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-16">
+  <meta property="article:modified_time" content="2026-11-16">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rewrites Without Regret: Keeping Quality and Velocity High">
+  <meta name="twitter:description" content="How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Keep Code Quality High (and Velocity Up) During a Major Rewrite",
+  "description": "How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/"
+  },
+  "keywords": "code quality during rewrite, software rewrite strategy, strangler fig pattern, characterization tests, legacy rewrite, engineering velocity rewrite, branch by abstraction",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "Joel Spolsky: Things You Should Never Do, Part I",
+      "url": "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Martin Fowler: Strangler Fig Application",
+      "url": "https://martinfowler.com/bliki/StranglerFigApplication.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Martin Fowler: Branch By Abstraction",
+      "url": "https://martinfowler.com/bliki/BranchByAbstraction.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "GitHub Scientist",
+      "url": "https://github.com/github/scientist"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "DORA: software delivery performance metrics",
+      "url": "https://dora.dev/guides/dora-metrics-four-keys/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to Keep Code Quality High (and Velocity Up) During a Major Rewrite",
+      "item": "https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it better to rewrite or refactor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Refactor in place when the architecture is sound and the code is just messy. Rewrite incrementally when the platform itself is the problem, such as an unsupported runtime or a data model that no longer fits the business."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the strangler fig pattern?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A way to replace a system gradually: a routing layer sends some functionality to the new system while the rest stays on the old one, until the old system can be switched off. The name comes from Martin Fowler."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are characterisation tests?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tests that record what existing code actually does, including odd edge cases, so a rewrite can prove it behaves the same. The term comes from Michael Feathers' Working Effectively with Legacy Code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you measure a rewrite's progress?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Track the share of traffic or functionality served by the new system, plus DORA metrics such as lead time and change fail rate. A rising change fail rate is the signal to slow down."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">Engineering · Architecture</span>
+              <time datetime="2026-11-16">November 16, 2026</time>
+              <span>6 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">How to Keep Code Quality High (and Velocity Up) During a Major Rewrite</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> Teams keep code quality high during a major rewrite by not doing a "big bang" rewrite at all. They replace the old system piece by piece behind a stable interface (the strangler fig pattern), pin current behaviour with characterisation tests, run old and new code side by side and compare results, release behind feature flags, and freeze new features in the old system. Velocity comes from shipping small, verified slices, not from writing the new system faster.</p>
+
+<p>"How do big companies keep code quality high while increasing engineering velocity during a major re-write?" showed up in my site's search data this month, and it's a better question than most. Rewrites are where good teams lose years. The techniques below are well documented and used at large companies; none of them are secret, but they're routinely skipped under deadline pressure. For how to measure whether it's working, see <a href="/blog/what-is-coding-velocity-how-to-measure/">what coding velocity is and how to measure it</a>.</p>
+
+<h2 id="why-rewrites-fail">Why rewrites go wrong<a class="h-anchor" href="#why-rewrites-fail" aria-label="Link to this section">#</a></h2>
+
+<p>In 2000, Joel Spolsky called rewriting code from scratch "the single worst strategic mistake that any software company can make," using Netscape as the example: years spent rebuilding while competitors kept shipping. A quarter of a century later, the failure pattern hasn't changed:</p>
+
+<ul>
+  <li><strong>Hidden behaviour.</strong> The old code is ugly partly because it handles a hundred edge cases nobody wrote down. The rewrite drops them and customers find out first.</li>
+  <li><strong>Two systems, one team.</strong> The old one still needs fixes, so the new one falls further behind.</li>
+  <li><strong>No feedback until the end.</strong> A big-bang cutover means the riskiest moment of the project is also the first time real users touch it.</li>
+  <li><strong>Scope creep.</strong> "While we're rewriting it, let's also…"</li>
+</ul>
+
+<h2 id="techniques">Seven techniques that keep quality high<a class="h-anchor" href="#techniques" aria-label="Link to this section">#</a></h2>
+
+<h3 id="1-strangle-it-don-t-replace-it">1. Strangle it, don't replace it<a class="h-anchor" href="#1-strangle-it-don-t-replace-it" aria-label="Link to this section">#</a></h3>
+<p>Martin Fowler's <a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">strangler fig application</a> pattern puts a routing layer in front of the old system and moves one route, module or workflow at a time to the new one. The old system shrinks until it can be switched off. Every step is small enough to review, test and roll back.</p>
+
+<h3 id="2-pin-behaviour-with-characterisation-tests">2. Pin behaviour with characterisation tests<a class="h-anchor" href="#2-pin-behaviour-with-characterisation-tests" aria-label="Link to this section">#</a></h3>
+<p>Before changing anything, write tests that record what the old system <em>actually does</em>, not what the spec says. Michael Feathers called these characterisation tests in <em>Working Effectively with Legacy Code</em>. For an API, that can be as simple as recording real requests and responses and asserting the new code returns the same. These tests are your definition of "done".</p>
+
+<h3 id="3-branch-by-abstraction">3. Branch by abstraction<a class="h-anchor" href="#3-branch-by-abstraction" aria-label="Link to this section">#</a></h3>
+<p>Inside one codebase, <a href="https://martinfowler.com/bliki/BranchByAbstraction.html" target="_blank" rel="noopener noreferrer">branch by abstraction</a> introduces an interface in front of the thing you're replacing, makes the old code one implementation, builds the new implementation behind it, and switches over. Everything stays on the main branch and deployable. No six-month rewrite branch that nobody can merge.</p>
+
+<h3 id="4-run-old-and-new-side-by-side">4. Run old and new side by side<a class="h-anchor" href="#4-run-old-and-new-side-by-side" aria-label="Link to this section">#</a></h3>
+<p>For critical logic, run both implementations on real traffic, serve the old result, and log any difference. GitHub open-sourced <a href="https://github.com/github/scientist" target="_blank" rel="noopener noreferrer">Scientist</a> for exactly this: run an "experiment" with a control and a candidate, compare, and publish mismatches. When mismatches drop to zero for long enough, switch. It's the most convincing quality evidence you can get, because it uses production data, not test fixtures.</p>
+
+<h3 id="5-release-behind-feature-flags">5. Release behind feature flags<a class="h-anchor" href="#5-release-behind-feature-flags" aria-label="Link to this section">#</a></h3>
+<p>Ship the new path to internal users, then 1% of traffic, then 10%. Flags decouple <em>deploying</em> code from <em>releasing</em> it, which lets you keep deploying daily during a rewrite without exposing unfinished work.</p>
+
+<h3 id="6-freeze-features-in-the-old-system">6. Freeze features in the old system<a class="h-anchor" href="#6-freeze-features-in-the-old-system" aria-label="Link to this section">#</a></h3>
+<p>Agree up front: no new features in the old system, bug and security fixes only. And no new features in the new system until it matches the old one. Parity first, improvements second. This is the hardest rule to hold and the one that matters most.</p>
+
+<h3 id="7-plan-the-data-migration-as-its-own-project">7. Plan the data migration as its own project<a class="h-anchor" href="#7-plan-the-data-migration-as-its-own-project" aria-label="Link to this section">#</a></h3>
+<p>Code is usually the easy part. Schemas, historical records and invariants are where rewrites quietly break. Use dual writes or change-data-capture, run reconciliation jobs that compare old and new data, and rehearse the cutover. I've written about why <a href="/blog/business-logic-first-not-perfect-tech-stack/">business rules and data are the real risk</a> in any system.</p>
+
+<h2 id="velocity">How this increases velocity, not just safety<a class="h-anchor" href="#velocity" aria-label="Link to this section">#</a></h2>
+
+<p>These techniques look slower on paper. In practice they're faster, because they remove the most expensive event in a rewrite: the late surprise. Small slices mean:</p>
+
+<ul>
+  <li><strong>Short lead time.</strong> Each slice reaches production in days, so you learn from real usage early.</li>
+  <li><strong>Low change fail rate.</strong> Characterisation tests and side-by-side runs catch regressions before users do.</li>
+  <li><strong>Cheap rollback.</strong> A flag flip instead of an incident.</li>
+  <li><strong>Visible progress.</strong> Stakeholders see routes move over, which buys the patience a rewrite needs.</li>
+</ul>
+
+<p>Track the DORA metrics (lead time, deployment frequency, change fail rate, rework rate) for the new system from the first slice. If the change fail rate climbs, slow down before it costs you a quarter.</p>
+
+<h2 id="quality-gates">Quality gates worth enforcing<a class="h-anchor" href="#quality-gates" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><strong>Static analysis at a strict level from day one</strong> in the new code. In PHP that means PHPStan at a high level, which is cheap to run now that <a href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo</a> cut cold runs by more than half.</li>
+  <li><strong>Small pull requests</strong> with a clear owner for every review.</li>
+  <li><strong>Characterisation tests can't be deleted</strong> without a written reason.</li>
+  <li><strong>AI-generated code gets the same review as human code.</strong> AI is useful for writing characterisation tests and boilerplate. It's also very good at confidently dropping the edge case the old code handled. I covered our guardrails in <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI changed our engineering velocity</a>.</li>
+</ul>
+
+<h2 id="should-you-rewrite">Should you rewrite at all?<a class="h-anchor" href="#should-you-rewrite" aria-label="Link to this section">#</a></h2>
+
+<p>Often the honest answer is no. Refactor in place if the architecture is sound and the code is just messy. Rewrite (incrementally) when the platform itself is the problem: an unsupported runtime, a framework with no upgrade path, or a data model that can't represent the business any more. If you're on an old PHP version, an <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a> usually beats a rewrite.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="is-it-better-to-rewrite-or-refactor">Is it better to rewrite or refactor?<a class="h-anchor" href="#is-it-better-to-rewrite-or-refactor" aria-label="Link to this section">#</a></h3>
+<p>Refactor in place when the architecture is sound and the code is just messy. Rewrite incrementally when the platform itself is the problem, such as an unsupported runtime or a data model that no longer fits the business.</p>
+
+<h3 id="what-is-the-strangler-fig-pattern">What is the strangler fig pattern?<a class="h-anchor" href="#what-is-the-strangler-fig-pattern" aria-label="Link to this section">#</a></h3>
+<p>A way to replace a system gradually: a routing layer sends some functionality to the new system while the rest stays on the old one, until the old system can be switched off. The name comes from Martin Fowler.</p>
+
+<h3 id="what-are-characterisation-tests">What are characterisation tests?<a class="h-anchor" href="#what-are-characterisation-tests" aria-label="Link to this section">#</a></h3>
+<p>Tests that record what existing code actually does, including odd edge cases, so a rewrite can prove it behaves the same. The term comes from Michael Feathers&#x27; Working Effectively with Legacy Code.</p>
+
+<h3 id="how-do-you-measure-a-rewrite-s-progress">How do you measure a rewrite&#x27;s progress?<a class="h-anchor" href="#how-do-you-measure-a-rewrite-s-progress" aria-label="Link to this section">#</a></h3>
+<p>Track the share of traffic or functionality served by the new system, plus DORA metrics such as lead time and change fail rate. A rising change fail rate is the signal to slow down.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>Avoid big-bang rewrites. Replace systems slice by slice with the strangler fig pattern or branch by abstraction.</li>
+  <li>Pin current behaviour with characterisation tests before you change anything.</li>
+  <li>Run old and new code side by side on real traffic and switch only when results match.</li>
+  <li>Use feature flags, freeze features in the old system, and treat data migration as its own project.</li>
+  <li>Measure the rewrite with lead time and change fail rate from the first slice.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/" target="_blank" rel="noopener noreferrer">Joel Spolsky: Things You Should Never Do, Part I</a> (2000)</li>
+  <li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">Martin Fowler: Strangler Fig Application</a></li>
+  <li><a href="https://martinfowler.com/bliki/BranchByAbstraction.html" target="_blank" rel="noopener noreferrer">Martin Fowler: Branch By Abstraction</a></li>
+  <li><a href="https://github.com/github/scientist" target="_blank" rel="noopener noreferrer">GitHub Scientist</a></li>
+  <li>Michael Feathers, <em>Working Effectively with Legacy Code</em> (Prentice Hall, 2004)</li>
+  <li><a href="https://dora.dev/guides/dora-metrics-four-keys/" target="_blank" rel="noopener noreferrer">DORA: software delivery performance metrics</a></li>
+</ul>
+
+<p>Facing a rewrite and not sure how to slice it? <a href="/#contact">Let's talk</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/what-is-coding-velocity-how-to-measure/">What Is Coding Velocity, and How Do You Measure It Without Gaming It?</a><time datetime="2026-11-16">November 16, 2026</time></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a><time datetime="2026-11-07">November 7, 2026</time></li>
+            <li><a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</a><time datetime="2026-09-02">September 2, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#why-rewrites-fail">Why rewrites go wrong</a></li>
+          <li><a href="#techniques">Seven techniques that keep quality high</a></li>
+          <li><a href="#velocity">How this increases velocity, not just safety</a></li>
+          <li><a href="#quality-gates">Quality gates worth enforcing</a></li>
+          <li><a href="#should-you-rewrite">Should you rewrite at all?</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/php-vs-nodejs-language-doesnt-matter-ai-era/">PHP vs Node.js in the AI Era</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

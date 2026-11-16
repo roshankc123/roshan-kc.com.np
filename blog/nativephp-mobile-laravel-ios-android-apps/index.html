@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>NativePHP in 2026: Laravel iOS &amp; Android Apps | Roshan Kc</title>
+  <meta name="description" content="What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/">
+  <meta property="og:title" content="NativePHP v4 and SuperNative: Real SwiftUI and Compose Apps from Laravel">
+  <meta property="og:description" content="What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-11">
+  <meta property="article:modified_time" content="2026-11-11">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NativePHP v4 and SuperNative: Real SwiftUI and Compose Apps from Laravel">
+  <meta name="twitter:description" content="What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel",
+  "description": "What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-11",
+  "dateModified": "2026-11-11",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/"
+  },
+  "keywords": "nativephp, nativephp mobile, nativephp v4, supernative, laravel mobile app, nativephp vs flutter, php ios android app",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "about": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "NativePHP",
+      "url": "https://nativephp.com/",
+      "applicationCategory": "DeveloperApplication"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "NativePHP for Mobile is now free",
+      "url": "https://nativephp.com/blog/nativephp-for-mobile-is-now-free"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "NativePHP Mobile v4: The Renderer",
+      "url": "https://nativephp.com/docs/mobile/4/architecture/renderer"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "NativePHP Mobile v4: Embedded PHP",
+      "url": "https://nativephp.com/docs/mobile/4/architecture/embedded-php"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Laravel News: NativePHP v4 SuperNative",
+      "url": "https://laravel-news.com/nativephp-v4-supernative"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "NativePHP Desktop v2 release notes",
+      "url": "https://nativephp.com/docs/desktop/2/getting-started/releasenotes"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel",
+      "item": "https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does NativePHP compile PHP to native code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. NativePHP bundles a real PHP runtime (PHP 8.4 on mobile) inside a Swift, Kotlin or Electron shell. Your PHP is interpreted on the device; only the UI is native when you use SuperNative."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is NativePHP free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes for the core. NativePHP for Mobile v3 and later is MIT licensed, and nine plugins are free. Premium plugins such as Biometrics and Push Notifications are one-time purchases, and the Bifrost cloud build service is a subscription."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is NativePHP SuperNative?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SuperNative is the v4 renderer that turns Blade components into real SwiftUI views on iOS and Jetpack Compose views on Android. PHP writes a binary frame into shared memory and native readers diff it into the UI, with no web view."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does NativePHP need a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The Laravel app runs inside the app process with SQLite as the bundled database. Most real apps still talk to a backend API for shared data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I use NativePHP or Flutter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use NativePHP if your team is strong in Laravel and you're building companion, B2B or internal apps. Use Flutter or React Native if UI polish is the product or you already have mobile engineers."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">PHP · Laravel · Mobile</span>
+              <time datetime="2026-11-11">November 11, 2026</time>
+              <span>7 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> NativePHP is an open-source framework that lets Laravel developers build iOS, Android, macOS, Windows and Linux apps from one PHP codebase. It doesn't compile PHP to machine code: it ships a real PHP runtime inside the app. Since v4 (July 2026), its SuperNative renderer turns Blade into genuine SwiftUI and Jetpack Compose views instead of a web view.</p>
+
+<p>I get asked about NativePHP more than any other "PHP on a phone" project, usually by founders who have a Laravel web app and a budget for exactly zero extra mobile engineers. This post is what I tell them: what NativePHP actually is in late 2026, what changed with v3 and v4, and where I think it fits against Flutter and React Native. If you're comparing it with the PHP compilers that also say "native", start with <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP</a>; they solve different problems.</p>
+
+<h2 id="what-is-nativephp">What is NativePHP?<a class="h-anchor" href="#what-is-nativephp" aria-label="Link to this section">#</a></h2>
+
+<p>NativePHP is a set of Laravel packages that wrap your app in a native shell and give it access to device features. There are two products:</p>
+
+<ul>
+  <li><strong>NativePHP for Mobile</strong> (<code>nativephp/mobile</code>): iOS and Android. PHP is compiled as a library (<code>libphp</code>) and linked into a Swift shell on iOS and a Kotlin shell on Android.</li>
+  <li><strong>NativePHP for Desktop</strong> (<code>nativephp/desktop</code>): macOS, Windows and Linux, built on Electron.</li>
+</ul>
+
+<p>The part most people miss: <strong>there is no server</strong>. The mobile docs put it plainly: "There's no server in a NativePHP app, and no separate PHP process either." The PHP engine boots inside the app process, loads your Laravel app from the bundle, and stays warm. The bundled database is SQLite. As of v4 the mobile runtime ships PHP 8.4, cross-compiled for iOS (device and simulator) and Android ARM64.</p>
+
+<p>So your Eloquent models, queues, validation rules and Blade views run on the phone. That's the whole pitch, and it's a good one if you already think in Laravel.</p>
+
+<h2 id="timeline">What changed in 2026: v3 went free, v4 went native<a class="h-anchor" href="#timeline" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Date</th><th style="padding:0.6rem 0.9rem;text-align:left">Release</th><th style="padding:0.6rem 0.9rem;text-align:left">What it means</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Oct 14, 2025</td><td style="padding:0.6rem 0.9rem">Desktop 2.0.1</td><td style="padding:0.6rem 0.9rem">Desktop v2 merged the old <code>nativephp/laravel</code> and <code>nativephp/electron</code> repos into <code>nativephp/desktop</code>, with breaking changes and safer defaults.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Feb 1, 2026</td><td style="padding:0.6rem 0.9rem">Mobile v3, MIT licence</td><td style="padding:0.6rem 0.9rem">The core framework and nine plugins (Browser, Camera, Device, Dialog, File, Microphone, Network, Share, System) became free and open source. Versions before v3 stay under the Business Source License.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Jul 30, 2026</td><td style="padding:0.6rem 0.9rem">Mobile v4 + SuperNative</td><td style="padding:0.6rem 0.9rem">Launched at The Vibes in Boston, the day after Laracon US. Blade renders as real SwiftUI and Compose views by default.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Aug 7, 2026</td><td style="padding:0.6rem 0.9rem">Mobile v4.1</td><td style="padding:0.6rem 0.9rem">Added TreeObservers for watching the element trees the runtime publishes.</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Nov 10, 2026</td><td style="padding:0.6rem 0.9rem">Desktop 2.5.0</td><td style="padding:0.6rem 0.9rem">Upgraded to Electron 45; apps can ask before downloading updates; the local events endpoint now requires authentication.</td></tr>
+  </tbody>
+</table></div>
+
+<p>The MIT switch matters more than it sounds. A BSL licence makes agencies nervous because you're betting client work on a vendor's future terms. MIT removes that conversation. NativePHP still earns money: premium plugins (Biometrics, Geolocation, Push Notifications via Firebase, Scanner, Secure Storage) are one-time purchases, and the Bifrost cloud build service is a subscription. You can ship a real app without paying anything, though.</p>
+
+<h2 id="supernative">How SuperNative works<a class="h-anchor" href="#supernative" aria-label="Link to this section">#</a></h2>
+
+<p>SuperNative replaces the web view with native UI. Earlier NativePHP Mobile versions rendered your Blade into HTML and showed it in a web view, which worked but felt like a website in a wrapper. In v4, Blade compiles to a compact binary description of the screen, and native code turns that into SwiftUI or Jetpack Compose views.</p>
+
+<p>The pipeline, from NativePHP's renderer docs:</p>
+
+<ol>
+  <li>Your PHP code produces an <strong>element tree</strong>.</li>
+  <li>The <strong>Element Runtime</strong>, native code built into the PHP runtime, encodes it into a binary frame of fixed-layout records.</li>
+  <li>Because PHP and the UI share one process, publishing a frame is just writing bytes into shared memory. No JSON, no HTTP round trip.</li>
+  <li>Small Swift and Kotlin readers diff each frame against the last and hand only the changes to SwiftUI or Compose.</li>
+</ol>
+
+<p>Layout is a native flexbox implementation on both platforms, and you style with Tailwind-like classes. Gestures, press feedback and animations run on the native side, so PHP isn't in the hot loop for every frame of a swipe. The component set is called EDGE (Element Definition and Generation Engine). A screen looks roughly like this:</p>
+
+<pre><code>&lt;column class="p-4 gap-2"&gt;
+    &lt;text class="text-xl font-bold"&gt;Orders&lt;/text&gt;
+    @foreach ($orders as $order)
+        &lt;pressable @tap="open({{ $order-&gt;id }})"&gt;
+            &lt;text&gt;{{ $order-&gt;reference }}&lt;/text&gt;
+        &lt;/pressable&gt;
+    @endforeach
+&lt;/column&gt;</code></pre>
+
+<p>That's still Blade. You keep <code>@foreach</code>, components and attributes like <code>#[Computed]</code> and <code>#[Lazy]</code>. Web views haven't gone away, either: there's a <code>&lt;webview&gt;</code> element, so you can keep an existing Livewire screen and rebuild the important ones natively over time. I like that a lot. It means migration can be gradual instead of a rewrite.</p>
+
+<p>Upgrading from v3 is mostly additive. The one breaking change Laravel News reported: the Device, Dialog, File and System plugins moved into core, so you uninstall the standalone packages before bumping to <code>~4.0.0</code>.</p>
+
+<h2 id="vs-flutter-react-native">NativePHP vs Flutter vs React Native<a class="h-anchor" href="#vs-flutter-react-native" aria-label="Link to this section">#</a></h2>
+
+<p>The honest answer is that NativePHP wins on team fit, not on raw capability. Flutter and React Native have a decade of production apps, huge component ecosystems and big-company backing. NativePHP has Laravel developers.</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left"></th><th style="padding:0.6rem 0.9rem;text-align:left">NativePHP Mobile v4</th><th style="padding:0.6rem 0.9rem;text-align:left">Flutter</th><th style="padding:0.6rem 0.9rem;text-align:left">React Native</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Language</td><td style="padding:0.6rem 0.9rem">PHP (Laravel, Blade)</td><td style="padding:0.6rem 0.9rem">Dart</td><td style="padding:0.6rem 0.9rem">JavaScript / TypeScript</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">UI</td><td style="padding:0.6rem 0.9rem">SwiftUI + Compose via SuperNative, or web view</td><td style="padding:0.6rem 0.9rem">Own renderer, draws every pixel</td><td style="padding:0.6rem 0.9rem">Native platform views</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Business logic</td><td style="padding:0.6rem 0.9rem">Runs on device in embedded PHP</td><td style="padding:0.6rem 0.9rem">Dart on device</td><td style="padding:0.6rem 0.9rem">JS on device</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Reuse from a Laravel web app</td><td style="padding:0.6rem 0.9rem">Models, validation, services, Blade skills</td><td style="padding:0.6rem 0.9rem">API only</td><td style="padding:0.6rem 0.9rem">API only</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Ecosystem size</td><td style="padding:0.6rem 0.9rem">Small, growing</td><td style="padding:0.6rem 0.9rem">Very large</td><td style="padding:0.6rem 0.9rem">Very large</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Licence</td><td style="padding:0.6rem 0.9rem">MIT (v3+), paid premium plugins</td><td style="padding:0.6rem 0.9rem">BSD</td><td style="padding:0.6rem 0.9rem">MIT</td></tr>
+  </tbody>
+</table></div>
+
+<p>Where I'd pick NativePHP:</p>
+
+<ul>
+  <li>A Laravel agency whose clients want "an app too", and the team has no mobile developer.</li>
+  <li>A solo SaaS founder who wants a companion app (dashboards, approvals, field forms) without learning Dart.</li>
+  <li>Internal and B2B tools where offline-first SQLite and fast iteration matter more than pixel-perfect animation.</li>
+</ul>
+
+<p>Where I wouldn't, yet:</p>
+
+<ul>
+  <li>Consumer apps where UI polish and motion are the product.</li>
+  <li>Apps that need a rare native SDK nobody has wrapped in a NativePHP plugin. You'll be writing Swift and Kotlin anyway.</li>
+  <li>Teams that already have strong Flutter or React Native engineers. Don't switch for the sake of PHP.</li>
+</ul>
+
+<h2 id="gotchas">Things to think about before you start<a class="h-anchor" href="#gotchas" aria-label="Link to this section">#</a></h2>
+
+<p><strong>Your app code ships to the device.</strong> On a server, PHP source stays private. In a NativePHP app the Laravel code is bundled into the app package. Don't put secrets in it, and treat any API key in the bundle as public. That's true of every mobile framework, but PHP developers aren't used to thinking about it.</p>
+
+<p><strong>The phone is not your server.</strong> Queues, scheduled jobs and heavy work behave differently when the OS can suspend your app at any moment. Keep the heavy lifting on your real backend and sync.</p>
+
+<p><strong>SuperNative is new.</strong> It launched in July 2026. The architecture is sound, but expect rough edges in less common components. Keep a web view escape hatch for complex screens.</p>
+
+<p><strong>Desktop is a different stack.</strong> NativePHP Desktop is Electron with PHP inside, not SuperNative. Fine for internal tools, but it carries Electron's memory footprint.</p>
+
+<h2 id="is-it-production-ready">Is NativePHP production ready?<a class="h-anchor" href="#is-it-production-ready" aria-label="Link to this section">#</a></h2>
+
+<p>For the use cases above, yes. Mobile v3 and v4 and Desktop v2 are stable releases with regular point updates, an MIT core and a paying customer base funding development. For a consumer app competing on feel, I'd prototype the two or three hardest screens in SuperNative before committing.</p>
+
+<p>NativePHP also isn't a performance tool. If your problem is slow PHP, look at <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">runtimes like Octane and FrankenPHP</a> or the AOT compilers covered in <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a>.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="does-nativephp-compile-php-to-native-code">Does NativePHP compile PHP to native code?<a class="h-anchor" href="#does-nativephp-compile-php-to-native-code" aria-label="Link to this section">#</a></h3>
+<p>No. NativePHP bundles a real PHP runtime (PHP 8.4 on mobile) inside a Swift, Kotlin or Electron shell. Your PHP is interpreted on the device; only the UI is native when you use SuperNative.</p>
+
+<h3 id="is-nativephp-free">Is NativePHP free?<a class="h-anchor" href="#is-nativephp-free" aria-label="Link to this section">#</a></h3>
+<p>Yes for the core. NativePHP for Mobile v3 and later is MIT licensed, and nine plugins are free. Premium plugins such as Biometrics and Push Notifications are one-time purchases, and the Bifrost cloud build service is a subscription.</p>
+
+<h3 id="what-is-nativephp-supernative">What is NativePHP SuperNative?<a class="h-anchor" href="#what-is-nativephp-supernative" aria-label="Link to this section">#</a></h3>
+<p>SuperNative is the v4 renderer that turns Blade components into real SwiftUI views on iOS and Jetpack Compose views on Android. PHP writes a binary frame into shared memory and native readers diff it into the UI, with no web view.</p>
+
+<h3 id="does-nativephp-need-a-server">Does NativePHP need a server?<a class="h-anchor" href="#does-nativephp-need-a-server" aria-label="Link to this section">#</a></h3>
+<p>No. The Laravel app runs inside the app process with SQLite as the bundled database. Most real apps still talk to a backend API for shared data.</p>
+
+<h3 id="should-i-use-nativephp-or-flutter">Should I use NativePHP or Flutter?<a class="h-anchor" href="#should-i-use-nativephp-or-flutter" aria-label="Link to this section">#</a></h3>
+<p>Use NativePHP if your team is strong in Laravel and you&#x27;re building companion, B2B or internal apps. Use Flutter or React Native if UI polish is the product or you already have mobile engineers.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>NativePHP embeds a real PHP 8.4 runtime in iOS and Android apps (and Electron on desktop). Your Laravel code runs on the device with SQLite and no server.</li>
+  <li>Mobile v3 went MIT on February 1, 2026. The core and nine plugins are free; premium plugins and the Bifrost build service are paid.</li>
+  <li>v4 (July 30, 2026) made SuperNative the default: Blade becomes SwiftUI and Jetpack Compose through binary frames in shared memory, with web views still available.</li>
+  <li>Choose it for team fit: Laravel shops and solo founders shipping companion, B2B or internal apps. Flutter and React Native still win on ecosystem depth.</li>
+  <li>Your app code ships to users' phones, so keep secrets and heavy jobs on your backend.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://nativephp.com/blog/nativephp-for-mobile-is-now-free" target="_blank" rel="noopener noreferrer">NativePHP: NativePHP for Mobile is now free</a> (Feb 1, 2026)</li>
+  <li><a href="https://nativephp.com/docs/mobile/4/architecture/renderer" target="_blank" rel="noopener noreferrer">NativePHP Mobile v4 docs: The Renderer</a></li>
+  <li><a href="https://nativephp.com/docs/mobile/4/architecture/embedded-php" target="_blank" rel="noopener noreferrer">NativePHP Mobile v4 docs: Embedded PHP</a></li>
+  <li><a href="https://laravel-news.com/nativephp-v4-supernative" target="_blank" rel="noopener noreferrer">Laravel News: NativePHP v4, build native iOS and Android UI in Blade</a> (Yannick Lyn Fatt)</li>
+  <li><a href="https://nativephp.com/docs/desktop/2/getting-started/releasenotes" target="_blank" rel="noopener noreferrer">NativePHP Desktop v2 release notes</a></li>
+  <li><a href="https://packagist.org/packages/nativephp/mobile" target="_blank" rel="noopener noreferrer">Packagist: nativephp/mobile</a></li>
+</ul>
+
+<p>Thinking about a mobile app on top of your Laravel product? <a href="/#contact">Get in touch</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/frankenphp-vs-swoole-laravel-octane/">FrankenPHP vs Swoole: Which Should You Run Laravel On?</a></li>
+            <li><a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM: Should You Switch in 2026?</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP: What &quot;Native PHP&quot; Actually Means in 2026</a></li>
+            <li><a href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? A PHP Compiler With No VM and No Zend Engine</a></li>
+            <li><a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</a></li>
+            <li aria-current="page"><span>NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</span></li>
+            <li><a href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?</a></li>
+            <li><a href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/why-we-chose-laravel-over-nodejs/">Why We Chose Laravel Over Node.js for Our Stack</a><time datetime="2026-08-27">August 27, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#what-is-nativephp">What is NativePHP?</a></li>
+          <li><a href="#timeline">What changed in 2026: v3 went free, v4 went native</a></li>
+          <li><a href="#supernative">How SuperNative works</a></li>
+          <li><a href="#vs-flutter-react-native">NativePHP vs Flutter vs React Native</a></li>
+          <li><a href="#gotchas">Things to think about before you start</a></li>
+          <li><a href="#is-it-production-ready">Is NativePHP production ready?</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? The PHP-to-Native Compiler</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

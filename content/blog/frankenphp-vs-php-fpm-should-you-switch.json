@@ -1,0 +1,60 @@
+{
+ "slug": "frankenphp-vs-php-fpm-should-you-switch",
+ "date": "2026-11-16",
+ "read": 5,
+ "tag": "PHP · Performance",
+ "title": "FrankenPHP vs PHP-FPM: Should You Switch? | Roshan Kc",
+ "h1": "FrankenPHP vs PHP-FPM: Should You Switch in 2026?",
+ "social": "FrankenPHP vs PHP-FPM: When to Switch and How to Migrate Safely",
+ "short": "FrankenPHP vs PHP-FPM",
+ "desc": "FrankenPHP vs PHP-FPM: how they differ, when switching pays off, extensions that break, and a low-risk migration path from classic mode to worker mode.",
+ "keywords": "frankenphp vs php-fpm, php fpm vs frankenphp, php fpm alternative, frankenphp alternative, migrate to frankenphp, frankenphp worker mode",
+ "citations": [
+  [
+   "FrankenPHP docs: configuration",
+   "https://frankenphp.dev/docs/config/"
+  ],
+  [
+   "FrankenPHP docs: known issues",
+   "https://frankenphp.dev/docs/known-issues/"
+  ],
+  [
+   "FrankenPHP releases",
+   "https://github.com/php/frankenphp/releases"
+  ],
+  [
+   "php.net: FastCGI Process Manager",
+   "https://www.php.net/manual/en/install.fpm.php"
+  ],
+  [
+   "Laravel Octane documentation",
+   "https://laravel.com/docs/octane"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "FrankenPHP",
+   "url": "https://frankenphp.dev/",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "Is FrankenPHP a drop-in replacement for PHP-FPM?",
+   "Mostly, in classic mode: your code runs per request as it does under FPM. You need a thread-safe PHP build, and a few extensions such as imap, newrelic and pcov are not supported."
+  ],
+  [
+   "Is FrankenPHP faster than PHP-FPM?",
+   "In worker mode it usually is, because the app boots once instead of on every request. In classic mode the gain is small. If your requests are slow because of database queries, neither runtime will fix that."
+  ],
+  [
+   "Do I still need nginx with FrankenPHP?",
+   "No. FrankenPHP is built on Caddy and serves HTTP, HTTPS with automatic certificates, HTTP/2 and HTTP/3 itself. Some teams keep a load balancer in front for other reasons."
+  ],
+  [
+   "What is the biggest risk when moving to FrankenPHP?",
+   "Worker mode state leaks and the larger crash blast radius. Migrate to classic mode first, run under a supervisor, then adopt worker mode once your code is safe across requests."
+  ]
+ ]
+}

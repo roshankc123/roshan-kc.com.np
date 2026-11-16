@@ -1,0 +1,56 @@
+{
+ "slug": "future-of-native-php-aot-compilers-nativephp",
+ "date": "2026-11-16",
+ "read": 6,
+ "tag": "PHP · Modern PHP",
+ "title": "The Future of Native PHP: AOT and NativePHP | Roshan Kc",
+ "h1": "The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?",
+ "social": "The Future of Native PHP: Compilers, Mobile Apps and the HHVM Lesson",
+ "short": "The Future of Native PHP",
+ "desc": "The future of PHP with elephc, TypePHP and NativePHP: lessons from HHVM, why 2026 is different, likely outcomes, and the signals to watch in 2027.",
+ "keywords": "future of php, native php, php aot compilation future, nativephp future, typephp, elephc, hhvm, php 2027",
+ "citations": [
+  [
+   "elephc.dev",
+   "https://elephc.dev"
+  ],
+  [
+   "swoole/typephp on GitHub",
+   "https://github.com/swoole/typephp"
+  ],
+  [
+   "Albert Chen: Introduction to Swoole's AOT compiler",
+   "https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler"
+  ],
+  [
+   "NativePHP for Mobile is now free",
+   "https://nativephp.com/blog/nativephp-for-mobile-is-now-free"
+  ],
+  [
+   "Laravel News: NativePHP v4 SuperNative",
+   "https://laravel-news.com/nativephp-v4-supernative"
+  ],
+  [
+   "PHP 7.0.0 release announcement",
+   "https://www.php.net/releases/7_0_0.php"
+  ]
+ ],
+ "faq": [
+  [
+   "Will PHP become a compiled language?",
+   "Partly. AOT compilers like elephc and TypePHP already compile a typed subset of PHP to native code, mainly for extensions and tools. Regular interpreted PHP will remain the default for frameworks for the foreseeable future."
+  ],
+  [
+   "Is native PHP just HHVM again?",
+   "No. HHVM tried to replace the PHP runtime. elephc and TypePHP are designed to work alongside standard PHP, for example by compiling modules into extensions that stock PHP loads."
+  ],
+  [
+   "When will TypePHP be production ready?",
+   "A May 2026 talk on Swoole's AOT compiler targeted general availability for May 2027. As of November 2026 the project describes itself as under active development."
+  ],
+  [
+   "Is NativePHP the future of PHP mobile development?",
+   "It is the most credible path for Laravel teams as of 2026, with an MIT core and native UI via SuperNative. Its long-term reach depends on how broad its plugin ecosystem becomes."
+  ]
+ ]
+}

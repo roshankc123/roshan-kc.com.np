@@ -1,0 +1,52 @@
+{
+ "slug": "what-is-coding-velocity-how-to-measure",
+ "date": "2026-11-16",
+ "read": 6,
+ "tag": "Engineering · Leadership",
+ "title": "What Is Coding Velocity? How to Measure It | Roshan Kc",
+ "h1": "What Is Coding Velocity, and How Do You Measure It Without Gaming It?",
+ "social": "Coding Velocity: What It Really Means and How to Measure It Honestly",
+ "short": "What Is Coding Velocity?",
+ "desc": "What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.",
+ "keywords": "coding velocity, engineering velocity, developer velocity, dora metrics, measure developer productivity, ai code velocity, test coverage",
+ "citations": [
+  [
+   "DORA: software delivery performance metrics",
+   "https://dora.dev/guides/dora-metrics-four-keys/"
+  ],
+  [
+   "Forsgren et al.: The SPACE of Developer Productivity",
+   "https://queue.acm.org/detail.cfm?id=3454124"
+  ],
+  [
+   "METR: Early-2025 AI and experienced open-source developer productivity",
+   "https://arxiv.org/abs/2507.09089"
+  ],
+  [
+   "Stack Overflow 2025 Developer Survey results",
+   "https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/"
+  ]
+ ],
+ "faq": [
+  [
+   "What is the difference between coding velocity and sprint velocity?",
+   "Sprint velocity counts story points a Scrum team completes per sprint and is only useful for that team's own planning. Coding or delivery velocity is how fast working changes reach production, measured with metrics like lead time and deployment frequency."
+  ],
+  [
+   "What are the DORA metrics?",
+   "DORA's current guide lists five: change lead time, deployment frequency and failed deployment recovery time (throughput), and change fail rate and deployment rework rate (instability)."
+  ],
+  [
+   "Does AI increase coding velocity?",
+   "It speeds up writing code, but the evidence on delivery is mixed. METR found experienced developers 19% slower with early-2025 AI tools on mature codebases. Measure lead time and rework to see the real effect on your team."
+  ],
+  [
+   "Should test coverage be a velocity target?",
+   "No. Use coverage as a guardrail to find untested code. A coverage target encourages tests that execute code without checking behaviour."
+  ],
+  [
+   "Should I measure individual developer velocity?",
+   "No. Delivery speed is mostly a property of the system: pipeline, review habits and architecture. Ranking individuals encourages gaming and hides the real bottlenecks."
+  ]
+ ]
+}

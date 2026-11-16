@@ -1,0 +1,103 @@
+<p><strong>Direct answer:</strong> Coding velocity is how quickly a team turns an idea into working software that users actually have, not how fast people type or how many lines they write. Measure it at the team level with delivery metrics like DORA's change lead time and deployment frequency, always paired with stability metrics like change fail rate. Never turn a single velocity number into a target, because people will hit the number and miss the point.</p>
+
+<p>"Velocity" gets thrown around in every engineering planning meeting, and it means something different to each person in the room. To a Scrum team it's story points per sprint. To a founder it's "why isn't this shipped yet". To an engineer with an AI assistant it's how fast code appears on the screen. This post separates those ideas, shows what's actually worth measuring, and covers what AI tools did to the picture. My earlier post on <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI coding tools changed our engineering velocity</a> covers our own experience; this one is the measurement side.</p>
+
+<h2 id="definition">What is coding velocity?</h2>
+
+<p>Coding velocity is the rate at which a team delivers working, valuable changes to production. Three words in that definition do the heavy lifting:</p>
+
+<ul>
+  <li><strong>Team</strong>, not individual. Software is a group activity; measuring individuals mostly measures who picked the easy tickets.</li>
+  <li><strong>Working</strong>. A change that ships and gets rolled back added zero velocity and some negative morale.</li>
+  <li><strong>Production</strong>. Code on a branch or waiting in review isn't delivered.</li>
+</ul>
+
+<h2 id="three-velocities">Three things people mean by velocity</h2>
+
+<table>
+  <thead><tr><th>Term</th><th>What it counts</th><th>Good for</th><th>Bad for</th></tr></thead>
+  <tbody>
+    <tr><td>Sprint velocity</td><td>Story points completed per sprint</td><td>A team forecasting its own next sprint</td><td>Comparing teams, or judging performance; points inflate the moment they're watched</td></tr>
+    <tr><td>Coding speed</td><td>Lines, commits, PRs, AI suggestions accepted</td><td>Almost nothing on its own</td><td>Rewards volume, which is the opposite of good engineering</td></tr>
+    <tr><td>Delivery velocity</td><td>Lead time, deployment frequency, with failure and rework rates</td><td>Seeing whether the system that ships software is getting better</td><td>Single-number targets, cross-team league tables</td></tr>
+  </tbody>
+</table>
+
+<p>When someone searches "coding velocity", they usually want the third one, and they usually get sold the second.</p>
+
+<h2 id="how-to-measure">How to measure it: DORA metrics</h2>
+
+<p>The most widely used framework comes from DORA (DevOps Research and Assessment), now part of Google Cloud. DORA's current guide lists five software delivery metrics in two groups:</p>
+
+<table>
+  <thead><tr><th>Group</th><th>Metric</th><th>Question it answers</th></tr></thead>
+  <tbody>
+    <tr><td>Throughput</td><td>Change lead time</td><td>How long from commit to running in production?</td></tr>
+    <tr><td>Throughput</td><td>Deployment frequency</td><td>How often do we ship?</td></tr>
+    <tr><td>Throughput</td><td>Failed deployment recovery time</td><td>When a deploy breaks something, how fast do we recover?</td></tr>
+    <tr><td>Instability</td><td>Change fail rate</td><td>What share of deploys cause a failure?</td></tr>
+    <tr><td>Instability</td><td>Deployment rework rate</td><td>How many deploys are unplanned fixes for earlier ones?</td></tr>
+  </tbody>
+</table>
+
+<p>The pairing is the point. Speed metrics without instability metrics reward shipping broken code quickly. DORA's own guidance warns against "having one metric to rule them all" and recommends several metrics "with some healthy tension between them."</p>
+
+<p>For the human side, the SPACE framework (Forsgren, Storey and colleagues, 2021) adds satisfaction, collaboration and flow. A team that ships fast while burning out is borrowing velocity from next quarter.</p>
+
+<h2 id="dont-game-it">How to measure velocity without gaming it</h2>
+
+<p>Goodhart's law applies to engineering more brutally than anywhere: once a measure becomes a target, it stops being a good measure. DORA's guide lists "setting metrics as a goal" as a pitfall in its own right. Practical rules:</p>
+
+<ol>
+  <li><strong>Measure the system, not people.</strong> Lead time is a property of your pipeline, review habits and architecture. Use it to find bottlenecks, never to rank engineers.</li>
+  <li><strong>Watch trends, not thresholds.</strong> "Lead time went from 4 days to 9 days this quarter" starts a useful conversation. "Lead time must be under 2 days" starts a gaming exercise.</li>
+  <li><strong>Don't compare teams.</strong> DORA warns that comparing "vastly different applications" misleads. A payments service and a marketing site shouldn't deploy at the same rate.</li>
+  <li><strong>Treat test coverage as a guardrail, not a score.</strong> Coverage tells you what's definitely untested. A coverage target produces tests that execute code without checking anything.</li>
+  <li><strong>Ignore activity metrics.</strong> Commits, lines changed and PR counts measure motion.</li>
+</ol>
+
+<h2 id="ai">What AI changed about coding velocity</h2>
+
+<p>AI tools made <em>code production</em> much faster and left the rest of delivery about where it was. That's the short version, and the research is more mixed than the marketing.</p>
+
+<ul>
+  <li>In the 2025 Stack Overflow Developer Survey, 84% of respondents said they use or plan to use AI tools, but more developers distrusted the accuracy of AI output (46%) than trusted it (33%).</li>
+  <li>METR's randomised study of 16 experienced open-source developers in early 2025 found they took <strong>19% longer</strong> with AI tools on their own mature codebases, while estimating afterwards that AI had made them 20% faster. METR is careful to say the result is specific to that setting.</li>
+</ul>
+
+<p>The lesson for measurement: if you only measure how fast code gets written, AI will look like a miracle. If you measure lead time and change fail rate, you'll see whether review, testing and deployment kept up. In most teams the bottleneck simply moves to review. That's why "AI suggestions accepted" is a vanity metric and lead time paired with rework rate is not.</p>
+
+<h2 id="improve">What actually improves velocity</h2>
+
+<p>The gains usually come from boring places:</p>
+
+<ul>
+  <li><strong>Smaller changes.</strong> Small PRs get reviewed faster, fail less and roll back easily.</li>
+  <li><strong>Fast, trusted CI.</strong> If the pipeline takes 40 minutes or flakes, every other improvement is capped.</li>
+  <li><strong>Review as a priority.</strong> A PR waiting a day for review is a day of lead time, every time.</li>
+  <li><strong>Clear business rules.</strong> Most rework comes from misunderstood requirements, not bad code. I've argued that in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first</a>.</li>
+  <li><strong>Deciding what not to build.</strong> The fastest feature is the one you didn't need (<a href="/blog/engineering-principles-what-not-to-build/">more on that</a>).</li>
+</ul>
+
+<p>If you're in the middle of a large rewrite, velocity and quality pull hardest against each other. I wrote a separate guide on <a href="/blog/keep-code-quality-during-major-rewrite/">keeping code quality high during a major rewrite</a>.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>Coding velocity is how fast a team delivers working changes to production, not how fast code gets written.</li>
+  <li>Measure it with DORA's five metrics: change lead time, deployment frequency and failed deployment recovery time, balanced by change fail rate and deployment rework rate.</li>
+  <li>Measure teams and trends; never rank individuals or set single-number targets.</li>
+  <li>AI sped up writing code, but research shows mixed effects on delivery. Measure lead time and rework, not suggestions accepted.</li>
+  <li>The biggest gains come from small changes, fast CI, prompt reviews and clear requirements.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://dora.dev/guides/dora-metrics-four-keys/" target="_blank" rel="noopener noreferrer">DORA: software delivery performance metrics</a></li>
+  <li><a href="https://queue.acm.org/detail.cfm?id=3454124" target="_blank" rel="noopener noreferrer">Forsgren et al.: The SPACE of Developer Productivity</a> (ACM Queue, 2021)</li>
+  <li><a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener noreferrer">METR: Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a></li>
+  <li><a href="https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/" target="_blank" rel="noopener noreferrer">Stack Overflow: 2025 Developer Survey results</a></li>
+</ul>
+
+<p>Trying to speed up a team without breaking things? <a href="/#contact">Let's talk</a>.</p>

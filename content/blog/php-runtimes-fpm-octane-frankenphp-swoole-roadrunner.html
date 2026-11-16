@@ -65,6 +65,8 @@
 
 <p>One warning from experience: profile first. If your slow endpoint spends 300 ms in the database, switching runtimes saves you the 10–20 ms of bootstrap and nothing else. Fix the queries, then change runtimes.</p>
 
+<p>Narrowing it down to two? I wrote head-to-heads for <a href="/blog/frankenphp-vs-swoole-laravel-octane/">FrankenPHP vs Swoole</a> and <a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM</a>.</p>
+
 <h2 id="takeaways">Key takeaways</h2>
 <ul>
   <li>FPM boots per request (simple and isolated). Swoole, RoadRunner and FrankenPHP boot once and reuse workers (much faster, but state leaks are possible).</li>

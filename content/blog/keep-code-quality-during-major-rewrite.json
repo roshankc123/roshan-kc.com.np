@@ -1,0 +1,52 @@
+{
+ "slug": "keep-code-quality-during-major-rewrite",
+ "date": "2026-11-16",
+ "read": 6,
+ "tag": "Engineering · Architecture",
+ "title": "Keeping Code Quality High in a Major Rewrite | Roshan Kc",
+ "h1": "How to Keep Code Quality High (and Velocity Up) During a Major Rewrite",
+ "social": "Rewrites Without Regret: Keeping Quality and Velocity High",
+ "short": "Code Quality During a Major Rewrite",
+ "desc": "How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.",
+ "keywords": "code quality during rewrite, software rewrite strategy, strangler fig pattern, characterization tests, legacy rewrite, engineering velocity rewrite, branch by abstraction",
+ "citations": [
+  [
+   "Joel Spolsky: Things You Should Never Do, Part I",
+   "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/"
+  ],
+  [
+   "Martin Fowler: Strangler Fig Application",
+   "https://martinfowler.com/bliki/StranglerFigApplication.html"
+  ],
+  [
+   "Martin Fowler: Branch By Abstraction",
+   "https://martinfowler.com/bliki/BranchByAbstraction.html"
+  ],
+  [
+   "GitHub Scientist",
+   "https://github.com/github/scientist"
+  ],
+  [
+   "DORA: software delivery performance metrics",
+   "https://dora.dev/guides/dora-metrics-four-keys/"
+  ]
+ ],
+ "faq": [
+  [
+   "Is it better to rewrite or refactor?",
+   "Refactor in place when the architecture is sound and the code is just messy. Rewrite incrementally when the platform itself is the problem, such as an unsupported runtime or a data model that no longer fits the business."
+  ],
+  [
+   "What is the strangler fig pattern?",
+   "A way to replace a system gradually: a routing layer sends some functionality to the new system while the rest stays on the old one, until the old system can be switched off. The name comes from Martin Fowler."
+  ],
+  [
+   "What are characterisation tests?",
+   "Tests that record what existing code actually does, including odd edge cases, so a rewrite can prove it behaves the same. The term comes from Michael Feathers' Working Effectively with Legacy Code."
+  ],
+  [
+   "How do you measure a rewrite's progress?",
+   "Track the share of traffic or functionality served by the new system, plus DORA metrics such as lead time and change fail rate. A rising change fail rate is the signal to slow down."
+  ]
+ ]
+}

@@ -1,0 +1,88 @@
+<p><strong>Direct answer:</strong> PHPStan Turbo is an optional native C++ extension that makes the PHPStan static analyser about 60% faster on a cold run (roughly 2.5×). It replaces around 350 of PHPStan's internal PHP classes with C++ versions of the same name, and analysis results are identical with or without it. It ships prebuilt with the <code>phpstan/phpstan</code> Composer package for PHP 8.2+, so most projects get it just by upgrading.</p>
+
+<p>If you searched "PHP vs Turbo", you probably saw PHPStan suddenly get much faster and wondered whether Turbo is a new PHP runtime. It isn't. It's a native extension that speeds up one PHP program, PHPStan, and it's one of the cleanest real-world examples of a pattern I covered in my <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">native PHP series</a>: keep PHP as the source of truth and move hot paths to native code. (If you meant Hotwire Turbo, the JavaScript library, that's unrelated.)</p>
+
+<h2 id="what-is-turbo">What is PHPStan Turbo?</h2>
+
+<p>PHPStan is the most widely used static analyser for PHP, created by Ondřej Mirtes. It reads your code without running it and reports type errors, impossible conditions and dead code. On a large codebase a full run can take a minute or more, which is why speed matters.</p>
+
+<p>Turbo is published as <code>phpstan/turbo</code>. In its own words, it's "a native PHP extension that makes PHPStan about 60% faster on a cold run." It arrived with PHPStan 2.2.6 in July 2026; the big jump came with 2.3.0 in October 2026, and the current release is 2.3.6 (November 15, 2026).</p>
+
+<h2 id="how-it-works">How Turbo works</h2>
+
+<p>The clever part is <strong>shadowing</strong>. Each native class takes the exact name of a PHP class in PHPStan. When the extension is loaded, PHP uses the C++ class; when it isn't, the original PHP class runs. The PHP version stays the reference implementation, which is why results can be identical.</p>
+
+<p>The speedup was built up in layers. Here's the breakdown from the package page, as a share of the time a run takes without Turbo:</p>
+
+<table>
+  <thead><tr><th>Layer</th><th>Version</th><th>Time saved</th></tr></thead>
+  <tbody>
+    <tr><td>Native hot paths</td><td>2.2.6</td><td>16%</td></tr>
+    <tr><td>Forked workers (fork from the booted process instead of starting fresh)</td><td>2.2.10</td><td>4%</td></tr>
+    <tr><td>Trusted types (an OPcache optimiser pass that drops redundant type checks in PHPStan's own code)</td><td>2.2.13</td><td>8%</td></tr>
+    <tr><td>Native analysis engine (~350 classes shadowed)</td><td>2.3.0</td><td>30%</td></tr>
+    <tr><td><strong>Total</strong></td><td></td><td><strong>58%</strong></td></tr>
+  </tbody>
+</table>
+
+<p>Turbo also reimplements php-parser's parsing engine natively, while tokenising stays in PHP. Rules, third-party PHPStan extensions, BetterReflection and phpdoc-parser all stay in PHP, so the parts the community extends are untouched. The package page also says Rector runs about 2× faster with Turbo.</p>
+
+<h2 id="benchmarks">How much faster in practice?</h2>
+
+<p>Independent numbers line up with the claims on cold runs. Sander Muller benchmarked PHPStan on WordPress at level 9 (Apple M4 Pro, PHP 8.5):</p>
+
+<table>
+  <thead><tr><th>Run</th><th>PHPStan 2.1.49</th><th>PHPStan 2.3.1, no Turbo</th><th>PHPStan 2.3.1, Turbo</th></tr></thead>
+  <tbody>
+    <tr><td>Cold (no cache)</td><td>48.6 s</td><td>31.2 s</td><td>13.3 s</td></tr>
+  </tbody>
+</table>
+
+<p>He also makes an important point in a post titled "Nobody runs PHPStan cold": day to day, PHPStan uses its result cache, and an average commit took 1.8 seconds on 2.3.1. So Turbo matters most in <strong>CI without a warm cache</strong>, on first runs after dependency updates, and on big monorepos. On your laptop the cache was already doing most of the work.</p>
+
+<h2 id="install">How to get it</h2>
+
+<p>Most people don't need to do anything:</p>
+
+<ul>
+  <li><strong>Composer users:</strong> <code>phpstan/phpstan</code> includes prebuilt binaries for Linux (glibc and musl, x86_64 and arm64), macOS arm64 and Windows x86_64, for PHP 8.2 and newer.</li>
+  <li><strong>Downloaded <code>phpstan.phar</code> users:</strong> install the extension with PIE: <code>pie install phpstan/turbo</code>.</li>
+  <li><strong>Check it's active:</strong> <code>vendor/bin/phpstan diagnose</code>.</li>
+</ul>
+
+<p>Turbo is version-gated: it only activates when its version matches the one the PHPStan release expects. Otherwise PHPStan prints a note and runs without it. A mismatched extension can only cost speed, never change results. There's no switch to turn it off.</p>
+
+<p>The quickest win for most teams: cache PHPStan's result cache directory between CI runs, then upgrade to get Turbo for the cold runs that remain.</p>
+
+<h2 id="lessons">What Turbo teaches about native PHP</h2>
+
+<p>Turbo is a useful counterpoint to the PHP compilers in this series. <a href="/blog/what-is-elephc-php-native-compiler/">elephc</a> and <a href="/blog/what-typephp-means-for-php-performance/">TypePHP</a> try to compile PHP automatically. Turbo hand-writes the hot parts in C++ and keeps PHP as the specification. It's more work, but it's shipping to everyone today, and the design choices are worth copying for any performance-critical PHP library:</p>
+
+<ol>
+  <li><strong>Profile first.</strong> The layers in the table target where time actually went.</li>
+  <li><strong>Keep a reference implementation.</strong> The PHP classes define correct behaviour; native code must match them.</li>
+  <li><strong>Make it optional and safe to be missing.</strong> Version gating means a broken or absent extension falls back to PHP.</li>
+  <li><strong>Leave the extension points alone.</strong> Rules and plugins stay in PHP, so the ecosystem doesn't break.</li>
+</ol>
+
+<p>It's also a nice answer to "is PHP too slow for serious tools?" The answer here was to keep PHP for most of the code and go native only where profiling said it would pay.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>PHPStan Turbo is a native C++ extension that makes PHPStan about 60% faster on cold runs, with identical results.</li>
+  <li>It shadows around 350 PHP classes with same-named native classes; the PHP code remains the reference implementation.</li>
+  <li>It ships prebuilt with <code>phpstan/phpstan</code> for PHP 8.2+; phar users install it with PIE.</li>
+  <li>The biggest gains are in CI and cold runs. Warm runs already benefit from the result cache.</li>
+  <li>It's a model for native PHP done safely: profile, keep a reference, make native optional.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://packagist.org/packages/phpstan/turbo" target="_blank" rel="noopener noreferrer">phpstan/turbo on Packagist</a> (description, breakdown, install, version history)</li>
+  <li><a href="https://dev.to/sandermuller/nobody-runs-phpstan-cold-9ed" target="_blank" rel="noopener noreferrer">Sander Muller: Nobody runs PHPStan cold</a></li>
+  <li><a href="https://phpstan.org/" target="_blank" rel="noopener noreferrer">PHPStan</a></li>
+</ul>
+
+<p>Want faster CI for a PHP codebase? <a href="/#contact">Get in touch</a>.</p>

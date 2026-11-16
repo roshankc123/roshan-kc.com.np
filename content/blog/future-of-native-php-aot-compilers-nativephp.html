@@ -1,0 +1,90 @@
+<p><strong>Direct answer:</strong> Native PHP is splitting PHP's future in two. NativePHP is already making PHP a credible way to ship mobile and desktop apps. AOT compilers like elephc and TypePHP are likely to become a normal way to write fast PHP extensions and single-binary tools within a year or two, but compiling whole Laravel or Symfony apps is further off and depends on the ecosystem getting much stricter about types.</p>
+
+<p>Predictions about programming languages age badly, so I'll try to make mine checkable. This is the last post in a short series. The others cover <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">what each tool is</a>, <a href="/blog/what-is-elephc-php-native-compiler/">elephc</a>, <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a> and <a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP</a>. Here I want to ask what all of it means for PHP as a language, and for the teams betting on it.</p>
+
+<h2 id="hhvm">We've been here before: what HHVM taught PHP</h2>
+
+<p>The last time PHP got a native-code moonshot, it worked, and it still lost. Facebook's HipHop compiled PHP to C++, and its successor, HHVM, gave large speedups over PHP 5 at Facebook's scale. Then PHP 7 shipped in 2015 with a rewritten engine that closed most of the gap for ordinary apps. HHVM drifted toward Hack, Meta's typed PHP dialect, and eventually dropped PHP support.</p>
+
+<p>The lesson wasn't "compilers don't work". It was that <strong>compatibility with the ecosystem beats raw speed</strong>. Developers chose the runtime their frameworks, packages and hosting already supported. Anyone predicting a big future for elephc or TypePHP has to explain why this time is different.</p>
+
+<h2 id="why-different">Why 2026 is different</h2>
+
+<p>Three things have changed since HHVM's peak.</p>
+
+<ol>
+  <li><strong>PHP code is typed now.</strong> Scalar types, return types, union types, enums, readonly properties, property hooks: PHP spent a decade making code predictable (<a href="/blog/php-type-system-evolution/">I traced that here</a>). Strictly typed code is exactly what an AOT compiler needs. In 2014 that code mostly didn't exist.</li>
+  <li><strong>The projects aren't trying to replace PHP.</strong> HHVM wanted to be <em>the</em> runtime. elephc and TypePHP both say plainly that frameworks stay on regular PHP and you compile selected modules. A compiled <code>.so</code> extension that loads into stock PHP 8.5 doesn't ask anyone to switch runtimes.</li>
+  <li><strong>The problem moved.</strong> For web throughput, long-running runtimes already won: <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">Octane, FrankenPHP, Swoole and RoadRunner</a> removed most per-request boot cost. Compilers don't need to rescue PHP's web performance any more. They can focus on what's left: CPU-bound work, distribution and new targets.</li>
+</ol>
+
+<h2 id="nativephp-future">The NativePHP half: PHP as a client language</h2>
+
+<p>This is the bigger shift, and it's further along. For most of its life PHP has been a server language. NativePHP Mobile v4 (July 2026) runs Laravel inside the app and renders Blade as real SwiftUI and Jetpack Compose views. After the core went MIT in February 2026, the licensing objection went away too.</p>
+
+<p>What I expect over the next couple of years:</p>
+
+<ul>
+  <li><strong>More Laravel agencies offering apps.</strong> NativePHP's economics are strongest here: the team you already have can ship a companion app.</li>
+  <li><strong>A plugin ecosystem that decides the ceiling.</strong> React Native's strength is that someone has already wrapped every native SDK. NativePHP's growth depends on the same thing happening for PHP.</li>
+  <li><strong>Pressure on PHP's footprint.</strong> Running PHP inside a phone app makes startup time, memory and binary size matter in ways they never did on servers. That could feed back into core PHP.</li>
+</ul>
+
+<p>What would prove me wrong: if SuperNative stalls on complex screens and teams quietly fall back to web views everywhere, NativePHP becomes "Laravel in a wrapper" again, which is useful but niche.</p>
+
+<h2 id="compiler-future">The compiler half: three likely outcomes</h2>
+
+<table>
+  <thead><tr><th>Outcome</th><th>Likelihood (my view)</th><th>What it looks like</th></tr></thead>
+  <tbody>
+    <tr><td>Extensions written in PHP</td><td>High</td><td>Teams compile one hot module (pricing, parsing, geometry) into a <code>.so</code> instead of writing C. Both elephc and TypePHP already support this.</td></tr>
+    <tr><td>PHP as a single-binary tool language</td><td>Medium–high</td><td>CLI tools and small services ship like Go binaries. elephc's no-runtime design suits this; TypePHP adds WASI output.</td></tr>
+    <tr><td>Whole frameworks compiled AOT</td><td>Low, near term</td><td>Would need Laravel, Symfony and major packages to drop much of their dynamic magic. A multi-year effort even if the compilers were ready.</td></tr>
+  </tbody>
+</table>
+
+<p>The milestones are public, so you can check them: elephc's roadmap marks <strong>1.0.0</strong> as production-ready and lists a WebAssembly target next. Albert Chen's May 2026 talk on Swoole's AOT compiler put general availability at <strong>May 2027</strong>. If those dates slip by more than a year, adjust your expectations accordingly.</p>
+
+<h2 id="what-to-watch">Signals to watch in 2027</h2>
+
+<ol>
+  <li><strong>A real production write-up</strong>, from a company with a normal codebase, compiling a PHP module with elephc or TypePHP and reporting before/after numbers. Not a benchmark script.</li>
+  <li><strong>A popular Composer package shipping a compiled extension variant</strong> with a pure-PHP fallback. That's how compiled code reaches ordinary apps.</li>
+  <li><strong>elephc 1.0 and TypePHP GA</strong> arriving roughly on schedule.</li>
+  <li><strong>Framework signals</strong>: Laravel or Symfony making core paths compiler-friendly, or the PHP project discussing AOT in an RFC.</li>
+  <li><strong>NativePHP plugin breadth</strong>: payments, maps and background location covered well enough that agencies stop needing native developers for them.</li>
+</ol>
+
+<h2 id="advice">What to do today</h2>
+
+<p>For a CTO or a team lead, the practical advice hasn't changed much, and that's the point:</p>
+
+<ul>
+  <li><strong>Ship on proven PHP.</strong> PHP 8.5, Laravel or Symfony, and Octane or FrankenPHP where boot time is the measured problem. (This is roughly the stack I already <a href="/blog/why-we-chose-laravel-over-nodejs/">wrote about choosing</a>.)</li>
+  <li><strong>Type your code properly.</strong> It pays off today in fewer bugs, and it's the entry ticket for any compiler tomorrow.</li>
+  <li><strong>Try NativePHP</strong> if a client or your product needs an app and your team is Laravel-first.</li>
+  <li><strong>Let one engineer experiment</strong> with elephc or TypePHP on one isolated hot path. Learn cheaply; don't put it on the critical path yet.</li>
+</ul>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>HHVM proved PHP could be compiled and that ecosystem compatibility decides adoption. elephc and TypePHP avoid HHVM's mistake by not trying to replace PHP.</li>
+  <li>PHP's decade of type-system work makes AOT compilation far more practical in 2026 than in 2014.</li>
+  <li>NativePHP is the larger near-term shift: PHP becoming a realistic client-app language for Laravel teams.</li>
+  <li>Expect compiled PHP extensions and single-binary tools soon; whole-framework compilation is a long way off.</li>
+  <li>Check the public milestones (elephc 1.0, TypePHP GA targeted for May 2027) to see whether these predictions hold.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://elephc.dev" target="_blank" rel="noopener noreferrer">elephc.dev</a> (roadmap) and <a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">illegalstudio/elephc</a></li>
+  <li><a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">swoole/typephp</a></li>
+  <li><a href="https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler" target="_blank" rel="noopener noreferrer">Albert Chen: Introduction to Swoole's AOT compiler</a> (May 24, 2026)</li>
+  <li><a href="https://nativephp.com/blog/nativephp-for-mobile-is-now-free" target="_blank" rel="noopener noreferrer">NativePHP for Mobile is now free</a> (Feb 1, 2026)</li>
+  <li><a href="https://laravel-news.com/nativephp-v4-supernative" target="_blank" rel="noopener noreferrer">Laravel News: NativePHP v4 SuperNative</a></li>
+  <li><a href="https://www.php.net/releases/7_0_0.php" target="_blank" rel="noopener noreferrer">PHP 7.0.0 release announcement</a></li>
+</ul>
+
+<p>Planning a PHP roadmap for the next few years? <a href="/#contact">Let's talk</a>.</p>

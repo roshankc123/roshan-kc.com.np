@@ -1,0 +1,116 @@
+<p><strong>Direct answer:</strong> elephc is an open-source compiler, written in Rust, that turns a subset of PHP straight into native assembly. It doesn't use the Zend Engine or a VM, and the output is a standalone binary or library. As of November 2026 (v0.27.8) it's fast-moving and experimental: worth trying for CLI tools, compute-heavy modules and PHP extensions, but not for compiling a whole Laravel app.</p>
+
+<p>"DOOM, written in PHP, compiled to a native binary" sounds like a joke, and the first question it invites is: why? The answer is more interesting than the demo. elephc is the most aggressive attempt yet to make PHP a compiled language without leaving PHP syntax, and it's changing faster than any PHP project I follow. Here's what it does, what it can't do, and where I'd actually use it.</p>
+
+<h2 id="what-is-elephc">What is elephc?</h2>
+
+<p>elephc (pronounced "el-ef-see") is a PHP-to-native compiler from <a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">Illegal Studio</a>, created by Vincenzo Petrucci with Guillaume Loulier as a core contributor. It's MIT licensed. Petrucci writes that his first serious programming book was <em>PHP 4 and MySQL</em>, and elephc is his answer to a gap he always felt: compiling PHP to native code while staying in the PHP ecosystem.</p>
+
+<p>The pipeline is short:</p>
+
+<ol>
+  <li><strong>Parse</strong> your PHP.</li>
+  <li><strong>Type-check</strong> it, inferring types where you didn't write them.</li>
+  <li><strong>Lower</strong> it to target-specific assembly (you can read the generated <code>.s</code> file).</li>
+  <li><strong>Assemble and link</strong> with the system's <code>as</code> and <code>ld</code>, plus a small runtime.</li>
+</ol>
+
+<p>No interpreter loop, no opcodes, no JIT. That's the big difference from PHP's own JIT and from TypePHP, which goes through C++ and keeps parts of the Zend runtime. I cover that comparison in <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a>.</p>
+
+<pre><code>$ elephc hello.php
+$ ./hello
+Hello, World!</code></pre>
+
+<h2 id="what-it-supports">What elephc supports in late 2026</h2>
+
+<p>More than you'd expect from a 0.x project. The site lists 20 of 21 language features as fully supported: classes, enums, traits, closures, generators, PHP 8.1-style Fibers, <code>match</code>, references and namespaces. <code>eval()</code> is partial.</p>
+
+<p>For the standard library, elephc measures itself against PHP 8.5.10 and publishes the numbers, which I appreciate:</p>
+
+<table>
+  <thead><tr><th>Measure (vs PHP 8.5.10)</th><th>Supported</th></tr></thead>
+  <tbody>
+    <tr><td>Functions in a default PHP build</td><td>666 of 901 (74%)</td></tr>
+    <tr><td>Functions across all 68 bundled extensions</td><td>1,078 of 2,169 (50%)</td></tr>
+    <tr><td>Extensions Laravel requires</td><td>6 of 13 complete</td></tr>
+    <tr><td>Extensions Symfony requires</td><td>4 of 6 complete</td></tr>
+    <tr><td>Extensions WordPress requires</td><td>2 of 4 complete</td></tr>
+  </tbody>
+</table>
+
+<p>The README's generated builtin reference lists 1,196 PHP-visible entries. Those two counts measure different things, so don't be surprised if you see different "how many functions" numbers quoted around the web.</p>
+
+<p><strong>Targets.</strong> Executables build for macOS ARM64, Linux ARM64 and Linux x86_64. A macOS host can also cross-compile <em>libraries</em> for iOS ARM64 devices and the iOS simulator; those targets don't run Fibers. Windows and Intel Macs aren't listed.</p>
+
+<p><strong>Output types.</strong> This is where elephc gets practical:</p>
+
+<ul>
+  <li><strong>Standalone executables</strong> for CLI tools and services.</li>
+  <li><code>--emit phpext</code>: a <code>.so</code> module that a normal PHP 8.5 install loads like any extension. You write the extension in PHP instead of C.</li>
+  <li><code>--emit cdylib</code> and <code>--emit staticlib</code>: shared and static libraries other languages can call.</li>
+  <li><code>extern</code> declarations for C FFI, so compiled PHP can call C libraries such as SDL (which is how the DOOM demo draws to the screen).</li>
+</ul>
+
+<h2 id="doom">The DOOM demo, and why it matters</h2>
+
+<p>The showcase runs the shareware episode from the original <code>DOOM1.WAD</code> "entirely in PHP compiled to a native binary," at DOOM's native 35 tics per second. It's a stunt, but a useful one. A game loop is a brutal test of a compiler: tight numeric code, arrays everywhere, no tolerance for a slow frame. Getting it to run proves the type inference and code generation work on something bigger than a benchmark script.</p>
+
+<p>It doesn't prove your Laravel app will compile. Those are very different kinds of code.</p>
+
+<h2 id="limits">What elephc can't do</h2>
+
+<p>elephc is honest about this, and you should be too before you pitch it to your team.</p>
+
+<ul>
+  <li><strong>It's not a drop-in replacement for PHP.</strong> The project says so directly. Unsupported dynamic behaviour becomes a compile-time error, not a runtime fallback.</li>
+  <li><strong>Frameworks stay on PHP.</strong> Laravel and Symfony lean on reflection, magic methods, dynamic container resolution and runtime-generated code. elephc's own advice is to keep the framework on regular PHP and move static, performance-sensitive modules into native libraries or extensions.</li>
+  <li><strong><code>eval()</code> is a special case.</strong> The README says eligible literal <code>eval()</code> fragments are compiled ahead of time, and dynamic ones can fall back to an optional, statically linked interpreter called Magician. The website describes "no interpreter, VM, Zend Engine, or opcode fallback". I read that as the default build, with Magician as an opt-in exception, but check the current docs if it matters to you.</li>
+  <li><strong>0.x means 0.x.</strong> The roadmap marks 1.0.0 as the production-ready milestone. Next on the list: multi-file library builds, pkg-config metadata and a WebAssembly target.</li>
+</ul>
+
+<h2 id="where-to-use">Where I'd use elephc today</h2>
+
+<p>The pattern that makes sense is <strong>hybrid</strong>: your app stays on normal PHP, and one hot, well-typed module gets compiled.</p>
+
+<ol>
+  <li><strong>A PHP extension you'd otherwise write in C.</strong> A pricing engine, a parser, a geometry routine. <code>--emit phpext</code> lets PHP developers own it.</li>
+  <li><strong>Single-binary CLI tools.</strong> Ship an internal tool to servers or teammates without "install PHP 8.5 and these extensions first".</li>
+  <li><strong>Learning.</strong> Reading the generated assembly for your own PHP is the best compiler course I can think of for a PHP developer.</li>
+</ol>
+
+<p>Where I wouldn't: anything I can't afford to rewrite if the project changes direction. And before compiling anything, profile. Most slow PHP web apps are slow because of queries and boot time, which <a href="/blog/laravel-octane-swoole-concurrent-load/">Octane with Swoole</a> or a better query plan fixes more cheaply.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>elephc has its own version manager, <code>elvm</code>, which I'd use so you can pin a version per project (worth doing at this release pace):</p>
+
+<pre><code>curl -fsSL https://get.elephc.dev | sh
+elvm install 0.27.8
+elvm use 0.27.8
+
+# or
+brew install illegalstudio/tap/elephc</code></pre>
+
+<p>You need a native assembler and linker: Xcode Command Line Tools on macOS, a standard build toolchain on Linux. Rust is only needed if you build elephc from source. Try <code>elephc repl</code> to poke at it interactively.</p>
+
+<p>As always with a piped install script, read it first.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>elephc compiles a subset of PHP directly to native assembly with a small runtime: no Zend Engine, no VM, no JIT. It's written in Rust and MIT licensed.</li>
+  <li>v0.27.8 (November 13, 2026) covers 74% of a default PHP 8.5 build's functions and 20 of 21 language features, with <code>eval()</code> partial.</li>
+  <li>It builds executables for macOS ARM64 and Linux, libraries for iOS, and <code>.so</code> extensions that stock PHP 8.5 can load.</li>
+  <li>Use it hybrid: keep Laravel or Symfony on PHP and compile isolated, typed hot paths or CLI tools.</li>
+  <li>It's pre-1.0 and changes almost daily. Pin versions and don't bet anything you can't rewrite.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">illegalstudio/elephc on GitHub</a> (README, builtin reference)</li>
+  <li><a href="https://github.com/illegalstudio/elephc/releases" target="_blank" rel="noopener noreferrer">elephc releases</a> (v0.27.8, November 13, 2026)</li>
+  <li><a href="https://elephc.dev" target="_blank" rel="noopener noreferrer">elephc.dev</a> (compatibility figures, roadmap, install)</li>
+</ul>
+
+<p>Have a PHP hot path you're tempted to compile? <a href="/#contact">Tell me about it</a>.</p>

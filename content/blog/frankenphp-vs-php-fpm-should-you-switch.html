@@ -1,0 +1,95 @@
+<p><strong>Direct answer:</strong> FrankenPHP can replace nginx + PHP-FPM with a single server that runs PHP in threads and handles HTTPS and HTTP/3 itself. In classic mode it behaves like FPM, so you get simpler operations with little code risk. The big speedup only comes from worker mode, which needs code that's safe across requests. Switch if you want simpler deploys or worker-mode performance; stay on FPM if it's working and you rely on extensions FrankenPHP doesn't support.</p>
+
+<p>PHP-FPM has been the default way to run PHP for about fifteen years, and "default" is underrated: every host, tutorial and monitoring tool understands it. So the question isn't whether FrankenPHP is good. It's whether moving is worth it for <em>your</em> app. Here's how I'd decide, and the migration path that keeps risk low. If you're also weighing Swoole, see <a href="/blog/frankenphp-vs-swoole-laravel-octane/">FrankenPHP vs Swoole</a>.</p>
+
+<h2 id="how-they-differ">How FrankenPHP and PHP-FPM differ</h2>
+
+<p><strong>PHP-FPM</strong> is PHP's FastCGI process manager. nginx (or Apache, or Caddy) accepts the HTTP request and hands it to a pool of PHP processes over FastCGI. Each request boots your app from scratch, and the pool size (<code>pm.max_children</code>) caps how many requests run at once.</p>
+
+<p><strong>FrankenPHP</strong> is one process: Caddy's web server with PHP embedded, running requests on PHP threads. No FastCGI hop, no separate nginx config. It has two modes:</p>
+
+<ul>
+  <li><strong>Classic mode</strong> boots the app per request, just like FPM. Same mental model, fewer moving parts.</li>
+  <li><strong>Worker mode</strong> boots the app once per thread and keeps it in memory. That's where the throughput gains come from, and where the state bugs come from too.</li>
+</ul>
+
+<table>
+  <thead><tr><th></th><th>nginx + PHP-FPM</th><th>FrankenPHP</th></tr></thead>
+  <tbody>
+    <tr><td>Processes to run</td><td>Two (web server + FPM pool)</td><td>One</td></tr>
+    <tr><td>PHP build</td><td>Standard (non-thread-safe)</td><td>Thread-safe build, embedded</td></tr>
+    <tr><td>Concurrency setting</td><td><code>pm.max_children</code> processes</td><td><code>num_threads</code> / <code>max_threads</code> (can be <code>auto</code>)</td></tr>
+    <tr><td>Per-request boot</td><td>Always</td><td>Classic: yes. Worker: no</td></tr>
+    <tr><td>HTTPS and HTTP/3</td><td>Configured in nginx</td><td>Automatic</td></tr>
+    <tr><td>Extension support</td><td>Everything</td><td>Thread-safe extensions only</td></tr>
+    <tr><td>Crash blast radius</td><td>One child process</td><td>Can be the whole server (see below)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="should-you-switch">Should you switch?</h2>
+
+<p><strong>Switch if:</strong></p>
+<ul>
+  <li>Your config is nginx + FPM + certbot + supervisor and you'd like it to be one binary or one container.</li>
+  <li>Profiling shows framework boot is a real share of response time and you're ready for worker mode (often via <a href="/blog/laravel-octane-swoole-concurrent-load/">Laravel Octane</a>).</li>
+  <li>You're starting a new project and don't have FPM habits to unlearn.</li>
+</ul>
+
+<p><strong>Stay on FPM if:</strong></p>
+<ul>
+  <li>Response times are dominated by database queries. Changing runtimes saves a few milliseconds of boot and nothing else.</li>
+  <li>You depend on imap, newrelic or pcov in production. FrankenPHP's known-issues page lists them as unsupported because they aren't thread-safe.</li>
+  <li>You're on shared or managed hosting that only offers FPM.</li>
+  <li>Nobody on the team has time to own a new piece of infrastructure.</li>
+</ul>
+
+<h2 id="migration">A low-risk migration path</h2>
+
+<ol>
+  <li><strong>Audit extensions.</strong> Compare <code>php -m</code> against FrankenPHP's known-issues list. If you use Imagick, plan to disable its OpenMP threading.</li>
+  <li><strong>Run classic mode in staging.</strong> A minimal Caddyfile is short:
+<pre><code>example.com {
+    root * /app/public
+    php_server
+}</code></pre>
+  Your code doesn't change. Compare error rates and latency with FPM.</li>
+  <li><strong>Set thread limits deliberately.</strong> Defaults are based on twice your CPU count. Size them against your database's connection limit, just as you would <code>pm.max_children</code>.</li>
+  <li><strong>Add a supervisor.</strong> Since PHP 8.2.35, 8.3.36, 8.4.27 and 8.5.12, exceeding the hard memory limit can stop the whole FrankenPHP server, not just one request. systemd, Docker restart policies or Kubernetes all work.</li>
+  <li><strong>Ship classic mode to production.</strong> Live with it for a few weeks.</li>
+  <li><strong>Only then try worker mode</strong>, ideally through Octane for Laravel (<code>php artisan octane:install --server=frankenphp</code>). Fix static state, set a max-requests limit, and make sure deploys restart workers.</li>
+</ol>
+
+<p>Splitting "new server" from "new execution model" is the important bit. If something breaks, you know which change caused it.</p>
+
+<h2 id="worker-mode-gotchas">Worker mode gotchas</h2>
+
+<p>Worker mode is where most migration pain lives, and none of it is FrankenPHP-specific. It's the same list for Swoole and RoadRunner:</p>
+
+<ul>
+  <li>Request data in static properties or singletons leaks into the next request. The current user, tenant and locale must be resolved per request.</li>
+  <li>Memory leaks accumulate instead of vanishing at the end of a request. Recycle workers.</li>
+  <li>Deploys and security patches don't take effect until workers restart.</li>
+</ul>
+
+<p>One more operational point: you now patch a web server, not just PHP. FrankenPHP shipped security releases fixing 7 and 17 vulnerabilities in October and November 2026. That's a healthy project responding fast, and it means you need to keep up. I wrote about why that matters in <a href="/blog/choose-tech-stack-ai-era-patch-velocity/">choosing a stack by patch velocity</a>.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>FrankenPHP replaces nginx + PHP-FPM with one process that runs PHP in threads and handles HTTPS and HTTP/3 itself.</li>
+  <li>Classic mode gives simpler operations with FPM-like behaviour; worker mode gives the speed, with state-leak risks.</li>
+  <li>Stay on FPM if you're database-bound, on managed FPM hosting, or rely on imap, newrelic or pcov.</li>
+  <li>Migrate in two steps: classic mode first, worker mode later, with a supervisor and deliberate thread limits.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://frankenphp.dev/docs/config/" target="_blank" rel="noopener noreferrer">FrankenPHP docs: configuration</a></li>
+  <li><a href="https://frankenphp.dev/docs/known-issues/" target="_blank" rel="noopener noreferrer">FrankenPHP docs: known issues</a></li>
+  <li><a href="https://github.com/php/frankenphp/releases" target="_blank" rel="noopener noreferrer">FrankenPHP releases</a></li>
+  <li><a href="https://www.php.net/manual/en/install.fpm.php" target="_blank" rel="noopener noreferrer">php.net: FastCGI Process Manager</a></li>
+  <li><a href="https://laravel.com/docs/octane" target="_blank" rel="noopener noreferrer">Laravel Octane documentation</a></li>
+</ul>
+
+<p>Planning a runtime migration? <a href="/#contact">Get in touch</a>.</p>

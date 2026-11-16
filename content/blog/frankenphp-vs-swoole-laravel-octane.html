@@ -1,0 +1,90 @@
+<p><strong>Direct answer:</strong> FrankenPHP is a PHP app server built on Go and Caddy that runs PHP in threads, with automatic HTTPS, HTTP/3 and an easy path from classic mode to worker mode. Swoole is a C++ PHP extension that adds an event loop and coroutines, so one worker can wait on many I/O calls at once. For a typical Laravel app, FrankenPHP is the simpler choice. Pick Swoole when you need WebSockets, in-process concurrency or Octane's Swoole-only features.</p>
+
+<p>At MarginTop we run Laravel Octane on Swoole in production and maintain our own <a href="/blog/optimized-laravel-docker-swoole-iouring/">Swoole + io_uring Docker image</a>, so I'm not neutral here, and I'll say where FrankenPHP is the better call anyway. My <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">five-way runtime comparison</a> covers FPM and RoadRunner too. This post is just the head-to-head people keep searching for.</p>
+
+<h2 id="what-they-are">What FrankenPHP and Swoole actually are</h2>
+
+<p><strong>FrankenPHP</strong> is a web server, not an extension. Created by Kévin Dunglas, it embeds PHP inside <a href="https://caddyserver.com/" target="_blank" rel="noopener noreferrer">Caddy</a>, so one binary gives you the web server, TLS certificates, HTTP/2 and HTTP/3, early hints and a Mercure real-time hub. The PHP Foundation took it under its wing in May 2025, and it now lives at <code>github.com/php/frankenphp</code>.</p>
+
+<p><strong>Swoole</strong> is a PHP extension written in C and C++. It gives PHP its own event loop, an HTTP and WebSocket server, and coroutines: lightweight tasks that pause while they wait on a database or an HTTP call and let other tasks run. Swoole 6 added multithreading on top of its long-standing process model.</p>
+
+<p>Both can run your app as long-lived workers that boot Laravel once and serve many requests, and both are supported Laravel Octane drivers.</p>
+
+<h2 id="comparison">FrankenPHP vs Swoole side by side</h2>
+
+<table>
+  <thead><tr><th></th><th>FrankenPHP</th><th>Swoole</th></tr></thead>
+  <tbody>
+    <tr><td>Type</td><td>App server (Go + Caddy) with PHP embedded</td><td>PHP extension (C/C++)</td></tr>
+    <tr><td>Concurrency model</td><td>PHP threads; one request per thread at a time</td><td>Event loop + coroutines; many in-flight I/O waits per worker</td></tr>
+    <tr><td>Modes</td><td>Classic (FPM-like) or worker mode</td><td>Always long-running</td></tr>
+    <tr><td>HTTPS, HTTP/3</td><td>Built in, automatic certificates</td><td>Usually behind nginx or a load balancer</td></tr>
+    <tr><td>WebSockets / real-time</td><td>Via the built-in Mercure hub (server-sent events)</td><td>Native WebSocket server</td></tr>
+    <tr><td>Octane extras</td><td>Core Octane features</td><td>Plus <code>Octane::concurrently()</code>, Octane Cache, Swoole Tables, ticks</td></tr>
+    <tr><td>Extension compatibility</td><td>Needs thread-safe extensions; imap, newrelic and pcov are listed as unsupported</td><td>Code and clients must be coroutine-safe when hooks are on</td></tr>
+    <tr><td>Backing</td><td>PHP Foundation</td><td>Swoole team</td></tr>
+    <tr><td>Latest release (Nov 2026)</td><td>v1.13.5 (Nov 5)</td><td>v6.2.5 (Nov 7)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="the-real-difference">The real difference: threads vs coroutines</h2>
+
+<p>This one design choice explains almost everything else.</p>
+
+<p>In FrankenPHP's worker mode, each PHP thread handles one request at a time. If a request waits 200 ms on an external API, that thread waits too. You get concurrency by having more threads (the default is twice your CPU count, and <code>max_threads</code> can scale up automatically).</p>
+
+<p>In Swoole, a worker that's waiting on I/O yields, and the same worker picks up other work. Inside a single request you can fire three API calls at once:</p>
+
+<pre><code>[$user, $orders, $limits] = Octane::concurrently([
+    fn () =&gt; Http::get("$crm/users/$id")-&gt;json(),
+    fn () =&gt; Order::where('user_id', $id)-&gt;latest()-&gt;take(20)-&gt;get(),
+    fn () =&gt; Http::get("$billing/limits/$id")-&gt;json(),
+]);</code></pre>
+
+<p>That call is Swoole-only in Octane. If your endpoints fan out to several slow services, or you hold thousands of WebSocket connections, Swoole's model is a real advantage. If your endpoints are "query the database, render JSON", the difference mostly disappears and FrankenPHP's simpler setup wins.</p>
+
+<h2 id="operations">Operations: what you live with day to day</h2>
+
+<p><strong>FrankenPHP is easier to run.</strong> One binary or Docker image, automatic certificates, a Caddyfile instead of nginx plus FPM pools, and a file watcher for development. You can start in classic mode and turn on worker mode later.</p>
+
+<p><strong>Swoole asks more of you.</strong> You'll usually put nginx or a load balancer in front, tune worker counts, and make sure every library you use behaves inside coroutines. In return you get the most control over how PHP handles concurrency.</p>
+
+<p>Two caveats from FrankenPHP's known-issues page are worth knowing before you migrate. Since PHP 8.2.35, 8.3.36, 8.4.27 and 8.5.12, hitting the hard memory limit can stop the whole FrankenPHP server, not just one worker, so run it under a supervisor that restarts it. And ImageMagick's OpenMP threads conflict with FrankenPHP's, so disable Imagick threading if you process images.</p>
+
+<p>Both projects ship security fixes often. FrankenPHP's v1.13.4 and v1.13.5 (October and November 2026) fixed 7 and 17 vulnerabilities respectively; Swoole's v6.2.5 included an upload-handling security fix. Whichever you choose, you now own patching a web server, not just PHP. That's the <a href="/blog/choose-tech-stack-ai-era-patch-velocity/">patch velocity</a> argument in practice.</p>
+
+<h2 id="which-to-choose">Which should you choose?</h2>
+
+<ol>
+  <li><strong>New Laravel app, normal CRUD and APIs:</strong> FrankenPHP with Octane. Fewer moving parts.</li>
+  <li><strong>Moving off nginx + PHP-FPM gradually:</strong> FrankenPHP in classic mode first. See <a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM</a>.</li>
+  <li><strong>WebSockets, IoT devices, long-lived connections:</strong> Swoole.</li>
+  <li><strong>Endpoints that call several slow services:</strong> Swoole, for <code>Octane::concurrently()</code>.</li>
+  <li><strong>You depend on New Relic, imap or pcov in production:</strong> not FrankenPHP, for now.</li>
+  <li><strong>Small team, nobody wants to learn coroutine safety:</strong> FrankenPHP.</li>
+</ol>
+
+<p>My own default is Swoole, even for a standard SaaS backend. Many of the systems we build talk to devices and hold connections open, but the bigger reason is that once a team has learned coroutine-safe habits, Swoole costs little extra and you never hit a ceiling. When a product later needs WebSockets, parallel API calls or in-memory tables, they're already there, with no runtime migration. FrankenPHP is the easier start if your team has never run long-lived PHP and wants the fewest moving parts.</p>
+
+<p>Whatever you pick, the long-running rules are identical: no request data in static properties or singletons, recycle workers with a max-requests limit, and restart workers on every deploy.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>FrankenPHP is a Go/Caddy app server running PHP in threads; Swoole is a C++ extension adding an event loop and coroutines.</li>
+  <li>Threads vs coroutines is the core difference: Swoole can overlap I/O inside one worker and one request; FrankenPHP scales by adding threads.</li>
+  <li>FrankenPHP wins on simplicity: built-in HTTPS and HTTP/3, classic mode as a stepping stone, PHP Foundation backing.</li>
+  <li>Swoole wins for WebSockets, fan-out endpoints and Octane's Swoole-only features.</li>
+  <li>Check extension compatibility (imap, newrelic, pcov, Imagick threading) before moving to FrankenPHP.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://frankenphp.dev/docs/config/" target="_blank" rel="noopener noreferrer">FrankenPHP docs: configuration</a> and <a href="https://frankenphp.dev/docs/known-issues/" target="_blank" rel="noopener noreferrer">known issues</a></li>
+  <li><a href="https://github.com/php/frankenphp/releases" target="_blank" rel="noopener noreferrer">FrankenPHP releases</a></li>
+  <li><a href="https://github.com/swoole/swoole-src/releases" target="_blank" rel="noopener noreferrer">Swoole releases</a></li>
+  <li><a href="https://laravel.com/docs/octane" target="_blank" rel="noopener noreferrer">Laravel Octane documentation</a></li>
+</ul>
+
+<p>Deciding on a runtime for a Laravel product? <a href="/#contact">Get in touch</a>.</p>

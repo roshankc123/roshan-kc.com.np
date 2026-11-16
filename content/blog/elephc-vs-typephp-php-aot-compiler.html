@@ -1,0 +1,84 @@
+<p><strong>Direct answer:</strong> elephc and TypePHP both compile PHP ahead of time to native code, but they take opposite routes. elephc (Rust, MIT) emits assembly directly and drops the Zend Engine entirely. TypePHP (Swoole, GPL-3.0) translates PHP to C++ and keeps a bridge to the Zend runtime. Pick elephc for small standalone binaries and PHP extensions; pick TypePHP if you live in the Swoole world and want closer compatibility with existing PHP. Neither is production-ready for a full framework app as of November 2026.</p>
+
+<p>Two serious PHP AOT compilers showed up within months of each other in 2026, after years of "PHP can't be compiled" being accepted wisdom (HHVM's story aside). If you're choosing which one to experiment with, the useful question isn't "which is faster". It's "which design fits the code I actually have". I've already written up <a href="/blog/what-is-elephc-php-native-compiler/">what elephc is</a> and <a href="/blog/what-typephp-means-for-php-performance/">what TypePHP means for PHP performance</a>; this post puts them side by side.</p>
+
+<h2 id="what-is-aot">What does an AOT compiler for PHP do?</h2>
+
+<p>An ahead-of-time (AOT) compiler turns PHP source into machine code before the program runs. Normal PHP compiles your script to opcodes at runtime and runs them in the Zend Engine's virtual machine; OPcache caches the opcodes, and the JIT (since PHP 8.0) compiles some hot ones to machine code while the program runs. AOT moves all of that to build time, which only works when the compiler can figure out your types in advance. That's why both projects target a <em>subset</em> of PHP.</p>
+
+<h2 id="side-by-side">elephc vs TypePHP side by side</h2>
+
+<table>
+  <thead><tr><th></th><th>elephc</th><th>TypePHP</th></tr></thead>
+  <tbody>
+    <tr><td>Maintainer</td><td>Illegal Studio (Vincenzo Petrucci)</td><td>Swoole team</td></tr>
+    <tr><td>Compiler written in</td><td>Rust</td><td>PHP (self-hosting: it compiles itself)</td></tr>
+    <tr><td>Pipeline</td><td>PHP → assembly → <code>as</code>/<code>ld</code></td><td>PHP → C++17 → GCC/Clang</td></tr>
+    <tr><td>Zend Engine at runtime</td><td>No. Small custom runtime</td><td>Links against <code>libphp</code> through the PHPX bridge for dynamic values and internal functions</td></tr>
+    <tr><td>Outputs</td><td>Executables, <code>.so</code> PHP extensions, shared and static libs, iOS libs</td><td>Executables, PHP extensions, shared libs, WASI components</td></tr>
+    <tr><td>Platforms</td><td>macOS ARM64, Linux ARM64/x86_64; iOS libraries</td><td>Linux x64 primary; Windows, macOS, ARM64, Android, iOS, WASI backends depending on toolchain</td></tr>
+    <tr><td>Build requirements</td><td>System assembler and linker</td><td>PHP 8.4–8.5 CLI + headers, libphp embed library, C++17 compiler, CMake 3.24+, Composer 2, GMP, MPFR</td></tr>
+    <tr><td>Licence</td><td>MIT</td><td>GPL-3.0</td></tr>
+    <tr><td>Status (Nov 2026)</td><td>v0.27.8, near-daily nightlies</td><td>"Under active development", ~2,000 commits; a May 2026 roadmap targets general availability in May 2027</td></tr>
+  </tbody>
+</table>
+
+<h2 id="design-difference">The design difference that matters</h2>
+
+<p><strong>elephc removes the runtime; TypePHP replaces the interpreter but keeps the runtime.</strong> Almost every practical difference follows from that.</p>
+
+<p>Because elephc has no Zend Engine, its binaries are self-contained and it can target places PHP doesn't normally go, like an iOS static library. The cost: every PHP function you call has to be reimplemented by the elephc team. That's why it publishes coverage numbers (74% of a default PHP 8.5 build's functions as of v0.27.8) and why unsupported behaviour is a compile error.</p>
+
+<p>TypePHP's approach, as Albert Chen put it in a May 2026 talk on Swoole's AOT compiler, "throws out the opcode handler — not the runtime — and links straight against libphp.so." PHPX, a header-only C++ library mirroring PHP's standard library, sits between your compiled code and Zend. You inherit PHP's real behaviour for the dynamic parts, and your build depends on a matching PHP installation.</p>
+
+<h2 id="typing-rules">How strict do you have to be?</h2>
+
+<p>Both want typed, predictable code, but they enforce it differently.</p>
+
+<p><strong>TypePHP's documented restrictions</strong> include: the global scope is declaration-only (code goes in functions, with a strict <code>main()</code> for binaries); inferred <code>int</code>, <code>float</code> and <code>bool</code> values use fixed native storage and can't later change type; PHP-compatible integer overflow needs <code>use varint_types</code>; and some highly dynamic reference, closure and reflection patterns aren't supported. The May 2026 talk also listed no <code>$$name</code> or <code>extract()</code>, no <code>yield</code> generators, and strict function arity.</p>
+
+<p><strong>elephc</strong> infers types and supports more of the language surface than you'd guess, including generators, Fibers, traits and references. Its limit shows up in the standard library and in dynamic behaviour it can't resolve at compile time.</p>
+
+<p>If your code already passes PHPStan at a high level with real types everywhere (see <a href="/blog/php-type-system-evolution/">how PHP's type system got here</a>), you're in good shape for either.</p>
+
+<h2 id="performance">What about speed?</h2>
+
+<p>The only numbers available are the projects' own, so treat them as directional. TypePHP's README reports <code>bench.php</code> dropping from 5.034 s interpreted to 0.603 s compiled at <code>-O3</code> (about 8×), and <code>micro_bench.php</code> from 13.045 s to 2.021 s (about 6.5×). In his talk, Albert Chen showed a recursive <code>fib(40)</code> going from about 14.8 s to 0.11 s. elephc publishes no headline benchmark; its showcase is DOOM running at the game's native 35 tics per second.</p>
+
+<p>Two cautions. These are CPU-bound micro-benchmarks, and a typical web request spends most of its time waiting on a database. And I haven't seen an independent, like-for-like benchmark of the two compilers. If you run one, publish your scripts.</p>
+
+<h2 id="which-to-choose">Which should you choose?</h2>
+
+<p>A short decision list:</p>
+
+<ol>
+  <li><strong>Writing a PHP extension instead of C?</strong> Either works. elephc has the lighter toolchain; TypePHP is closer to real PHP semantics.</li>
+  <li><strong>Need a self-contained binary with no PHP install on the target?</strong> elephc.</li>
+  <li><strong>Targeting iOS?</strong> elephc's iOS static libraries are the clearer path today.</li>
+  <li><strong>Already running Swoole, Hypervel or Workerman?</strong> TypePHP. The Swoole team built it for that world, and the talk reports Workerman compiling to a single binary "with only minor patches".</li>
+  <li><strong>Shipping closed-source commercial software?</strong> Read the licences. GPL-3.0 (TypePHP) and MIT (elephc) have very different obligations if you distribute the compiler or linked runtime.</li>
+  <li><strong>Want to compile your whole Laravel app?</strong> Neither, yet. Use <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">Octane or FrankenPHP</a> and compile only a hot module.</li>
+</ol>
+
+<p>My own lean, for what it's worth: I'd use elephc to learn and to build tools, and watch TypePHP for server workloads, because keeping the Zend runtime is the more realistic route to compiling real-world code eventually.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>Both are PHP ahead-of-time compilers for a typed subset; neither compiles a full Laravel or Symfony app today.</li>
+  <li>elephc (Rust, MIT) emits assembly with no Zend Engine: self-contained binaries, PHP extensions and iOS libraries.</li>
+  <li>TypePHP (Swoole, GPL-3.0, written in PHP) goes through C++ and links against libphp via PHPX, trading self-containment for compatibility.</li>
+  <li>Published speedups (6.5×–8× on the README's benchmark scripts) are the vendors' own CPU-bound numbers, not web-app results.</li>
+  <li>Choose on design fit and licence, and compile isolated hot paths rather than whole applications.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">illegalstudio/elephc on GitHub</a> and <a href="https://elephc.dev" target="_blank" rel="noopener noreferrer">elephc.dev</a></li>
+  <li><a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">swoole/typephp on GitHub</a> (README, restrictions, benchmarks)</li>
+  <li><a href="https://laravel-news.com/typephp-compile-php-native-binaries" target="_blank" rel="noopener noreferrer">Laravel News: TypePHP compiles PHP to native binaries</a> (Eric L. Barnes, Aug 26, 2026)</li>
+  <li><a href="https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler" target="_blank" rel="noopener noreferrer">Albert Chen: Introduction to Swoole's AOT compiler</a> (slides, May 24, 2026)</li>
+</ul>
+
+<p>Weighing a compiler for a real workload? <a href="/#contact">Get in touch</a>.</p>

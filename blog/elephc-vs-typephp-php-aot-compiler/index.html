@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>elephc vs TypePHP: Which PHP AOT Compiler? | Roshan Kc</title>
+  <meta name="description" content="elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/">
+  <meta property="og:title" content="elephc vs TypePHP: Two Ways to Compile PHP to Native Code">
+  <meta property="og:description" content="elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-14">
+  <meta property="article:modified_time" content="2026-11-14">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="elephc vs TypePHP: Two Ways to Compile PHP to Native Code">
+  <meta name="twitter:description" content="elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?",
+  "description": "elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-14",
+  "dateModified": "2026-11-14",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/"
+  },
+  "keywords": "elephc vs typephp, php aot compiler, typephp, elephc, compile php to native, swoole aot, php to c++",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "about": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "elephc",
+      "url": "https://elephc.dev",
+      "applicationCategory": "DeveloperApplication"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "TypePHP",
+      "url": "https://github.com/swoole/typephp",
+      "applicationCategory": "DeveloperApplication"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "illegalstudio/elephc on GitHub",
+      "url": "https://github.com/illegalstudio/elephc"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "elephc.dev",
+      "url": "https://elephc.dev"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "swoole/typephp on GitHub",
+      "url": "https://github.com/swoole/typephp"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Laravel News: TypePHP",
+      "url": "https://laravel-news.com/typephp-compile-php-native-binaries"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Albert Chen: Introduction to Swoole's AOT compiler",
+      "url": "https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?",
+      "item": "https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which is faster, elephc or TypePHP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no independent like-for-like benchmark yet. TypePHP's README reports roughly 6.5x to 8x speedups on its own benchmark scripts, and elephc publishes no headline benchmark. Both target CPU-bound code, not database-bound web requests."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does TypePHP need PHP installed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To build, yes: it needs a PHP 8.4 or 8.5 CLI with development headers and a matching libphp embed library, because compiled code links against the Zend runtime through PHPX. elephc only needs a system assembler and linker."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can either compile a Laravel app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not as of November 2026. Both compile a typed subset of PHP. The practical approach is to keep the framework on regular PHP and compile isolated hot paths as extensions or libraries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What licences do elephc and TypePHP use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "elephc is MIT licensed. TypePHP is GPL-3.0. Check the obligations before distributing compiled closed-source software."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">PHP · Performance</span>
+              <time datetime="2026-11-14">November 14, 2026</time>
+              <span>6 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> elephc and TypePHP both compile PHP ahead of time to native code, but they take opposite routes. elephc (Rust, MIT) emits assembly directly and drops the Zend Engine entirely. TypePHP (Swoole, GPL-3.0) translates PHP to C++ and keeps a bridge to the Zend runtime. Pick elephc for small standalone binaries and PHP extensions; pick TypePHP if you live in the Swoole world and want closer compatibility with existing PHP. Neither is production-ready for a full framework app as of November 2026.</p>
+
+<p>Two serious PHP AOT compilers showed up within months of each other in 2026, after years of "PHP can't be compiled" being accepted wisdom (HHVM's story aside). If you're choosing which one to experiment with, the useful question isn't "which is faster". It's "which design fits the code I actually have". I've already written up <a href="/blog/what-is-elephc-php-native-compiler/">what elephc is</a> and <a href="/blog/what-typephp-means-for-php-performance/">what TypePHP means for PHP performance</a>; this post puts them side by side.</p>
+
+<h2 id="what-is-aot">What does an AOT compiler for PHP do?<a class="h-anchor" href="#what-is-aot" aria-label="Link to this section">#</a></h2>
+
+<p>An ahead-of-time (AOT) compiler turns PHP source into machine code before the program runs. Normal PHP compiles your script to opcodes at runtime and runs them in the Zend Engine's virtual machine; OPcache caches the opcodes, and the JIT (since PHP 8.0) compiles some hot ones to machine code while the program runs. AOT moves all of that to build time, which only works when the compiler can figure out your types in advance. That's why both projects target a <em>subset</em> of PHP.</p>
+
+<h2 id="side-by-side">elephc vs TypePHP side by side<a class="h-anchor" href="#side-by-side" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left"></th><th style="padding:0.6rem 0.9rem;text-align:left">elephc</th><th style="padding:0.6rem 0.9rem;text-align:left">TypePHP</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Maintainer</td><td style="padding:0.6rem 0.9rem">Illegal Studio (Vincenzo Petrucci)</td><td style="padding:0.6rem 0.9rem">Swoole team</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Compiler written in</td><td style="padding:0.6rem 0.9rem">Rust</td><td style="padding:0.6rem 0.9rem">PHP (self-hosting: it compiles itself)</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Pipeline</td><td style="padding:0.6rem 0.9rem">PHP → assembly → <code>as</code>/<code>ld</code></td><td style="padding:0.6rem 0.9rem">PHP → C++17 → GCC/Clang</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Zend Engine at runtime</td><td style="padding:0.6rem 0.9rem">No. Small custom runtime</td><td style="padding:0.6rem 0.9rem">Links against <code>libphp</code> through the PHPX bridge for dynamic values and internal functions</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Outputs</td><td style="padding:0.6rem 0.9rem">Executables, <code>.so</code> PHP extensions, shared and static libs, iOS libs</td><td style="padding:0.6rem 0.9rem">Executables, PHP extensions, shared libs, WASI components</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Platforms</td><td style="padding:0.6rem 0.9rem">macOS ARM64, Linux ARM64/x86_64; iOS libraries</td><td style="padding:0.6rem 0.9rem">Linux x64 primary; Windows, macOS, ARM64, Android, iOS, WASI backends depending on toolchain</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Build requirements</td><td style="padding:0.6rem 0.9rem">System assembler and linker</td><td style="padding:0.6rem 0.9rem">PHP 8.4–8.5 CLI + headers, libphp embed library, C++17 compiler, CMake 3.24+, Composer 2, GMP, MPFR</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Licence</td><td style="padding:0.6rem 0.9rem">MIT</td><td style="padding:0.6rem 0.9rem">GPL-3.0</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Status (Nov 2026)</td><td style="padding:0.6rem 0.9rem">v0.27.8, near-daily nightlies</td><td style="padding:0.6rem 0.9rem">"Under active development", ~2,000 commits; a May 2026 roadmap targets general availability in May 2027</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="design-difference">The design difference that matters<a class="h-anchor" href="#design-difference" aria-label="Link to this section">#</a></h2>
+
+<p><strong>elephc removes the runtime; TypePHP replaces the interpreter but keeps the runtime.</strong> Almost every practical difference follows from that.</p>
+
+<p>Because elephc has no Zend Engine, its binaries are self-contained and it can target places PHP doesn't normally go, like an iOS static library. The cost: every PHP function you call has to be reimplemented by the elephc team. That's why it publishes coverage numbers (74% of a default PHP 8.5 build's functions as of v0.27.8) and why unsupported behaviour is a compile error.</p>
+
+<p>TypePHP's approach, as Albert Chen put it in a May 2026 talk on Swoole's AOT compiler, "throws out the opcode handler — not the runtime — and links straight against libphp.so." PHPX, a header-only C++ library mirroring PHP's standard library, sits between your compiled code and Zend. You inherit PHP's real behaviour for the dynamic parts, and your build depends on a matching PHP installation.</p>
+
+<h2 id="typing-rules">How strict do you have to be?<a class="h-anchor" href="#typing-rules" aria-label="Link to this section">#</a></h2>
+
+<p>Both want typed, predictable code, but they enforce it differently.</p>
+
+<p><strong>TypePHP's documented restrictions</strong> include: the global scope is declaration-only (code goes in functions, with a strict <code>main()</code> for binaries); inferred <code>int</code>, <code>float</code> and <code>bool</code> values use fixed native storage and can't later change type; PHP-compatible integer overflow needs <code>use varint_types</code>; and some highly dynamic reference, closure and reflection patterns aren't supported. The May 2026 talk also listed no <code>$$name</code> or <code>extract()</code>, no <code>yield</code> generators, and strict function arity.</p>
+
+<p><strong>elephc</strong> infers types and supports more of the language surface than you'd guess, including generators, Fibers, traits and references. Its limit shows up in the standard library and in dynamic behaviour it can't resolve at compile time.</p>
+
+<p>If your code already passes PHPStan at a high level with real types everywhere (see <a href="/blog/php-type-system-evolution/">how PHP's type system got here</a>), you're in good shape for either.</p>
+
+<h2 id="performance">What about speed?<a class="h-anchor" href="#performance" aria-label="Link to this section">#</a></h2>
+
+<p>The only numbers available are the projects' own, so treat them as directional. TypePHP's README reports <code>bench.php</code> dropping from 5.034 s interpreted to 0.603 s compiled at <code>-O3</code> (about 8×), and <code>micro_bench.php</code> from 13.045 s to 2.021 s (about 6.5×). In his talk, Albert Chen showed a recursive <code>fib(40)</code> going from about 14.8 s to 0.11 s. elephc publishes no headline benchmark; its showcase is DOOM running at the game's native 35 tics per second.</p>
+
+<p>Two cautions. These are CPU-bound micro-benchmarks, and a typical web request spends most of its time waiting on a database. And I haven't seen an independent, like-for-like benchmark of the two compilers. If you run one, publish your scripts.</p>
+
+<h2 id="which-to-choose">Which should you choose?<a class="h-anchor" href="#which-to-choose" aria-label="Link to this section">#</a></h2>
+
+<p>A short decision list:</p>
+
+<ol>
+  <li><strong>Writing a PHP extension instead of C?</strong> Either works. elephc has the lighter toolchain; TypePHP is closer to real PHP semantics.</li>
+  <li><strong>Need a self-contained binary with no PHP install on the target?</strong> elephc.</li>
+  <li><strong>Targeting iOS?</strong> elephc's iOS static libraries are the clearer path today.</li>
+  <li><strong>Already running Swoole, Hypervel or Workerman?</strong> TypePHP. The Swoole team built it for that world, and the talk reports Workerman compiling to a single binary "with only minor patches".</li>
+  <li><strong>Shipping closed-source commercial software?</strong> Read the licences. GPL-3.0 (TypePHP) and MIT (elephc) have very different obligations if you distribute the compiler or linked runtime.</li>
+  <li><strong>Want to compile your whole Laravel app?</strong> Neither, yet. Use <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">Octane or FrankenPHP</a> and compile only a hot module.</li>
+</ol>
+
+<p>My own lean, for what it's worth: I'd use elephc to learn and to build tools, and watch TypePHP for server workloads, because keeping the Zend runtime is the more realistic route to compiling real-world code eventually.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="which-is-faster-elephc-or-typephp">Which is faster, elephc or TypePHP?<a class="h-anchor" href="#which-is-faster-elephc-or-typephp" aria-label="Link to this section">#</a></h3>
+<p>There is no independent like-for-like benchmark yet. TypePHP&#x27;s README reports roughly 6.5x to 8x speedups on its own benchmark scripts, and elephc publishes no headline benchmark. Both target CPU-bound code, not database-bound web requests.</p>
+
+<h3 id="does-typephp-need-php-installed">Does TypePHP need PHP installed?<a class="h-anchor" href="#does-typephp-need-php-installed" aria-label="Link to this section">#</a></h3>
+<p>To build, yes: it needs a PHP 8.4 or 8.5 CLI with development headers and a matching libphp embed library, because compiled code links against the Zend runtime through PHPX. elephc only needs a system assembler and linker.</p>
+
+<h3 id="can-either-compile-a-laravel-app">Can either compile a Laravel app?<a class="h-anchor" href="#can-either-compile-a-laravel-app" aria-label="Link to this section">#</a></h3>
+<p>Not as of November 2026. Both compile a typed subset of PHP. The practical approach is to keep the framework on regular PHP and compile isolated hot paths as extensions or libraries.</p>
+
+<h3 id="what-licences-do-elephc-and-typephp-use">What licences do elephc and TypePHP use?<a class="h-anchor" href="#what-licences-do-elephc-and-typephp-use" aria-label="Link to this section">#</a></h3>
+<p>elephc is MIT licensed. TypePHP is GPL-3.0. Check the obligations before distributing compiled closed-source software.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>Both are PHP ahead-of-time compilers for a typed subset; neither compiles a full Laravel or Symfony app today.</li>
+  <li>elephc (Rust, MIT) emits assembly with no Zend Engine: self-contained binaries, PHP extensions and iOS libraries.</li>
+  <li>TypePHP (Swoole, GPL-3.0, written in PHP) goes through C++ and links against libphp via PHPX, trading self-containment for compatibility.</li>
+  <li>Published speedups (6.5×–8× on the README's benchmark scripts) are the vendors' own CPU-bound numbers, not web-app results.</li>
+  <li>Choose on design fit and licence, and compile isolated hot paths rather than whole applications.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://github.com/illegalstudio/elephc" target="_blank" rel="noopener noreferrer">illegalstudio/elephc on GitHub</a> and <a href="https://elephc.dev" target="_blank" rel="noopener noreferrer">elephc.dev</a></li>
+  <li><a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">swoole/typephp on GitHub</a> (README, restrictions, benchmarks)</li>
+  <li><a href="https://laravel-news.com/typephp-compile-php-native-binaries" target="_blank" rel="noopener noreferrer">Laravel News: TypePHP compiles PHP to native binaries</a> (Eric L. Barnes, Aug 26, 2026)</li>
+  <li><a href="https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler" target="_blank" rel="noopener noreferrer">Albert Chen: Introduction to Swoole's AOT compiler</a> (slides, May 24, 2026)</li>
+</ul>
+
+<p>Weighing a compiler for a real workload? <a href="/#contact">Get in touch</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/frankenphp-vs-swoole-laravel-octane/">FrankenPHP vs Swoole: Which Should You Run Laravel On?</a></li>
+            <li><a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM: Should You Switch in 2026?</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP: What &quot;Native PHP&quot; Actually Means in 2026</a></li>
+            <li><a href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? A PHP Compiler With No VM and No Zend Engine</a></li>
+            <li aria-current="page"><span>elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</span></li>
+            <li><a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</a></li>
+            <li><a href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?</a></li>
+            <li><a href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</a></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/security-basics-startups-before-fundraising/">Security Basics Every Early-Stage Startup Should Get Right Before Fundraising</a><time datetime="2026-09-05">September 5, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#what-is-aot">What does an AOT compiler for PHP do?</a></li>
+          <li><a href="#side-by-side">elephc vs TypePHP side by side</a></li>
+          <li><a href="#design-difference">The design difference that matters</a></li>
+          <li><a href="#typing-rules">How strict do you have to be?</a></li>
+          <li><a href="#performance">What about speed?</a></li>
+          <li><a href="#which-to-choose">Which should you choose?</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? The PHP-to-Native Compiler</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

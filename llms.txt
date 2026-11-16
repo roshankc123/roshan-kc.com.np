@@ -61,6 +61,17 @@ Right after his bachelor's degree, Roshan started teaching while taking freelanc
 
 Founder and CTO notes: https://www.roshan-kc.com.np/blog/
 
+- What Is Coding Velocity?: https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/
+- PHPStan Turbo Explained: https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/
+- PHP vs Node.js in the AI Era: https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/
+- Code Quality During a Major Rewrite: https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/
+- The Future of Native PHP: https://www.roshan-kc.com.np/blog/future-of-native-php-aot-compilers-nativephp/
+- FrankenPHP vs Swoole for Laravel: https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/
+- FrankenPHP vs PHP-FPM: https://www.roshan-kc.com.np/blog/frankenphp-vs-php-fpm-should-you-switch/
+- elephc vs TypePHP vs NativePHP: https://www.roshan-kc.com.np/blog/elephc-vs-typephp-vs-nativephp-native-php/
+- elephc vs TypePHP: PHP AOT Compilers Compared: https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/
+- What Is elephc? The PHP-to-Native Compiler: https://www.roshan-kc.com.np/blog/what-is-elephc-php-native-compiler/
+- NativePHP in 2026: Laravel Mobile and Desktop Apps: https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/
 - PHP 8.6: New Features and the RFCs to Watch: https://www.roshan-kc.com.np/blog/php-8-6-new-features/
 - PHP in 2026: Why You Should Revisit PHP: https://www.roshan-kc.com.np/blog/php-in-2026-why-you-should-revisit-php/
 - How to Choose a Tech Stack in the AI Era: https://www.roshan-kc.com.np/blog/choose-tech-stack-ai-era-patch-velocity/

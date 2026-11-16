@@ -1,0 +1,44 @@
+{
+ "slug": "php-vs-nodejs-language-doesnt-matter-ai-era",
+ "date": "2026-11-16",
+ "read": 5,
+ "tag": "Engineering · AI",
+ "title": "PHP vs Node.js: Why Language Barely Matters Now | Roshan Kc",
+ "h1": "PHP vs Node.js vs Python: Why the Language Barely Matters in the AI Era",
+ "social": "PHP vs Node.js vs Python: Why the Language Barely Matters Anymore",
+ "short": "PHP vs Node.js in the AI Era",
+ "desc": "PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.",
+ "keywords": "php vs node.js, php vs nodejs 2026, does programming language matter ai, best backend language 2026, php vs python, tech stack ai era",
+ "citations": [
+  [
+   "Stack Overflow 2025 Developer Survey results",
+   "https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/"
+  ],
+  [
+   "METR: Early-2025 AI and experienced open-source developer productivity",
+   "https://arxiv.org/abs/2507.09089"
+  ],
+  [
+   "W3Techs: usage of server-side programming languages",
+   "https://w3techs.com/technologies/overview/programming_language"
+  ]
+ ],
+ "faq": [
+  [
+   "Is PHP or Node.js better in 2026?",
+   "Neither is better in general. Both have mature frameworks, large ecosystems and good AI support. Choose the one your team runs well; pick Node if you want one language across frontend and backend, PHP with Laravel if you want strong batteries-included conventions."
+  ],
+  [
+   "Does the programming language matter with AI coding tools?",
+   "Much less than before. AI writes competent code in every mainstream language and can translate between them. Team skill, framework conventions, operations and security patching now matter more."
+  ],
+  [
+   "Which languages does AI write best?",
+   "Mainstream languages and frameworks with lots of public code, such as PHP, JavaScript and TypeScript, Python, Java and Go. Typed code and strong framework conventions also make AI output easier to review."
+  ],
+  [
+   "When does choosing a language still matter?",
+   "For CPU-bound or latency-critical systems, machine learning, sharing code across frontend and backend, very large real-time connection counts, and platform-specific mobile work."
+  ]
+ ]
+}

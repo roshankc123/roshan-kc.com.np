@@ -102,6 +102,17 @@
   });
 
   const BLOG_POSTS = [
+    "/blog/what-is-coding-velocity-how-to-measure/",
+    "/blog/phpstan-turbo-native-extension/",
+    "/blog/php-vs-nodejs-language-doesnt-matter-ai-era/",
+    "/blog/keep-code-quality-during-major-rewrite/",
+    "/blog/future-of-native-php-aot-compilers-nativephp/",
+    "/blog/frankenphp-vs-swoole-laravel-octane/",
+    "/blog/frankenphp-vs-php-fpm-should-you-switch/",
+    "/blog/elephc-vs-typephp-vs-nativephp-native-php/",
+    "/blog/elephc-vs-typephp-php-aot-compiler/",
+    "/blog/what-is-elephc-php-native-compiler/",
+    "/blog/nativephp-mobile-laravel-ios-android-apps/",
     "/blog/php-8-6-new-features/",
     "/blog/php-in-2026-why-you-should-revisit-php/",
     "/blog/choose-tech-stack-ai-era-patch-velocity/",

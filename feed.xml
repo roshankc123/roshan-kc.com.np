@@ -5,8 +5,96 @@
     <link>https://www.roshan-kc.com.np/blog/</link>
     <description>Essays from Roshan Kc on founding MarginTop Solutions, the CTO craft, building teams in Kathmandu, and shipping without losing trust.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 09 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 16 Nov 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.roshan-kc.com.np/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>What Is Coding Velocity, and How Do You Measure It Without Gaming It?</title>
+      <link>https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</title>
+      <link>https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>PHP vs Node.js vs Python: Why the Language Barely Matters in the AI Era</title>
+      <link>https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>PHP vs Node.js vs Python in the AI era: why the language barely matters now, what matters more, why AI favours typed conventional code, and when it still counts.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>How to Keep Code Quality High (and Velocity Up) During a Major Rewrite</title>
+      <link>https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>How teams keep code quality high during a major rewrite: strangler fig, characterisation tests, side-by-side runs, feature flags and data migration discipline.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?</title>
+      <link>https://www.roshan-kc.com.np/blog/future-of-native-php-aot-compilers-nativephp/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/future-of-native-php-aot-compilers-nativephp/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>The future of PHP with elephc, TypePHP and NativePHP: lessons from HHVM, why 2026 is different, likely outcomes, and the signals to watch in 2027.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>FrankenPHP vs Swoole: Which Should You Run Laravel On?</title>
+      <link>https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>FrankenPHP vs PHP-FPM: Should You Switch in 2026?</title>
+      <link>https://www.roshan-kc.com.np/blog/frankenphp-vs-php-fpm-should-you-switch/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/frankenphp-vs-php-fpm-should-you-switch/</guid>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+      <description>FrankenPHP vs PHP-FPM: how they differ, when switching pays off, extensions that break, and a low-risk migration path from classic mode to worker mode.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>elephc vs TypePHP vs NativePHP: What &quot;Native PHP&quot; Actually Means in 2026</title>
+      <link>https://www.roshan-kc.com.np/blog/elephc-vs-typephp-vs-nativephp-native-php/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/elephc-vs-typephp-vs-nativephp-native-php/</guid>
+      <pubDate>Sun, 15 Nov 2026 00:00:00 +0000</pubDate>
+      <description>elephc vs TypePHP vs NativePHP: two AOT compilers and one app framework. What each does, a side-by-side table, and which native PHP tool fits your problem.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</title>
+      <link>https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/</guid>
+      <pubDate>Sat, 14 Nov 2026 00:00:00 +0000</pubDate>
+      <description>elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>What Is elephc? A PHP Compiler With No VM and No Zend Engine</title>
+      <link>https://www.roshan-kc.com.np/blog/what-is-elephc-php-native-compiler/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-is-elephc-php-native-compiler/</guid>
+      <pubDate>Fri, 13 Nov 2026 00:00:00 +0000</pubDate>
+      <description>What is elephc? The Rust-built compiler that turns PHP into native assembly: PHP 8.5 coverage, iOS and extension output, the DOOM demo, limits and real uses.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
+    <item>
+      <title>NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</title>
+      <link>https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/</link>
+      <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/</guid>
+      <pubDate>Wed, 11 Nov 2026 00:00:00 +0000</pubDate>
+      <description>What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.</description>
+      <author>kcroshan566@gmail.com (Roshan Kc)</author>
+    </item>
     <item>
       <title>PHP 8.6: New Features and the RFCs to Watch</title>
       <link>https://www.roshan-kc.com.np/blog/php-8-6-new-features/</link>
@@ -164,7 +252,7 @@
       <link>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</link>
       <guid isPermaLink="true">https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</guid>
       <pubDate>Sat, 29 Aug 2026 00:00:00 +0000</pubDate>
-      <description>What is TypePHP? Swoole&#x27;s AOT compiler turns typed PHP into C++ and native code. How it compares to JIT and HHVM, Laravel support, and whether to bet on it.</description>
+      <description>TypePHP is Swoole&#x27;s open-source AOT compiler: PHP to C++ to native code. Laravel support, README benchmarks (6.5–8×), GitHub, limits and when to use it.</description>
       <author>kcroshan566@gmail.com (Roshan Kc)</author>
     </item>
     <item>

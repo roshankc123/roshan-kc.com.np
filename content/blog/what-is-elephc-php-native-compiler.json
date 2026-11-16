@@ -1,0 +1,58 @@
+{
+ "slug": "what-is-elephc-php-native-compiler",
+ "date": "2026-11-13",
+ "read": 6,
+ "tag": "PHP · Performance",
+ "title": "What Is elephc? PHP to Native Assembly | Roshan Kc",
+ "h1": "What Is elephc? A PHP Compiler With No VM and No Zend Engine",
+ "social": "elephc Explained: Compiling PHP Straight to Native Assembly",
+ "short": "What Is elephc? The PHP-to-Native Compiler",
+ "desc": "What is elephc? The Rust-built compiler that turns PHP into native assembly: PHP 8.5 coverage, iOS and extension output, the DOOM demo, limits and real uses.",
+ "keywords": "elephc, elephc php compiler, php to native, php aot compiler, compile php to binary, php native assembly, php extension in php",
+ "citations": [
+  [
+   "illegalstudio/elephc on GitHub",
+   "https://github.com/illegalstudio/elephc"
+  ],
+  [
+   "elephc releases",
+   "https://github.com/illegalstudio/elephc/releases"
+  ],
+  [
+   "elephc.dev",
+   "https://elephc.dev"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "elephc",
+   "url": "https://elephc.dev",
+   "applicationCategory": "DeveloperApplication",
+   "softwareVersion": "0.27.8",
+   "license": "https://opensource.org/licenses/MIT"
+  }
+ ],
+ "faq": [
+  [
+   "Is elephc production ready?",
+   "Not yet. As of November 2026 it is at v0.27.8 and describes itself as experimental; the roadmap marks 1.0.0 as the production-ready release. It is reasonable for isolated tools and modules you can rewrite."
+  ],
+  [
+   "Can elephc compile Laravel?",
+   "No. elephc compiles a subset of PHP and treats unsupported dynamic behaviour as a compile error. Its advice is to keep Laravel or Symfony on regular PHP and compile static, performance-sensitive modules as extensions or libraries."
+  ],
+  [
+   "How is elephc different from the PHP JIT?",
+   "The PHP JIT runs inside the Zend Engine and compiles hot code at runtime. elephc compiles ahead of time to a standalone native binary or library with no Zend Engine at all."
+  ],
+  [
+   "What platforms does elephc support?",
+   "Executables for macOS ARM64, Linux ARM64 and Linux x86_64, plus iOS ARM64 device and simulator libraries cross-compiled from macOS."
+  ],
+  [
+   "Can I write a PHP extension with elephc?",
+   "Yes. elephc --emit phpext builds a .so module that a standard PHP 8.5 install can load, so you can write an extension in PHP instead of C."
+  ]
+ ]
+}

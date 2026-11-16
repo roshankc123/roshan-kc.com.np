@@ -1,6 +1,24 @@
-<p><strong>Direct answer:</strong> <strong>TypePHP</strong> is Swoole's open-source ahead-of-time (AOT) compiler that aims to turn typed PHP into C++ and then native code — a promising path for PHP performance, still early, and not a reason to delay shipping products on proven stacks like Laravel + Octane.</p>
+<p><strong>Direct answer:</strong> <strong>TypePHP</strong> is the Swoole team's open-source ahead-of-time (AOT) compiler. It translates typed PHP into C++ and then native machine code, producing binaries, PHP extensions or shared libraries. As of November 2026 it's GPL-3.0 licensed on GitHub, reports 6.5–8× speedups on its own CPU-bound benchmarks, and doesn't compile full Laravel apps: use it for typed hot paths, not as a replacement for Laravel + Octane.</p>
 
 <p>We watch this space closely at <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> because we run serious PHP workloads. Curiosity is free; holding your product roadmap hostage to an experimental compiler is not.</p>
+
+<h2 id="at-a-glance">TypePHP at a glance (November 2026)</h2>
+
+<table>
+  <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+  <tbody>
+    <tr><td>Who makes it?</td><td>The Swoole team. Source at <a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">github.com/swoole/typephp</a></td></tr>
+    <tr><td>Licence</td><td>GPL-3.0</td></tr>
+    <tr><td>How it compiles</td><td>PHP → C++17 → native code with GCC or Clang. The compiler is written in PHP and compiles itself.</td></tr>
+    <tr><td>Outputs</td><td>Native executables, PHP extensions, shared libraries, WASI components</td></tr>
+    <tr><td>Runtime</td><td>Links against libphp through PHPX, a C++ layer that bridges dynamic values and internal functions to the Zend runtime</td></tr>
+    <tr><td>Build requirements</td><td>PHP 8.4–8.5 CLI and headers, libphp embed library, C++17 compiler, CMake 3.24+, Composer 2, GMP, MPFR</td></tr>
+    <tr><td>Speed (vendor numbers)</td><td>README: <code>bench.php</code> 5.034 s → 0.603 s (~8×); <code>micro_bench.php</code> 13.045 s → 2.021 s (~6.5×)</td></tr>
+    <tr><td>Laravel support</td><td>None claimed. The README defines a typed subset and lists unsupported dynamic patterns; frameworks stay on regular PHP</td></tr>
+  </tbody>
+</table>
+
+<p>For a head-to-head with the other PHP compiler, read <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a>. For how both differ from NativePHP, see <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">what "native PHP" means in 2026</a>.</p>
 
 <h2 id="php-performance-history">PHP performance: a brief, honest history</h2>
 
@@ -63,7 +81,7 @@
 
 <p>Then PHP 7 shipped in 2015 with the PHPNG engine and closed most of the gap. HHVM kept evolving; Meta pivoted it toward Hack (their typed superset). Today HHVM runs Hack, not PHP. The wider PHP ecosystem never really followed.</p>
 
-<p>The lesson isn't that performance moonshots fail — HHVM genuinely worked at Meta's scale and on their codebase. The lesson is that <strong>ecosystem gravity, tooling compatibility, and migration cost decide adoption</strong> more than benchmark results. Laravel runs on TypePHP today the way it ran on HHVM in 2014: experimentally, with caveats.</p>
+<p>The lesson isn't that performance moonshots fail — HHVM genuinely worked at Meta's scale and on their codebase. The lesson is that <strong>ecosystem gravity, tooling compatibility, and migration cost decide adoption</strong> more than benchmark results. As of November 2026, Laravel doesn't run on TypePHP at all: the README makes no framework claims, and its rules (declaration-only global scope, fixed native types, no highly dynamic reflection) rule out most framework internals.</p>
 
 <h2 id="realistic-outlook">Realistic outlook for TypePHP</h2>
 
@@ -96,6 +114,14 @@
   <li>TypePHP attempts AOT compilation via a C++ intermediate step, targeting fully-typed PHP hot paths. The approach is architecturally sound but early.</li>
   <li>HHVM showed that PHP performance moonshots work — at scale, with the right codebase — and that ecosystem adoption is the harder problem than the technical one.</li>
   <li>Don't hold product decisions waiting for TypePHP. Profile your actual app; fix queries and architecture first; reach for Octane when boot time is the measured bottleneck.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://github.com/swoole/typephp" target="_blank" rel="noopener noreferrer">swoole/typephp on GitHub</a> (README, restrictions, benchmarks)</li>
+  <li><a href="https://laravel-news.com/typephp-compile-php-native-binaries" target="_blank" rel="noopener noreferrer">Laravel News: TypePHP compiles PHP to native binaries</a> (Aug 26, 2026)</li>
+  <li><a href="https://www.swoole.com/aot" target="_blank" rel="noopener noreferrer">Swoole AOT</a></li>
 </ul>
 
 <p>Running serious PHP workloads and thinking about performance? <a href="/#contact">Get in touch</a> — we've thought about this problem from multiple angles at MarginTop.</p>

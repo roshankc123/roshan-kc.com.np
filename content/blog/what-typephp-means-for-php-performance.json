@@ -3,10 +3,52 @@
  "date": "2026-08-29",
  "read": 9,
  "tag": "PHP · Performance",
- "title": "TypePHP Explained: Swoole's PHP AOT Compiler | Roshan Kc",
+ "title": "TypePHP by Swoole: Laravel Support & Benchmarks | Roshan Kc",
  "h1": "What TypePHP Means for the Future of PHP Performance",
- "social": "TypePHP Explained: Swoole's PHP AOT Compiler and What It Means for Laravel",
+ "social": "TypePHP by Swoole: How It Works, Laravel Support, Benchmarks and Limits",
  "short": "TypePHP Explained: Swoole's PHP AOT Compiler and What It Means for Laravel",
- "desc": "What is TypePHP? Swoole's AOT compiler turns typed PHP into C++ and native code. How it compares to JIT and HHVM, Laravel support, and whether to bet on it.",
- "keywords": "TypePHP, Swoole AOT, PHP performance, PHP to C++"
+ "desc": "TypePHP is Swoole's open-source AOT compiler: PHP to C++ to native code. Laravel support, README benchmarks (6.5–8×), GitHub, limits and when to use it.",
+ "keywords": "typephp, swoole typephp, typephp laravel, typephp github, php aot compiler, php to c++, swoole aot",
+ "modified": "2026-11-16",
+ "citations": [
+  [
+   "swoole/typephp on GitHub",
+   "https://github.com/swoole/typephp"
+  ],
+  [
+   "Laravel News: TypePHP",
+   "https://laravel-news.com/typephp-compile-php-native-binaries"
+  ],
+  [
+   "Swoole AOT",
+   "https://www.swoole.com/aot"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "TypePHP",
+   "url": "https://github.com/swoole/typephp",
+   "applicationCategory": "DeveloperApplication",
+   "license": "https://www.gnu.org/licenses/gpl-3.0.html"
+  }
+ ],
+ "faq": [
+  [
+   "Does TypePHP work with Laravel?",
+   "Not as a whole. TypePHP compiles a typed subset of PHP and makes no Laravel support claims. Keep Laravel on regular PHP, with Octane for performance, and compile only isolated, strictly typed hot paths."
+  ],
+  [
+   "Is TypePHP open source?",
+   "Yes. The Swoole team published it on GitHub at swoole/typephp under the GPL-3.0 licence."
+  ],
+  [
+   "How much faster is TypePHP?",
+   "The README reports about 8x on bench.php and 6.5x on micro_bench.php compared with interpreted PHP. These are the project's own CPU-bound benchmarks; typical database-bound web requests gain far less."
+  ],
+  [
+   "Is TypePHP production ready?",
+   "Not for general use as of November 2026. The project describes itself as under active development and supports a defined subset of PHP."
+  ]
+ ]
 }

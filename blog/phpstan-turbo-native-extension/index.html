@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PHPStan Turbo: 2.5× Faster With Native C++ | Roshan Kc</title>
+  <meta name="description" content="What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/">
+  <meta property="og:title" content="PHPStan Turbo Explained: Native C++ That Makes PHPStan 60% Faster">
+  <meta property="og:description" content="What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-16">
+  <meta property="article:modified_time" content="2026-11-16">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PHPStan Turbo Explained: Native C++ That Makes PHPStan 60% Faster">
+  <meta name="twitter:description" content="What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension",
+  "description": "What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/"
+  },
+  "keywords": "phpstan turbo, php turbo, phpstan faster, phpstan native extension, phpstan 2.3, php static analysis performance, pie install",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "about": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "PHPStan",
+      "url": "https://phpstan.org/",
+      "applicationCategory": "DeveloperApplication"
+    }
+  ],
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "phpstan/turbo on Packagist",
+      "url": "https://packagist.org/packages/phpstan/turbo"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Sander Muller: Nobody runs PHPStan cold",
+      "url": "https://dev.to/sandermuller/nobody-runs-phpstan-cold-9ed"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "PHPStan",
+      "url": "https://phpstan.org/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension",
+      "item": "https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is PHP Turbo a new PHP runtime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Turbo here is PHPStan Turbo, a native extension that speeds up the PHPStan static analyser. It does not change how your application runs. Hotwire Turbo, the JavaScript library, is unrelated."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does PHPStan Turbo change analysis results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Results are identical with or without it. The native classes mirror PHPStan's PHP classes, which remain the reference implementation, and the extension only activates when its version matches the PHPStan release."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I enable PHPStan Turbo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you install phpstan/phpstan with Composer on PHP 8.2 or newer, prebuilt binaries are included. If you use a downloaded phpstan.phar, run pie install phpstan/turbo. Check with vendor/bin/phpstan diagnose."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much faster is PHPStan with Turbo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "About 60% less time on a cold run, roughly 2.5x. One independent WordPress benchmark went from 31.2 seconds to 13.3 seconds. Warm runs using the result cache gain less."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">PHP · Performance</span>
+              <time datetime="2026-11-16">November 16, 2026</time>
+              <span>5 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> PHPStan Turbo is an optional native C++ extension that makes the PHPStan static analyser about 60% faster on a cold run (roughly 2.5×). It replaces around 350 of PHPStan's internal PHP classes with C++ versions of the same name, and analysis results are identical with or without it. It ships prebuilt with the <code>phpstan/phpstan</code> Composer package for PHP 8.2+, so most projects get it just by upgrading.</p>
+
+<p>If you searched "PHP vs Turbo", you probably saw PHPStan suddenly get much faster and wondered whether Turbo is a new PHP runtime. It isn't. It's a native extension that speeds up one PHP program, PHPStan, and it's one of the cleanest real-world examples of a pattern I covered in my <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">native PHP series</a>: keep PHP as the source of truth and move hot paths to native code. (If you meant Hotwire Turbo, the JavaScript library, that's unrelated.)</p>
+
+<h2 id="what-is-turbo">What is PHPStan Turbo?<a class="h-anchor" href="#what-is-turbo" aria-label="Link to this section">#</a></h2>
+
+<p>PHPStan is the most widely used static analyser for PHP, created by Ondřej Mirtes. It reads your code without running it and reports type errors, impossible conditions and dead code. On a large codebase a full run can take a minute or more, which is why speed matters.</p>
+
+<p>Turbo is published as <code>phpstan/turbo</code>. In its own words, it's "a native PHP extension that makes PHPStan about 60% faster on a cold run." It arrived with PHPStan 2.2.6 in July 2026; the big jump came with 2.3.0 in October 2026, and the current release is 2.3.6 (November 15, 2026).</p>
+
+<h2 id="how-it-works">How Turbo works<a class="h-anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
+
+<p>The clever part is <strong>shadowing</strong>. Each native class takes the exact name of a PHP class in PHPStan. When the extension is loaded, PHP uses the C++ class; when it isn't, the original PHP class runs. The PHP version stays the reference implementation, which is why results can be identical.</p>
+
+<p>The speedup was built up in layers. Here's the breakdown from the package page, as a share of the time a run takes without Turbo:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Layer</th><th style="padding:0.6rem 0.9rem;text-align:left">Version</th><th style="padding:0.6rem 0.9rem;text-align:left">Time saved</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Native hot paths</td><td style="padding:0.6rem 0.9rem">2.2.6</td><td style="padding:0.6rem 0.9rem">16%</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Forked workers (fork from the booted process instead of starting fresh)</td><td style="padding:0.6rem 0.9rem">2.2.10</td><td style="padding:0.6rem 0.9rem">4%</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Trusted types (an OPcache optimiser pass that drops redundant type checks in PHPStan's own code)</td><td style="padding:0.6rem 0.9rem">2.2.13</td><td style="padding:0.6rem 0.9rem">8%</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Native analysis engine (~350 classes shadowed)</td><td style="padding:0.6rem 0.9rem">2.3.0</td><td style="padding:0.6rem 0.9rem">30%</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem"><strong>Total</strong></td><td style="padding:0.6rem 0.9rem"></td><td style="padding:0.6rem 0.9rem"><strong>58%</strong></td></tr>
+  </tbody>
+</table></div>
+
+<p>Turbo also reimplements php-parser's parsing engine natively, while tokenising stays in PHP. Rules, third-party PHPStan extensions, BetterReflection and phpdoc-parser all stay in PHP, so the parts the community extends are untouched. The package page also says Rector runs about 2× faster with Turbo.</p>
+
+<h2 id="benchmarks">How much faster in practice?<a class="h-anchor" href="#benchmarks" aria-label="Link to this section">#</a></h2>
+
+<p>Independent numbers line up with the claims on cold runs. Sander Muller benchmarked PHPStan on WordPress at level 9 (Apple M4 Pro, PHP 8.5):</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Run</th><th style="padding:0.6rem 0.9rem;text-align:left">PHPStan 2.1.49</th><th style="padding:0.6rem 0.9rem;text-align:left">PHPStan 2.3.1, no Turbo</th><th style="padding:0.6rem 0.9rem;text-align:left">PHPStan 2.3.1, Turbo</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Cold (no cache)</td><td style="padding:0.6rem 0.9rem">48.6 s</td><td style="padding:0.6rem 0.9rem">31.2 s</td><td style="padding:0.6rem 0.9rem">13.3 s</td></tr>
+  </tbody>
+</table></div>
+
+<p>He also makes an important point in a post titled "Nobody runs PHPStan cold": day to day, PHPStan uses its result cache, and an average commit took 1.8 seconds on 2.3.1. So Turbo matters most in <strong>CI without a warm cache</strong>, on first runs after dependency updates, and on big monorepos. On your laptop the cache was already doing most of the work.</p>
+
+<h2 id="install">How to get it<a class="h-anchor" href="#install" aria-label="Link to this section">#</a></h2>
+
+<p>Most people don't need to do anything:</p>
+
+<ul>
+  <li><strong>Composer users:</strong> <code>phpstan/phpstan</code> includes prebuilt binaries for Linux (glibc and musl, x86_64 and arm64), macOS arm64 and Windows x86_64, for PHP 8.2 and newer.</li>
+  <li><strong>Downloaded <code>phpstan.phar</code> users:</strong> install the extension with PIE: <code>pie install phpstan/turbo</code>.</li>
+  <li><strong>Check it's active:</strong> <code>vendor/bin/phpstan diagnose</code>.</li>
+</ul>
+
+<p>Turbo is version-gated: it only activates when its version matches the one the PHPStan release expects. Otherwise PHPStan prints a note and runs without it. A mismatched extension can only cost speed, never change results. There's no switch to turn it off.</p>
+
+<p>The quickest win for most teams: cache PHPStan's result cache directory between CI runs, then upgrade to get Turbo for the cold runs that remain.</p>
+
+<h2 id="lessons">What Turbo teaches about native PHP<a class="h-anchor" href="#lessons" aria-label="Link to this section">#</a></h2>
+
+<p>Turbo is a useful counterpoint to the PHP compilers in this series. <a href="/blog/what-is-elephc-php-native-compiler/">elephc</a> and <a href="/blog/what-typephp-means-for-php-performance/">TypePHP</a> try to compile PHP automatically. Turbo hand-writes the hot parts in C++ and keeps PHP as the specification. It's more work, but it's shipping to everyone today, and the design choices are worth copying for any performance-critical PHP library:</p>
+
+<ol>
+  <li><strong>Profile first.</strong> The layers in the table target where time actually went.</li>
+  <li><strong>Keep a reference implementation.</strong> The PHP classes define correct behaviour; native code must match them.</li>
+  <li><strong>Make it optional and safe to be missing.</strong> Version gating means a broken or absent extension falls back to PHP.</li>
+  <li><strong>Leave the extension points alone.</strong> Rules and plugins stay in PHP, so the ecosystem doesn't break.</li>
+</ol>
+
+<p>It's also a nice answer to "is PHP too slow for serious tools?" The answer here was to keep PHP for most of the code and go native only where profiling said it would pay.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="is-php-turbo-a-new-php-runtime">Is PHP Turbo a new PHP runtime?<a class="h-anchor" href="#is-php-turbo-a-new-php-runtime" aria-label="Link to this section">#</a></h3>
+<p>No. Turbo here is PHPStan Turbo, a native extension that speeds up the PHPStan static analyser. It does not change how your application runs. Hotwire Turbo, the JavaScript library, is unrelated.</p>
+
+<h3 id="does-phpstan-turbo-change-analysis-results">Does PHPStan Turbo change analysis results?<a class="h-anchor" href="#does-phpstan-turbo-change-analysis-results" aria-label="Link to this section">#</a></h3>
+<p>No. Results are identical with or without it. The native classes mirror PHPStan&#x27;s PHP classes, which remain the reference implementation, and the extension only activates when its version matches the PHPStan release.</p>
+
+<h3 id="how-do-i-enable-phpstan-turbo">How do I enable PHPStan Turbo?<a class="h-anchor" href="#how-do-i-enable-phpstan-turbo" aria-label="Link to this section">#</a></h3>
+<p>If you install phpstan/phpstan with Composer on PHP 8.2 or newer, prebuilt binaries are included. If you use a downloaded phpstan.phar, run pie install phpstan/turbo. Check with vendor/bin/phpstan diagnose.</p>
+
+<h3 id="how-much-faster-is-phpstan-with-turbo">How much faster is PHPStan with Turbo?<a class="h-anchor" href="#how-much-faster-is-phpstan-with-turbo" aria-label="Link to this section">#</a></h3>
+<p>About 60% less time on a cold run, roughly 2.5x. One independent WordPress benchmark went from 31.2 seconds to 13.3 seconds. Warm runs using the result cache gain less.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>PHPStan Turbo is a native C++ extension that makes PHPStan about 60% faster on cold runs, with identical results.</li>
+  <li>It shadows around 350 PHP classes with same-named native classes; the PHP code remains the reference implementation.</li>
+  <li>It ships prebuilt with <code>phpstan/phpstan</code> for PHP 8.2+; phar users install it with PIE.</li>
+  <li>The biggest gains are in CI and cold runs. Warm runs already benefit from the result cache.</li>
+  <li>It's a model for native PHP done safely: profile, keep a reference, make native optional.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://packagist.org/packages/phpstan/turbo" target="_blank" rel="noopener noreferrer">phpstan/turbo on Packagist</a> (description, breakdown, install, version history)</li>
+  <li><a href="https://dev.to/sandermuller/nobody-runs-phpstan-cold-9ed" target="_blank" rel="noopener noreferrer">Sander Muller: Nobody runs PHPStan cold</a></li>
+  <li><a href="https://phpstan.org/" target="_blank" rel="noopener noreferrer">PHPStan</a></li>
+</ul>
+
+<p>Want faster CI for a PHP codebase? <a href="/#contact">Get in touch</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-series" aria-labelledby="series-title">
+            <p class="post-series__label" id="series-title">Part of the series <a href="/blog/php-in-2026-why-you-should-revisit-php/">Modern PHP in 2026</a></p>
+            <ol>
+            <li><a href="/blog/php-in-2026-why-you-should-revisit-php/">PHP in 2026: Why Everything You Think You Know About PHP Is Out of Date</a></li>
+            <li><a href="/blog/php-8-6-new-features/">PHP 8.6: New Features and the RFCs to Watch</a></li>
+            <li><a href="/blog/php-8-5-features-production/">PHP 8.5 Features That Actually Matter in Production Code</a></li>
+            <li><a href="/blog/php-8-4-property-hooks-asymmetric-visibility/">Property Hooks and Asymmetric Visibility: PHP 8.4 Changed How You Write Classes</a></li>
+            <li><a href="/blog/php-type-system-evolution/">The PHP Type System Grew Up: From Loose Scripts to Strict Contracts</a></li>
+            <li><a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">PHP Runtimes Explained: FPM vs Octane vs FrankenPHP vs Swoole vs RoadRunner</a></li>
+            <li><a href="/blog/frankenphp-vs-swoole-laravel-octane/">FrankenPHP vs Swoole: Which Should You Run Laravel On?</a></li>
+            <li><a href="/blog/frankenphp-vs-php-fpm-should-you-switch/">FrankenPHP vs PHP-FPM: Should You Switch in 2026?</a></li>
+            <li><a href="/blog/php-async-fibers-coroutines/">PHP Async in 2026: Fibers, Coroutines and the Road to Native Async</a></li>
+            <li><a href="/blog/what-typephp-means-for-php-performance/">What TypePHP Means for the Future of PHP Performance</a></li>
+            <li><a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP: What &quot;Native PHP&quot; Actually Means in 2026</a></li>
+            <li><a href="/blog/what-is-elephc-php-native-compiler/">What Is elephc? A PHP Compiler With No VM and No Zend Engine</a></li>
+            <li><a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?</a></li>
+            <li><a href="/blog/nativephp-mobile-laravel-ios-android-apps/">NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel</a></li>
+            <li><a href="/blog/future-of-native-php-aot-compilers-nativephp/">The Future of Native PHP: Will AOT Compilers and NativePHP Change What PHP Is For?</a></li>
+            <li aria-current="page"><span>PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension</span></li>
+            <li><a href="/blog/php2shell-how-php-contained-critical-rce/">PHP2Shell: How the PHP Team Contained a Critical RCE, and How the Fix Reached Your Server</a></li>
+            <li><a href="/blog/php-runtime-vulnerabilities-history/">Runtime-Level PHP Vulnerabilities: Why PHP2Shell Wasn&#x27;t the First, and What They Have in Common</a></li>
+            <li><a href="/blog/upgrade-php-7-to-php-8-5-playbook/">Upgrading a Legacy PHP 7 App to PHP 8.5: A Practical Playbook</a></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a></li>
+            </ol>
+          </section>
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/optimized-laravel-docker-swoole-iouring/">I Built a Public Docker Image for Laravel + Swoole with io_uring Support (Here&#x27;s Why It Exists)</a><time datetime="2026-09-07">September 7, 2026</time></li>
+            <li><a href="/blog/laravel-octane-swoole-concurrent-load/">How We Use Laravel Octane + Swoole to Handle Concurrent Load Without Rewriting Our App</a><time datetime="2026-08-30">August 30, 2026</time></li>
+            <li><a href="/blog/hidden-cost-premature-microservices-monolith/">The Hidden Cost of Premature Microservices (And Why We&#x27;re Still a Monolith)</a><time datetime="2026-09-01">September 1, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#what-is-turbo">What is PHPStan Turbo?</a></li>
+          <li><a href="#how-it-works">How Turbo works</a></li>
+          <li><a href="#benchmarks">How much faster in practice?</a></li>
+          <li><a href="#install">How to get it</a></li>
+          <li><a href="#lessons">What Turbo teaches about native PHP</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/what-is-coding-velocity-how-to-measure/">What Is Coding Velocity?</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/php-vs-nodejs-language-doesnt-matter-ai-era/">PHP vs Node.js in the AI Era</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

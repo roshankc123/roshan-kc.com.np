@@ -1,0 +1,52 @@
+{
+ "slug": "phpstan-turbo-native-extension",
+ "date": "2026-11-16",
+ "read": 5,
+ "tag": "PHP · Performance",
+ "title": "PHPStan Turbo: 2.5× Faster With Native C++ | Roshan Kc",
+ "h1": "PHPStan Turbo: How PHPStan Got 2.5× Faster With a Native Extension",
+ "social": "PHPStan Turbo Explained: Native C++ That Makes PHPStan 60% Faster",
+ "short": "PHPStan Turbo Explained",
+ "desc": "What PHPStan Turbo is: the native C++ extension making PHPStan about 60% faster on cold runs. How class shadowing works, real benchmarks, and how to enable it.",
+ "keywords": "phpstan turbo, php turbo, phpstan faster, phpstan native extension, phpstan 2.3, php static analysis performance, pie install",
+ "citations": [
+  [
+   "phpstan/turbo on Packagist",
+   "https://packagist.org/packages/phpstan/turbo"
+  ],
+  [
+   "Sander Muller: Nobody runs PHPStan cold",
+   "https://dev.to/sandermuller/nobody-runs-phpstan-cold-9ed"
+  ],
+  [
+   "PHPStan",
+   "https://phpstan.org/"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "PHPStan",
+   "url": "https://phpstan.org/",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "Is PHP Turbo a new PHP runtime?",
+   "No. Turbo here is PHPStan Turbo, a native extension that speeds up the PHPStan static analyser. It does not change how your application runs. Hotwire Turbo, the JavaScript library, is unrelated."
+  ],
+  [
+   "Does PHPStan Turbo change analysis results?",
+   "No. Results are identical with or without it. The native classes mirror PHPStan's PHP classes, which remain the reference implementation, and the extension only activates when its version matches the PHPStan release."
+  ],
+  [
+   "How do I enable PHPStan Turbo?",
+   "If you install phpstan/phpstan with Composer on PHP 8.2 or newer, prebuilt binaries are included. If you use a downloaded phpstan.phar, run pie install phpstan/turbo. Check with vendor/bin/phpstan diagnose."
+  ],
+  [
+   "How much faster is PHPStan with Turbo?",
+   "About 60% less time on a cold run, roughly 2.5x. One independent WordPress benchmark went from 31.2 seconds to 13.3 seconds. Warm runs using the result cache gain less."
+  ]
+ ]
+}

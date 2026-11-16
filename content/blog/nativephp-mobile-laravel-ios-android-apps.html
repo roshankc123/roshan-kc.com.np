@@ -1,0 +1,130 @@
+<p><strong>Direct answer:</strong> NativePHP is an open-source framework that lets Laravel developers build iOS, Android, macOS, Windows and Linux apps from one PHP codebase. It doesn't compile PHP to machine code: it ships a real PHP runtime inside the app. Since v4 (July 2026), its SuperNative renderer turns Blade into genuine SwiftUI and Jetpack Compose views instead of a web view.</p>
+
+<p>I get asked about NativePHP more than any other "PHP on a phone" project, usually by founders who have a Laravel web app and a budget for exactly zero extra mobile engineers. This post is what I tell them: what NativePHP actually is in late 2026, what changed with v3 and v4, and where I think it fits against Flutter and React Native. If you're comparing it with the PHP compilers that also say "native", start with <a href="/blog/elephc-vs-typephp-vs-nativephp-native-php/">elephc vs TypePHP vs NativePHP</a>; they solve different problems.</p>
+
+<h2 id="what-is-nativephp">What is NativePHP?</h2>
+
+<p>NativePHP is a set of Laravel packages that wrap your app in a native shell and give it access to device features. There are two products:</p>
+
+<ul>
+  <li><strong>NativePHP for Mobile</strong> (<code>nativephp/mobile</code>): iOS and Android. PHP is compiled as a library (<code>libphp</code>) and linked into a Swift shell on iOS and a Kotlin shell on Android.</li>
+  <li><strong>NativePHP for Desktop</strong> (<code>nativephp/desktop</code>): macOS, Windows and Linux, built on Electron.</li>
+</ul>
+
+<p>The part most people miss: <strong>there is no server</strong>. The mobile docs put it plainly: "There's no server in a NativePHP app, and no separate PHP process either." The PHP engine boots inside the app process, loads your Laravel app from the bundle, and stays warm. The bundled database is SQLite. As of v4 the mobile runtime ships PHP 8.4, cross-compiled for iOS (device and simulator) and Android ARM64.</p>
+
+<p>So your Eloquent models, queues, validation rules and Blade views run on the phone. That's the whole pitch, and it's a good one if you already think in Laravel.</p>
+
+<h2 id="timeline">What changed in 2026: v3 went free, v4 went native</h2>
+
+<table>
+  <thead><tr><th>Date</th><th>Release</th><th>What it means</th></tr></thead>
+  <tbody>
+    <tr><td>Oct 14, 2025</td><td>Desktop 2.0.1</td><td>Desktop v2 merged the old <code>nativephp/laravel</code> and <code>nativephp/electron</code> repos into <code>nativephp/desktop</code>, with breaking changes and safer defaults.</td></tr>
+    <tr><td>Feb 1, 2026</td><td>Mobile v3, MIT licence</td><td>The core framework and nine plugins (Browser, Camera, Device, Dialog, File, Microphone, Network, Share, System) became free and open source. Versions before v3 stay under the Business Source License.</td></tr>
+    <tr><td>Jul 30, 2026</td><td>Mobile v4 + SuperNative</td><td>Launched at The Vibes in Boston, the day after Laracon US. Blade renders as real SwiftUI and Compose views by default.</td></tr>
+    <tr><td>Aug 7, 2026</td><td>Mobile v4.1</td><td>Added TreeObservers for watching the element trees the runtime publishes.</td></tr>
+    <tr><td>Nov 10, 2026</td><td>Desktop 2.5.0</td><td>Upgraded to Electron 45; apps can ask before downloading updates; the local events endpoint now requires authentication.</td></tr>
+  </tbody>
+</table>
+
+<p>The MIT switch matters more than it sounds. A BSL licence makes agencies nervous because you're betting client work on a vendor's future terms. MIT removes that conversation. NativePHP still earns money: premium plugins (Biometrics, Geolocation, Push Notifications via Firebase, Scanner, Secure Storage) are one-time purchases, and the Bifrost cloud build service is a subscription. You can ship a real app without paying anything, though.</p>
+
+<h2 id="supernative">How SuperNative works</h2>
+
+<p>SuperNative replaces the web view with native UI. Earlier NativePHP Mobile versions rendered your Blade into HTML and showed it in a web view, which worked but felt like a website in a wrapper. In v4, Blade compiles to a compact binary description of the screen, and native code turns that into SwiftUI or Jetpack Compose views.</p>
+
+<p>The pipeline, from NativePHP's renderer docs:</p>
+
+<ol>
+  <li>Your PHP code produces an <strong>element tree</strong>.</li>
+  <li>The <strong>Element Runtime</strong>, native code built into the PHP runtime, encodes it into a binary frame of fixed-layout records.</li>
+  <li>Because PHP and the UI share one process, publishing a frame is just writing bytes into shared memory. No JSON, no HTTP round trip.</li>
+  <li>Small Swift and Kotlin readers diff each frame against the last and hand only the changes to SwiftUI or Compose.</li>
+</ol>
+
+<p>Layout is a native flexbox implementation on both platforms, and you style with Tailwind-like classes. Gestures, press feedback and animations run on the native side, so PHP isn't in the hot loop for every frame of a swipe. The component set is called EDGE (Element Definition and Generation Engine). A screen looks roughly like this:</p>
+
+<pre><code>&lt;column class="p-4 gap-2"&gt;
+    &lt;text class="text-xl font-bold"&gt;Orders&lt;/text&gt;
+    @foreach ($orders as $order)
+        &lt;pressable @tap="open({{ $order-&gt;id }})"&gt;
+            &lt;text&gt;{{ $order-&gt;reference }}&lt;/text&gt;
+        &lt;/pressable&gt;
+    @endforeach
+&lt;/column&gt;</code></pre>
+
+<p>That's still Blade. You keep <code>@foreach</code>, components and attributes like <code>#[Computed]</code> and <code>#[Lazy]</code>. Web views haven't gone away, either: there's a <code>&lt;webview&gt;</code> element, so you can keep an existing Livewire screen and rebuild the important ones natively over time. I like that a lot. It means migration can be gradual instead of a rewrite.</p>
+
+<p>Upgrading from v3 is mostly additive. The one breaking change Laravel News reported: the Device, Dialog, File and System plugins moved into core, so you uninstall the standalone packages before bumping to <code>~4.0.0</code>.</p>
+
+<h2 id="vs-flutter-react-native">NativePHP vs Flutter vs React Native</h2>
+
+<p>The honest answer is that NativePHP wins on team fit, not on raw capability. Flutter and React Native have a decade of production apps, huge component ecosystems and big-company backing. NativePHP has Laravel developers.</p>
+
+<table>
+  <thead><tr><th></th><th>NativePHP Mobile v4</th><th>Flutter</th><th>React Native</th></tr></thead>
+  <tbody>
+    <tr><td>Language</td><td>PHP (Laravel, Blade)</td><td>Dart</td><td>JavaScript / TypeScript</td></tr>
+    <tr><td>UI</td><td>SwiftUI + Compose via SuperNative, or web view</td><td>Own renderer, draws every pixel</td><td>Native platform views</td></tr>
+    <tr><td>Business logic</td><td>Runs on device in embedded PHP</td><td>Dart on device</td><td>JS on device</td></tr>
+    <tr><td>Reuse from a Laravel web app</td><td>Models, validation, services, Blade skills</td><td>API only</td><td>API only</td></tr>
+    <tr><td>Ecosystem size</td><td>Small, growing</td><td>Very large</td><td>Very large</td></tr>
+    <tr><td>Licence</td><td>MIT (v3+), paid premium plugins</td><td>BSD</td><td>MIT</td></tr>
+  </tbody>
+</table>
+
+<p>Where I'd pick NativePHP:</p>
+
+<ul>
+  <li>A Laravel agency whose clients want "an app too", and the team has no mobile developer.</li>
+  <li>A solo SaaS founder who wants a companion app (dashboards, approvals, field forms) without learning Dart.</li>
+  <li>Internal and B2B tools where offline-first SQLite and fast iteration matter more than pixel-perfect animation.</li>
+</ul>
+
+<p>Where I wouldn't, yet:</p>
+
+<ul>
+  <li>Consumer apps where UI polish and motion are the product.</li>
+  <li>Apps that need a rare native SDK nobody has wrapped in a NativePHP plugin. You'll be writing Swift and Kotlin anyway.</li>
+  <li>Teams that already have strong Flutter or React Native engineers. Don't switch for the sake of PHP.</li>
+</ul>
+
+<h2 id="gotchas">Things to think about before you start</h2>
+
+<p><strong>Your app code ships to the device.</strong> On a server, PHP source stays private. In a NativePHP app the Laravel code is bundled into the app package. Don't put secrets in it, and treat any API key in the bundle as public. That's true of every mobile framework, but PHP developers aren't used to thinking about it.</p>
+
+<p><strong>The phone is not your server.</strong> Queues, scheduled jobs and heavy work behave differently when the OS can suspend your app at any moment. Keep the heavy lifting on your real backend and sync.</p>
+
+<p><strong>SuperNative is new.</strong> It launched in July 2026. The architecture is sound, but expect rough edges in less common components. Keep a web view escape hatch for complex screens.</p>
+
+<p><strong>Desktop is a different stack.</strong> NativePHP Desktop is Electron with PHP inside, not SuperNative. Fine for internal tools, but it carries Electron's memory footprint.</p>
+
+<h2 id="is-it-production-ready">Is NativePHP production ready?</h2>
+
+<p>For the use cases above, yes. Mobile v3 and v4 and Desktop v2 are stable releases with regular point updates, an MIT core and a paying customer base funding development. For a consumer app competing on feel, I'd prototype the two or three hardest screens in SuperNative before committing.</p>
+
+<p>NativePHP also isn't a performance tool. If your problem is slow PHP, look at <a href="/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/">runtimes like Octane and FrankenPHP</a> or the AOT compilers covered in <a href="/blog/elephc-vs-typephp-php-aot-compiler/">elephc vs TypePHP</a>.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>NativePHP embeds a real PHP 8.4 runtime in iOS and Android apps (and Electron on desktop). Your Laravel code runs on the device with SQLite and no server.</li>
+  <li>Mobile v3 went MIT on February 1, 2026. The core and nine plugins are free; premium plugins and the Bifrost build service are paid.</li>
+  <li>v4 (July 30, 2026) made SuperNative the default: Blade becomes SwiftUI and Jetpack Compose through binary frames in shared memory, with web views still available.</li>
+  <li>Choose it for team fit: Laravel shops and solo founders shipping companion, B2B or internal apps. Flutter and React Native still win on ecosystem depth.</li>
+  <li>Your app code ships to users' phones, so keep secrets and heavy jobs on your backend.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://nativephp.com/blog/nativephp-for-mobile-is-now-free" target="_blank" rel="noopener noreferrer">NativePHP: NativePHP for Mobile is now free</a> (Feb 1, 2026)</li>
+  <li><a href="https://nativephp.com/docs/mobile/4/architecture/renderer" target="_blank" rel="noopener noreferrer">NativePHP Mobile v4 docs: The Renderer</a></li>
+  <li><a href="https://nativephp.com/docs/mobile/4/architecture/embedded-php" target="_blank" rel="noopener noreferrer">NativePHP Mobile v4 docs: Embedded PHP</a></li>
+  <li><a href="https://laravel-news.com/nativephp-v4-supernative" target="_blank" rel="noopener noreferrer">Laravel News: NativePHP v4, build native iOS and Android UI in Blade</a> (Yannick Lyn Fatt)</li>
+  <li><a href="https://nativephp.com/docs/desktop/2/getting-started/releasenotes" target="_blank" rel="noopener noreferrer">NativePHP Desktop v2 release notes</a></li>
+  <li><a href="https://packagist.org/packages/nativephp/mobile" target="_blank" rel="noopener noreferrer">Packagist: nativephp/mobile</a></li>
+</ul>
+
+<p>Thinking about a mobile app on top of your Laravel product? <a href="/#contact">Get in touch</a>.</p>

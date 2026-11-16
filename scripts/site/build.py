@@ -19,7 +19,8 @@ post.json keys
   slug, date (YYYY-MM-DD), read (minutes), tag ("PHP · Security"),
   title (<title>, <= 60 chars incl. " | Roshan Kc"), h1, social (og/twitter title),
   short (sitemap/llms name), desc (140-160 chars), keywords
-  optional: modified (YYYY-MM-DD), citations [[name, url]], about [schema objects]
+  optional: modified (YYYY-MM-DD), citations [[name, url]], about [schema objects],
+  faq [[question, plain-text answer]] (rendered before Key takeaways + FAQPage schema)
 
 Previous/next links follow the date order (newest first); the ends point at /blog/.
 """
@@ -103,8 +104,26 @@ def jsonld(m):
         {"@type": "ListItem", "position": 2, "name": "Blog", "item": f"{SITE}/blog/"},
         {"@type": "ListItem", "position": 3, "name": m["h1"], "item": m["url"]}]}
     dump = lambda o: json.dumps(o, indent=2, ensure_ascii=False).replace("</", "<\\/")
-    return (f'<script type="application/ld+json">\n{dump(post)}\n  </script>\n'
-            f'  <script type="application/ld+json">\n{dump(crumbs)}\n  </script>')
+    out = (f'<script type="application/ld+json">\n{dump(post)}\n  </script>\n'
+           f'  <script type="application/ld+json">\n{dump(crumbs)}\n  </script>')
+    if m.get("faq"):
+        faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in m["faq"]]}
+        out += f'\n  <script type="application/ld+json">\n{dump(faq)}\n  </script>'
+    return out
+
+
+def with_faq(m):
+    """Insert the FAQ section from post.json before Key takeaways (or Sources, or the end)."""
+    b = m["body"]
+    if not m.get("faq"):
+        return b
+    items = "".join(f"<h3>{E(q)}</h3>\n<p>{E(a)}</p>\n\n" for q, a in m["faq"])
+    sec = f'<h2 id="faq">Frequently asked questions</h2>\n\n{items}'
+    for anchor in ('<h2 id="takeaways"', '<h2 id="sources"'):
+        if anchor in b:
+            return b.replace(anchor, sec + anchor, 1)
+    return b.rstrip() + "\n\n" + sec
 
 
 def post_nav(prev, nxt):
@@ -124,7 +143,7 @@ def build_posts(posts):
         page = render(tpl, {
             "title": E(m["title"]), "desc": E(m["desc"]), "social": E(m.get("social", m["h1"])),
             "url": m["url"], "date": m["date"], "modified": m["modified"], "date_human": human(m["date"]),
-            "tag": E(m["tag"]), "read": m["read"], "h1": E(m["h1"]), "body": style_tables(m["body"]).rstrip() + "\n",
+            "tag": E(m["tag"]), "read": m["read"], "h1": E(m["h1"]), "body": style_tables(with_faq(m)).rstrip() + "\n",
             "jsonld": jsonld(m), "total": len(posts),
             "post_nav": post_nav(posts[i - 1] if i > 0 else None, posts[i + 1] if i + 1 < len(posts) else None),
         })

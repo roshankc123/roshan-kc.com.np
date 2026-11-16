@@ -1,0 +1,66 @@
+{
+ "slug": "elephc-vs-typephp-php-aot-compiler",
+ "date": "2026-11-14",
+ "read": 6,
+ "tag": "PHP · Performance",
+ "title": "elephc vs TypePHP: Which PHP AOT Compiler? | Roshan Kc",
+ "h1": "elephc vs TypePHP: Which PHP AOT Compiler Should You Bet On?",
+ "social": "elephc vs TypePHP: Two Ways to Compile PHP to Native Code",
+ "short": "elephc vs TypePHP: PHP AOT Compilers Compared",
+ "desc": "elephc vs TypePHP compared: assembly vs C++, Zend runtime or none, typing rules, platforms, licences, vendor benchmarks, and which PHP AOT compiler fits your code.",
+ "keywords": "elephc vs typephp, php aot compiler, typephp, elephc, compile php to native, swoole aot, php to c++",
+ "citations": [
+  [
+   "illegalstudio/elephc on GitHub",
+   "https://github.com/illegalstudio/elephc"
+  ],
+  [
+   "elephc.dev",
+   "https://elephc.dev"
+  ],
+  [
+   "swoole/typephp on GitHub",
+   "https://github.com/swoole/typephp"
+  ],
+  [
+   "Laravel News: TypePHP",
+   "https://laravel-news.com/typephp-compile-php-native-binaries"
+  ],
+  [
+   "Albert Chen: Introduction to Swoole's AOT compiler",
+   "https://speakerdeck.com/albertcht/introduction-to-swooles-aot-compiler"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "elephc",
+   "url": "https://elephc.dev",
+   "applicationCategory": "DeveloperApplication"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "TypePHP",
+   "url": "https://github.com/swoole/typephp",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "Which is faster, elephc or TypePHP?",
+   "There is no independent like-for-like benchmark yet. TypePHP's README reports roughly 6.5x to 8x speedups on its own benchmark scripts, and elephc publishes no headline benchmark. Both target CPU-bound code, not database-bound web requests."
+  ],
+  [
+   "Does TypePHP need PHP installed?",
+   "To build, yes: it needs a PHP 8.4 or 8.5 CLI with development headers and a matching libphp embed library, because compiled code links against the Zend runtime through PHPX. elephc only needs a system assembler and linker."
+  ],
+  [
+   "Can either compile a Laravel app?",
+   "Not as of November 2026. Both compile a typed subset of PHP. The practical approach is to keep the framework on regular PHP and compile isolated hot paths as extensions or libraries."
+  ],
+  [
+   "What licences do elephc and TypePHP use?",
+   "elephc is MIT licensed. TypePHP is GPL-3.0. Check the obligations before distributing compiled closed-source software."
+  ]
+ ]
+}

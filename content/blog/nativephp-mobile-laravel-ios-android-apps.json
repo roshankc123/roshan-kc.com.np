@@ -1,0 +1,64 @@
+{
+ "slug": "nativephp-mobile-laravel-ios-android-apps",
+ "date": "2026-11-11",
+ "read": 7,
+ "tag": "PHP · Laravel · Mobile",
+ "title": "NativePHP in 2026: Laravel iOS & Android Apps | Roshan Kc",
+ "h1": "NativePHP in 2026: Building iOS, Android and Desktop Apps with Laravel",
+ "social": "NativePHP v4 and SuperNative: Real SwiftUI and Compose Apps from Laravel",
+ "short": "NativePHP in 2026: Laravel Mobile and Desktop Apps",
+ "desc": "What NativePHP is in 2026: Mobile v3 going MIT, v4 SuperNative rendering Blade as SwiftUI and Compose, Desktop v2, and when to pick it over Flutter.",
+ "keywords": "nativephp, nativephp mobile, nativephp v4, supernative, laravel mobile app, nativephp vs flutter, php ios android app",
+ "citations": [
+  [
+   "NativePHP for Mobile is now free",
+   "https://nativephp.com/blog/nativephp-for-mobile-is-now-free"
+  ],
+  [
+   "NativePHP Mobile v4: The Renderer",
+   "https://nativephp.com/docs/mobile/4/architecture/renderer"
+  ],
+  [
+   "NativePHP Mobile v4: Embedded PHP",
+   "https://nativephp.com/docs/mobile/4/architecture/embedded-php"
+  ],
+  [
+   "Laravel News: NativePHP v4 SuperNative",
+   "https://laravel-news.com/nativephp-v4-supernative"
+  ],
+  [
+   "NativePHP Desktop v2 release notes",
+   "https://nativephp.com/docs/desktop/2/getting-started/releasenotes"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "NativePHP",
+   "url": "https://nativephp.com/",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "Does NativePHP compile PHP to native code?",
+   "No. NativePHP bundles a real PHP runtime (PHP 8.4 on mobile) inside a Swift, Kotlin or Electron shell. Your PHP is interpreted on the device; only the UI is native when you use SuperNative."
+  ],
+  [
+   "Is NativePHP free?",
+   "Yes for the core. NativePHP for Mobile v3 and later is MIT licensed, and nine plugins are free. Premium plugins such as Biometrics and Push Notifications are one-time purchases, and the Bifrost cloud build service is a subscription."
+  ],
+  [
+   "What is NativePHP SuperNative?",
+   "SuperNative is the v4 renderer that turns Blade components into real SwiftUI views on iOS and Jetpack Compose views on Android. PHP writes a binary frame into shared memory and native readers diff it into the UI, with no web view."
+  ],
+  [
+   "Does NativePHP need a server?",
+   "No. The Laravel app runs inside the app process with SQLite as the bundled database. Most real apps still talk to a backend API for shared data."
+  ],
+  [
+   "Should I use NativePHP or Flutter?",
+   "Use NativePHP if your team is strong in Laravel and you're building companion, B2B or internal apps. Use Flutter or React Native if UI polish is the product or you already have mobile engineers."
+  ]
+ ]
+}

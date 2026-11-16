@@ -9,7 +9,7 @@
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/blog/</loc>
-        <lastmod>2026-11-09</lastmod>
+        <lastmod>2026-11-16</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -30,6 +30,72 @@
         <lastmod>2026-09-05</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.4</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/phpstan-turbo-native-extension/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/php-vs-nodejs-language-doesnt-matter-ai-era/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/keep-code-quality-during-major-rewrite/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/future-of-native-php-aot-compilers-nativephp/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/frankenphp-vs-swoole-laravel-octane/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/frankenphp-vs-php-fpm-should-you-switch/</loc>
+        <lastmod>2026-11-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/elephc-vs-typephp-vs-nativephp-native-php/</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/elephc-vs-typephp-php-aot-compiler/</loc>
+        <lastmod>2026-11-14</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/what-is-elephc-php-native-compiler/</loc>
+        <lastmod>2026-11-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.roshan-kc.com.np/blog/nativephp-mobile-laravel-ios-android-apps/</loc>
+        <lastmod>2026-11-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/blog/php-8-6-new-features/</loc>
@@ -63,7 +129,7 @@
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/blog/php-runtimes-fpm-octane-frankenphp-swoole-roadrunner/</loc>
-        <lastmod>2026-11-04</lastmod>
+        <lastmod>2026-11-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -147,7 +213,7 @@
     </url>
     <url>
         <loc>https://www.roshan-kc.com.np/blog/what-typephp-means-for-php-performance/</loc>
-        <lastmod>2026-08-29</lastmod>
+        <lastmod>2026-11-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>

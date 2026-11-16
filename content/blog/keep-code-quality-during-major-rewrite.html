@@ -1,0 +1,86 @@
+<p><strong>Direct answer:</strong> Teams keep code quality high during a major rewrite by not doing a "big bang" rewrite at all. They replace the old system piece by piece behind a stable interface (the strangler fig pattern), pin current behaviour with characterisation tests, run old and new code side by side and compare results, release behind feature flags, and freeze new features in the old system. Velocity comes from shipping small, verified slices, not from writing the new system faster.</p>
+
+<p>"How do big companies keep code quality high while increasing engineering velocity during a major re-write?" showed up in my site's search data this month, and it's a better question than most. Rewrites are where good teams lose years. The techniques below are well documented and used at large companies; none of them are secret, but they're routinely skipped under deadline pressure. For how to measure whether it's working, see <a href="/blog/what-is-coding-velocity-how-to-measure/">what coding velocity is and how to measure it</a>.</p>
+
+<h2 id="why-rewrites-fail">Why rewrites go wrong</h2>
+
+<p>In 2000, Joel Spolsky called rewriting code from scratch "the single worst strategic mistake that any software company can make," using Netscape as the example: years spent rebuilding while competitors kept shipping. A quarter of a century later, the failure pattern hasn't changed:</p>
+
+<ul>
+  <li><strong>Hidden behaviour.</strong> The old code is ugly partly because it handles a hundred edge cases nobody wrote down. The rewrite drops them and customers find out first.</li>
+  <li><strong>Two systems, one team.</strong> The old one still needs fixes, so the new one falls further behind.</li>
+  <li><strong>No feedback until the end.</strong> A big-bang cutover means the riskiest moment of the project is also the first time real users touch it.</li>
+  <li><strong>Scope creep.</strong> "While we're rewriting it, let's also…"</li>
+</ul>
+
+<h2 id="techniques">Seven techniques that keep quality high</h2>
+
+<h3>1. Strangle it, don't replace it</h3>
+<p>Martin Fowler's <a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">strangler fig application</a> pattern puts a routing layer in front of the old system and moves one route, module or workflow at a time to the new one. The old system shrinks until it can be switched off. Every step is small enough to review, test and roll back.</p>
+
+<h3>2. Pin behaviour with characterisation tests</h3>
+<p>Before changing anything, write tests that record what the old system <em>actually does</em>, not what the spec says. Michael Feathers called these characterisation tests in <em>Working Effectively with Legacy Code</em>. For an API, that can be as simple as recording real requests and responses and asserting the new code returns the same. These tests are your definition of "done".</p>
+
+<h3>3. Branch by abstraction</h3>
+<p>Inside one codebase, <a href="https://martinfowler.com/bliki/BranchByAbstraction.html" target="_blank" rel="noopener noreferrer">branch by abstraction</a> introduces an interface in front of the thing you're replacing, makes the old code one implementation, builds the new implementation behind it, and switches over. Everything stays on the main branch and deployable. No six-month rewrite branch that nobody can merge.</p>
+
+<h3>4. Run old and new side by side</h3>
+<p>For critical logic, run both implementations on real traffic, serve the old result, and log any difference. GitHub open-sourced <a href="https://github.com/github/scientist" target="_blank" rel="noopener noreferrer">Scientist</a> for exactly this: run an "experiment" with a control and a candidate, compare, and publish mismatches. When mismatches drop to zero for long enough, switch. It's the most convincing quality evidence you can get, because it uses production data, not test fixtures.</p>
+
+<h3>5. Release behind feature flags</h3>
+<p>Ship the new path to internal users, then 1% of traffic, then 10%. Flags decouple <em>deploying</em> code from <em>releasing</em> it, which lets you keep deploying daily during a rewrite without exposing unfinished work.</p>
+
+<h3>6. Freeze features in the old system</h3>
+<p>Agree up front: no new features in the old system, bug and security fixes only. And no new features in the new system until it matches the old one. Parity first, improvements second. This is the hardest rule to hold and the one that matters most.</p>
+
+<h3>7. Plan the data migration as its own project</h3>
+<p>Code is usually the easy part. Schemas, historical records and invariants are where rewrites quietly break. Use dual writes or change-data-capture, run reconciliation jobs that compare old and new data, and rehearse the cutover. I've written about why <a href="/blog/business-logic-first-not-perfect-tech-stack/">business rules and data are the real risk</a> in any system.</p>
+
+<h2 id="velocity">How this increases velocity, not just safety</h2>
+
+<p>These techniques look slower on paper. In practice they're faster, because they remove the most expensive event in a rewrite: the late surprise. Small slices mean:</p>
+
+<ul>
+  <li><strong>Short lead time.</strong> Each slice reaches production in days, so you learn from real usage early.</li>
+  <li><strong>Low change fail rate.</strong> Characterisation tests and side-by-side runs catch regressions before users do.</li>
+  <li><strong>Cheap rollback.</strong> A flag flip instead of an incident.</li>
+  <li><strong>Visible progress.</strong> Stakeholders see routes move over, which buys the patience a rewrite needs.</li>
+</ul>
+
+<p>Track the DORA metrics (lead time, deployment frequency, change fail rate, rework rate) for the new system from the first slice. If the change fail rate climbs, slow down before it costs you a quarter.</p>
+
+<h2 id="quality-gates">Quality gates worth enforcing</h2>
+
+<ul>
+  <li><strong>Static analysis at a strict level from day one</strong> in the new code. In PHP that means PHPStan at a high level, which is cheap to run now that <a href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo</a> cut cold runs by more than half.</li>
+  <li><strong>Small pull requests</strong> with a clear owner for every review.</li>
+  <li><strong>Characterisation tests can't be deleted</strong> without a written reason.</li>
+  <li><strong>AI-generated code gets the same review as human code.</strong> AI is useful for writing characterisation tests and boilerplate. It's also very good at confidently dropping the edge case the old code handled. I covered our guardrails in <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI changed our engineering velocity</a>.</li>
+</ul>
+
+<h2 id="should-you-rewrite">Should you rewrite at all?</h2>
+
+<p>Often the honest answer is no. Refactor in place if the architecture is sound and the code is just messy. Rewrite (incrementally) when the platform itself is the problem: an unsupported runtime, a framework with no upgrade path, or a data model that can't represent the business any more. If you're on an old PHP version, an <a href="/blog/upgrade-php-7-to-php-8-5-playbook/">upgrade playbook</a> usually beats a rewrite.</p>
+
+<h2 id="takeaways">Key takeaways</h2>
+
+<ul>
+  <li>Avoid big-bang rewrites. Replace systems slice by slice with the strangler fig pattern or branch by abstraction.</li>
+  <li>Pin current behaviour with characterisation tests before you change anything.</li>
+  <li>Run old and new code side by side on real traffic and switch only when results match.</li>
+  <li>Use feature flags, freeze features in the old system, and treat data migration as its own project.</li>
+  <li>Measure the rewrite with lead time and change fail rate from the first slice.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/" target="_blank" rel="noopener noreferrer">Joel Spolsky: Things You Should Never Do, Part I</a> (2000)</li>
+  <li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">Martin Fowler: Strangler Fig Application</a></li>
+  <li><a href="https://martinfowler.com/bliki/BranchByAbstraction.html" target="_blank" rel="noopener noreferrer">Martin Fowler: Branch By Abstraction</a></li>
+  <li><a href="https://github.com/github/scientist" target="_blank" rel="noopener noreferrer">GitHub Scientist</a></li>
+  <li>Michael Feathers, <em>Working Effectively with Legacy Code</em> (Prentice Hall, 2004)</li>
+  <li><a href="https://dora.dev/guides/dora-metrics-four-keys/" target="_blank" rel="noopener noreferrer">DORA: software delivery performance metrics</a></li>
+</ul>
+
+<p>Facing a rewrite and not sure how to slice it? <a href="/#contact">Let's talk</a>.</p>

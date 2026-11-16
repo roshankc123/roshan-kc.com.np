@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" data-sidebar="collapsed">
+<head>
+  <!-- Google Analytics: deferred until after load to avoid mobile forced reflows -->
+  <script src="/js/analytics.js" defer></script>
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>What Is Coding Velocity? How to Measure It | Roshan Kc</title>
+  <meta name="description" content="What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.">
+  <meta name="author" content="Roshan Kc">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="alternate" type="text/plain" href="https://www.roshan-kc.com.np/llms.txt" title="LLM information">
+  <link rel="alternate" type="application/rss+xml" title="Roshan Kc Blog" href="https://www.roshan-kc.com.np/feed.xml">
+  <link rel="canonical" href="https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Roshan Kc">
+  <meta property="og:url" content="https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/">
+  <meta property="og:title" content="Coding Velocity: What It Really Means and How to Measure It Honestly">
+  <meta property="og:description" content="What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.">
+  <meta property="og:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <meta property="article:published_time" content="2026-11-16">
+  <meta property="article:modified_time" content="2026-11-16">
+  <meta property="article:author" content="Roshan Kc">
+  <meta property="og:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:image:alt" content="Portrait of Roshan Kc">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Coding Velocity: What It Really Means and How to Measure It Honestly">
+  <meta name="twitter:description" content="What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.">
+  <meta name="twitter:image" content="https://www.roshan-kc.com.np/images/profile.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta name="theme-color" content="#FAFBFC">
+  <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What Is Coding Velocity, and How Do You Measure It Without Gaming It?",
+  "description": "What coding velocity really means, how to measure it with DORA metrics, why single-number targets backfire, and what AI tools changed about engineering speed.",
+  "image": "https://www.roshan-kc.com.np/images/profile.webp",
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "author": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person",
+    "jobTitle": "Cofounder & CTO"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/",
+    "@id": "https://www.roshan-kc.com.np/#person"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/"
+  },
+  "keywords": "coding velocity, engineering velocity, developer velocity, dora metrics, measure developer productivity, ai code velocity, test coverage",
+  "inLanguage": "en",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+      ".prose p:first-of-type"
+    ]
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Notes by Roshan Kc",
+    "url": "https://www.roshan-kc.com.np/blog/"
+  },
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "name": "DORA: software delivery performance metrics",
+      "url": "https://dora.dev/guides/dora-metrics-four-keys/"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Forsgren et al.: The SPACE of Developer Productivity",
+      "url": "https://queue.acm.org/detail.cfm?id=3454124"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "METR: Early-2025 AI and experienced open-source developer productivity",
+      "url": "https://arxiv.org/abs/2507.09089"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Stack Overflow 2025 Developer Survey results",
+      "url": "https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.roshan-kc.com.np/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.roshan-kc.com.np/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What Is Coding Velocity, and How Do You Measure It Without Gaming It?",
+      "item": "https://www.roshan-kc.com.np/blog/what-is-coding-velocity-how-to-measure/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between coding velocity and sprint velocity?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sprint velocity counts story points a Scrum team completes per sprint and is only useful for that team's own planning. Coding or delivery velocity is how fast working changes reach production, measured with metrics like lead time and deployment frequency."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the DORA metrics?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DORA's current guide lists five: change lead time, deployment frequency and failed deployment recovery time (throughput), and change fail rate and deployment rework rate (instability)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does AI increase coding velocity?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It speeds up writing code, but the evidence on delivery is mixed. METR found experienced developers 19% slower with early-2025 AI tools on mature codebases. Measure lead time and rework to see the real effect on your team."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should test coverage be a velocity target?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Use coverage as a guardrail to find untested code. A coverage target encourages tests that execute code without checking behaviour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I measure individual developer velocity?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Delivery speed is mostly a property of the system: pipeline, review habits and architecture. Ranking individuals encourages gaming and hides the real bottlenecks."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <button type="button" class="icon-btn sidebar-toggle" data-sidebar-toggle aria-pressed="true" aria-label="Show sidebar">
+    <svg class="icon-expand" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2z"/></svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+  </button>
+  <div class="shell">
+    <nav id="left-nav" class="left-nav" aria-label="Primary">
+      <div>
+        <div class="left-nav-brand">
+          <a href="/" class="font-display name">Roshan Kc</a>
+          <a class="role" href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">
+            Co-Founder and CTO, MarginTop Solutions
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+        <ul class="nav-list" id="desktop-nav-links">
+                    <li><a href="/#home"><span class="nav-rule" aria-hidden="true"></span>Home</a></li>
+                    <li><a href="/#about"><span class="nav-rule" aria-hidden="true"></span>About</a></li>
+                    <li><a href="/#focus"><span class="nav-rule" aria-hidden="true"></span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="nav-rule" aria-hidden="true"></span>Experience</a></li>
+                    <li><a href="/#work"><span class="nav-rule" aria-hidden="true"></span>Work</a></li>
+                    <li><a href="/#stack"><span class="nav-rule" aria-hidden="true"></span>Tech stack</a></li>
+                    <li><a href="/blog/" aria-current="page"><span class="nav-rule" aria-hidden="true"></span>Blog</a></li>
+                    <li><a href="/#contact"><span class="nav-rule" aria-hidden="true"></span>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </nav>
+
+    <header class="mobile-bar">
+      <a href="/" class="font-display" style="font-size:1.35rem;color:var(--ink)" aria-label="Roshan Kc home"><span class="visually-hidden">Home: </span>Roshan Kc</a>
+      <button type="button" id="mobile-menu-button" class="icon-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
+      </button>
+    </header>
+    <div id="mobile-menu-overlay" class="mobile-overlay" aria-hidden="true"></div>
+    <div id="mobile-menu" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+      <div class="mobile-drawer-inner">
+        <button type="button" id="mobile-menu-close-button" class="icon-btn close-btn" aria-label="Close navigation menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>
+        </button>
+        <p class="font-display" style="font-size:1.75rem;color:var(--ink);margin:0 0 1.5rem">Menu</p>
+        <ul id="mobile-nav-links" class="mobile-nav-list">
+                    <li><a href="/#home"><span class="visually-hidden">Mobile nav: </span>Home</a></li>
+                    <li><a href="/#about"><span class="visually-hidden">Mobile nav: </span>About</a></li>
+                    <li><a href="/#focus"><span class="visually-hidden">Mobile nav: </span>Values I hold</a></li>
+                    <li><a href="/#experience"><span class="visually-hidden">Mobile nav: </span>Experience</a></li>
+                    <li><a href="/#work"><span class="visually-hidden">Mobile nav: </span>Work</a></li>
+                    <li><a href="/#stack"><span class="visually-hidden">Mobile nav: </span>Tech stack</a></li>
+                    <li><a href="/blog/"><span class="visually-hidden">Mobile nav: </span>Blog</a></li>
+                    <li><a href="/#contact"><span class="visually-hidden">Mobile nav: </span>Contact</a></li>
+        </ul>
+
+                <ul class="social-row" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+
+        <p style="font-size:0.75rem;color:var(--mist)">&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+      </div>
+    </div>
+
+    <main id="main-content" class="main-pane">
+      <div class="main-inner">
+        <p style="margin:0 0 1.25rem"><a href="/blog/" style="color:var(--sapphire);font-weight:700">← All posts</a></p>
+        <!--enh:shell-open--><div class="post-shell"><article class="prose">
+          <header style="margin-bottom:2rem">
+            <div class="blog-meta">
+              <span class="tag">Engineering · Leadership</span>
+              <time datetime="2026-11-16">November 16, 2026</time>
+              <span>6 min read</span>
+            </div>
+            <h1 class="font-display" style="font-size:clamp(1.9rem,4.5vw,2.85rem);color:var(--ink);margin:0 0 1rem;line-height:1.15">What Is Coding Velocity, and How Do You Measure It Without Gaming It?</h1>
+          </header>
+
+<p><strong>Direct answer:</strong> Coding velocity is how quickly a team turns an idea into working software that users actually have, not how fast people type or how many lines they write. Measure it at the team level with delivery metrics like DORA's change lead time and deployment frequency, always paired with stability metrics like change fail rate. Never turn a single velocity number into a target, because people will hit the number and miss the point.</p>
+
+<p>"Velocity" gets thrown around in every engineering planning meeting, and it means something different to each person in the room. To a Scrum team it's story points per sprint. To a founder it's "why isn't this shipped yet". To an engineer with an AI assistant it's how fast code appears on the screen. This post separates those ideas, shows what's actually worth measuring, and covers what AI tools did to the picture. My earlier post on <a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">how AI coding tools changed our engineering velocity</a> covers our own experience; this one is the measurement side.</p>
+
+<h2 id="definition">What is coding velocity?<a class="h-anchor" href="#definition" aria-label="Link to this section">#</a></h2>
+
+<p>Coding velocity is the rate at which a team delivers working, valuable changes to production. Three words in that definition do the heavy lifting:</p>
+
+<ul>
+  <li><strong>Team</strong>, not individual. Software is a group activity; measuring individuals mostly measures who picked the easy tickets.</li>
+  <li><strong>Working</strong>. A change that ships and gets rolled back added zero velocity and some negative morale.</li>
+  <li><strong>Production</strong>. Code on a branch or waiting in review isn't delivered.</li>
+</ul>
+
+<h2 id="three-velocities">Three things people mean by velocity<a class="h-anchor" href="#three-velocities" aria-label="Link to this section">#</a></h2>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Term</th><th style="padding:0.6rem 0.9rem;text-align:left">What it counts</th><th style="padding:0.6rem 0.9rem;text-align:left">Good for</th><th style="padding:0.6rem 0.9rem;text-align:left">Bad for</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Sprint velocity</td><td style="padding:0.6rem 0.9rem">Story points completed per sprint</td><td style="padding:0.6rem 0.9rem">A team forecasting its own next sprint</td><td style="padding:0.6rem 0.9rem">Comparing teams, or judging performance; points inflate the moment they're watched</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Coding speed</td><td style="padding:0.6rem 0.9rem">Lines, commits, PRs, AI suggestions accepted</td><td style="padding:0.6rem 0.9rem">Almost nothing on its own</td><td style="padding:0.6rem 0.9rem">Rewards volume, which is the opposite of good engineering</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Delivery velocity</td><td style="padding:0.6rem 0.9rem">Lead time, deployment frequency, with failure and rework rates</td><td style="padding:0.6rem 0.9rem">Seeing whether the system that ships software is getting better</td><td style="padding:0.6rem 0.9rem">Single-number targets, cross-team league tables</td></tr>
+  </tbody>
+</table></div>
+
+<p>When someone searches "coding velocity", they usually want the third one, and they usually get sold the second.</p>
+
+<h2 id="how-to-measure">How to measure it: DORA metrics<a class="h-anchor" href="#how-to-measure" aria-label="Link to this section">#</a></h2>
+
+<p>The most widely used framework comes from DORA (DevOps Research and Assessment), now part of Google Cloud. DORA's current guide lists five software delivery metrics in two groups:</p>
+
+<div class="table-scroll"><table style="width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.92rem">
+  <thead>
+    <tr style="background:var(--ink);color:var(--paper)"><th style="padding:0.6rem 0.9rem;text-align:left">Group</th><th style="padding:0.6rem 0.9rem;text-align:left">Metric</th><th style="padding:0.6rem 0.9rem;text-align:left">Question it answers</th></tr></thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Throughput</td><td style="padding:0.6rem 0.9rem">Change lead time</td><td style="padding:0.6rem 0.9rem">How long from commit to running in production?</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Throughput</td><td style="padding:0.6rem 0.9rem">Deployment frequency</td><td style="padding:0.6rem 0.9rem">How often do we ship?</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Throughput</td><td style="padding:0.6rem 0.9rem">Failed deployment recovery time</td><td style="padding:0.6rem 0.9rem">When a deploy breaks something, how fast do we recover?</td></tr>
+    <tr style="border-bottom:1px solid var(--rule);background:var(--wash)"><td style="padding:0.6rem 0.9rem">Instability</td><td style="padding:0.6rem 0.9rem">Change fail rate</td><td style="padding:0.6rem 0.9rem">What share of deploys cause a failure?</td></tr>
+    <tr style="border-bottom:1px solid var(--rule)"><td style="padding:0.6rem 0.9rem">Instability</td><td style="padding:0.6rem 0.9rem">Deployment rework rate</td><td style="padding:0.6rem 0.9rem">How many deploys are unplanned fixes for earlier ones?</td></tr>
+  </tbody>
+</table></div>
+
+<p>The pairing is the point. Speed metrics without instability metrics reward shipping broken code quickly. DORA's own guidance warns against "having one metric to rule them all" and recommends several metrics "with some healthy tension between them."</p>
+
+<p>For the human side, the SPACE framework (Forsgren, Storey and colleagues, 2021) adds satisfaction, collaboration and flow. A team that ships fast while burning out is borrowing velocity from next quarter.</p>
+
+<h2 id="dont-game-it">How to measure velocity without gaming it<a class="h-anchor" href="#dont-game-it" aria-label="Link to this section">#</a></h2>
+
+<p>Goodhart's law applies to engineering more brutally than anywhere: once a measure becomes a target, it stops being a good measure. DORA's guide lists "setting metrics as a goal" as a pitfall in its own right. Practical rules:</p>
+
+<ol>
+  <li><strong>Measure the system, not people.</strong> Lead time is a property of your pipeline, review habits and architecture. Use it to find bottlenecks, never to rank engineers.</li>
+  <li><strong>Watch trends, not thresholds.</strong> "Lead time went from 4 days to 9 days this quarter" starts a useful conversation. "Lead time must be under 2 days" starts a gaming exercise.</li>
+  <li><strong>Don't compare teams.</strong> DORA warns that comparing "vastly different applications" misleads. A payments service and a marketing site shouldn't deploy at the same rate.</li>
+  <li><strong>Treat test coverage as a guardrail, not a score.</strong> Coverage tells you what's definitely untested. A coverage target produces tests that execute code without checking anything.</li>
+  <li><strong>Ignore activity metrics.</strong> Commits, lines changed and PR counts measure motion.</li>
+</ol>
+
+<h2 id="ai">What AI changed about coding velocity<a class="h-anchor" href="#ai" aria-label="Link to this section">#</a></h2>
+
+<p>AI tools made <em>code production</em> much faster and left the rest of delivery about where it was. That's the short version, and the research is more mixed than the marketing.</p>
+
+<ul>
+  <li>In the 2025 Stack Overflow Developer Survey, 84% of respondents said they use or plan to use AI tools, but more developers distrusted the accuracy of AI output (46%) than trusted it (33%).</li>
+  <li>METR's randomised study of 16 experienced open-source developers in early 2025 found they took <strong>19% longer</strong> with AI tools on their own mature codebases, while estimating afterwards that AI had made them 20% faster. METR is careful to say the result is specific to that setting.</li>
+</ul>
+
+<p>The lesson for measurement: if you only measure how fast code gets written, AI will look like a miracle. If you measure lead time and change fail rate, you'll see whether review, testing and deployment kept up. In most teams the bottleneck simply moves to review. That's why "AI suggestions accepted" is a vanity metric and lead time paired with rework rate is not.</p>
+
+<h2 id="improve">What actually improves velocity<a class="h-anchor" href="#improve" aria-label="Link to this section">#</a></h2>
+
+<p>The gains usually come from boring places:</p>
+
+<ul>
+  <li><strong>Smaller changes.</strong> Small PRs get reviewed faster, fail less and roll back easily.</li>
+  <li><strong>Fast, trusted CI.</strong> If the pipeline takes 40 minutes or flakes, every other improvement is capped.</li>
+  <li><strong>Review as a priority.</strong> A PR waiting a day for review is a day of lead time, every time.</li>
+  <li><strong>Clear business rules.</strong> Most rework comes from misunderstood requirements, not bad code. I've argued that in <a href="/blog/business-logic-first-not-perfect-tech-stack/">business logic first</a>.</li>
+  <li><strong>Deciding what not to build.</strong> The fastest feature is the one you didn't need (<a href="/blog/engineering-principles-what-not-to-build/">more on that</a>).</li>
+</ul>
+
+<p>If you're in the middle of a large rewrite, velocity and quality pull hardest against each other. I wrote a separate guide on <a href="/blog/keep-code-quality-during-major-rewrite/">keeping code quality high during a major rewrite</a>.</p>
+
+<h2 id="faq">Frequently asked questions<a class="h-anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+
+<h3 id="what-is-the-difference-between-coding-velocity-and-sprint-ve">What is the difference between coding velocity and sprint velocity?<a class="h-anchor" href="#what-is-the-difference-between-coding-velocity-and-sprint-ve" aria-label="Link to this section">#</a></h3>
+<p>Sprint velocity counts story points a Scrum team completes per sprint and is only useful for that team&#x27;s own planning. Coding or delivery velocity is how fast working changes reach production, measured with metrics like lead time and deployment frequency.</p>
+
+<h3 id="what-are-the-dora-metrics">What are the DORA metrics?<a class="h-anchor" href="#what-are-the-dora-metrics" aria-label="Link to this section">#</a></h3>
+<p>DORA&#x27;s current guide lists five: change lead time, deployment frequency and failed deployment recovery time (throughput), and change fail rate and deployment rework rate (instability).</p>
+
+<h3 id="does-ai-increase-coding-velocity">Does AI increase coding velocity?<a class="h-anchor" href="#does-ai-increase-coding-velocity" aria-label="Link to this section">#</a></h3>
+<p>It speeds up writing code, but the evidence on delivery is mixed. METR found experienced developers 19% slower with early-2025 AI tools on mature codebases. Measure lead time and rework to see the real effect on your team.</p>
+
+<h3 id="should-test-coverage-be-a-velocity-target">Should test coverage be a velocity target?<a class="h-anchor" href="#should-test-coverage-be-a-velocity-target" aria-label="Link to this section">#</a></h3>
+<p>No. Use coverage as a guardrail to find untested code. A coverage target encourages tests that execute code without checking behaviour.</p>
+
+<h3 id="should-i-measure-individual-developer-velocity">Should I measure individual developer velocity?<a class="h-anchor" href="#should-i-measure-individual-developer-velocity" aria-label="Link to this section">#</a></h3>
+<p>No. Delivery speed is mostly a property of the system: pipeline, review habits and architecture. Ranking individuals encourages gaming and hides the real bottlenecks.</p>
+
+<h2 id="takeaways">Key takeaways<a class="h-anchor" href="#takeaways" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li>Coding velocity is how fast a team delivers working changes to production, not how fast code gets written.</li>
+  <li>Measure it with DORA's five metrics: change lead time, deployment frequency and failed deployment recovery time, balanced by change fail rate and deployment rework rate.</li>
+  <li>Measure teams and trends; never rank individuals or set single-number targets.</li>
+  <li>AI sped up writing code, but research shows mixed effects on delivery. Measure lead time and rework, not suggestions accepted.</li>
+  <li>The biggest gains come from small changes, fast CI, prompt reviews and clear requirements.</li>
+</ul>
+
+<h2 id="sources">Sources<a class="h-anchor" href="#sources" aria-label="Link to this section">#</a></h2>
+
+<ul>
+  <li><a href="https://dora.dev/guides/dora-metrics-four-keys/" target="_blank" rel="noopener noreferrer">DORA: software delivery performance metrics</a></li>
+  <li><a href="https://queue.acm.org/detail.cfm?id=3454124" target="_blank" rel="noopener noreferrer">Forsgren et al.: The SPACE of Developer Productivity</a> (ACM Queue, 2021)</li>
+  <li><a href="https://arxiv.org/abs/2507.09089" target="_blank" rel="noopener noreferrer">METR: Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity</a></li>
+  <li><a href="https://stackoverflow.blog/2025/07/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/" target="_blank" rel="noopener noreferrer">Stack Overflow: 2025 Developer Survey results</a></li>
+</ul>
+
+<p>Trying to speed up a team without breaking things? <a href="/#contact">Let's talk</a>.</p>
+
+
+<!--enh:end:start--><footer class="post-end">
+          <section class="post-author" aria-label="About the author">
+            <img src="/images/profile-144.webp" width="72" height="72" alt="Portrait of Roshan Kc" loading="lazy" decoding="async">
+            <div>
+              <p class="post-author__name">Written by <a href="/#about">Roshan Kc</a></p>
+              <p class="post-author__bio">Co-Founder and CTO of <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions</a> in Kathmandu. Computer engineer building device-connected and enterprise software: IoT, robotics, multi-tenant SaaS and the PHP and Laravel systems behind them.</p>
+              <p class="post-author__links"><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer">GitHub</a><a href="/#contact">Get in touch</a></p>
+            </div>
+          </section>
+          <section class="post-related" aria-labelledby="related-title">
+            <p class="post-related__label" id="related-title">Keep reading</p>
+            <ul>
+            <li><a href="/blog/how-to-run-startup-tech-stack-free-until-funded/">How to Run Your Startup Tech Stack for Free Until You&#x27;re Funded</a><time datetime="2026-08-26">August 26, 2026</time></li>
+            <li><a href="/blog/how-ai-coding-tools-changed-engineering-velocity/">How AI Coding Tools Changed Our Engineering Velocity (Without Changing Our Standards)</a><time datetime="2026-09-02">September 2, 2026</time></li>
+            <li><a href="/blog/choose-tech-stack-ai-era-patch-velocity/">How to Choose a Tech Stack in the AI Era: Follow the Patch Velocity, Not the Hype</a><time datetime="2026-11-07">November 7, 2026</time></li>
+            </ul>
+          </section>
+        </footer><!--enh:end:end-->
+</article><!--enh:aside:start--><aside class="post-toc" aria-label="On this page">
+        <p class="post-toc__title">On this page</p>
+        <ol>
+          <li><a href="#definition">What is coding velocity?</a></li>
+          <li><a href="#three-velocities">Three things people mean by velocity</a></li>
+          <li><a href="#how-to-measure">How to measure it: DORA metrics</a></li>
+          <li><a href="#dont-game-it">How to measure velocity without gaming it</a></li>
+          <li><a href="#ai">What AI changed about coding velocity</a></li>
+          <li><a href="#improve">What actually improves velocity</a></li>
+          <li><a href="#faq">Frequently asked questions</a></li>
+          <li><a href="#takeaways">Key takeaways</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+        <a class="post-toc__top" href="#main-content">Back to top</a>
+      </aside><!--enh:aside:end--></div><!--enh:shell-close-->
+
+        <nav class="post-nav" aria-label="Post navigation">
+          <div class="post-nav__link post-nav__prev">
+            <span class="font-mono-label" style="color:var(--sapphire)">Previous</span>
+            <a class="post-nav__title" href="/blog/">All posts</a>
+          </div>
+          <div class="post-nav__link post-nav__next">
+            <span class="font-mono-label" style="color:var(--sapphire)">Next</span>
+            <a class="post-nav__title" href="/blog/phpstan-turbo-native-extension/">PHPStan Turbo Explained</a>
+          </div>
+        </nav>
+
+        <footer class="page-footer site-footer">
+          <div class="sf-top">
+            <div class="sf-brand">
+              <p class="sf-name">Roshan Kc</p>
+              <p class="sf-meta">Co-Founder and CTO, MarginTop Solutions · Kathmandu, Nepal</p>
+            </div>
+            <ul class="footer-social" aria-label="Social profiles">
+                    <li><a href="https://www.facebook.com/roshan.kc.3557440" target="_blank" rel="noopener noreferrer" aria-label="Facebook (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-facebook"></use></svg></a></li>
+                    <li><a href="https://www.linkedin.com/in/roshan-kc-12892b25a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-linkedin"></use></svg></a></li>
+                    <li><a href="https://github.com/roshankc123" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-github"></use></svg></a></li>
+                    <li><a href="mailto:kcroshan566@gmail.com" aria-label="Email Roshan Kc" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-email"></use></svg></a></li>
+                    <li><a href="https://wa.me/qr/4VJJDHCT4HNUC1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-whatsapp"></use></svg></a></li>
+                    <li><a href="https://medium.com/@kcroshan566" target="_blank" rel="noopener noreferrer" aria-label="Medium (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-medium"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/kcroshan7727/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-instagram"></use></svg></a></li>
+                    <li><a href="https://x.com/roshankc182324" target="_blank" rel="noopener noreferrer" aria-label="X (opens in a new tab)" class="social-link"><svg class="social-icon" width="22" height="22" fill="currentColor" aria-hidden="true"><use href="/images/icons.svg#icon-x"></use></svg></a></li>
+                </ul>
+          </div>
+          <div class="sf-bottom">
+            <p>&copy; <span data-copyright-year></span> Roshan Kc. All rights reserved.</p>
+            <nav class="sf-links" aria-label="Footer">
+              <a href="/blog/">Blog</a>
+              <a href="/sitemap">Sitemap</a>
+              <a href="/feed.xml">RSS</a>
+              <a href="https://www.margintopsolutions.com/" target="_blank" rel="noopener noreferrer">MarginTop Solutions<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </nav>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <nav class="deck-dock" data-deck="blog-post" aria-label="Story presentation controls">
+    <button type="button" class="deck-dock__btn" data-deck-prev aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/></svg>
+    </button>
+    <div class="deck-dock__meta" aria-live="polite">
+      <span class="deck-dock__label" data-deck-label>Blog</span>
+      <span class="deck-dock__progress"><span data-deck-index>1</span> / <span data-deck-total>38</span></span>
+    </div>
+    <button type="button" class="deck-dock__btn" data-deck-next aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>
+    </button>
+  </nav>
+
+  <script src="/js/shell.js" defer></script>
+</body>
+</html>

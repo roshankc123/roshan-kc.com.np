@@ -1,0 +1,66 @@
+{
+ "slug": "frankenphp-vs-swoole-laravel-octane",
+ "date": "2026-11-16",
+ "read": 5,
+ "tag": "Laravel · Performance",
+ "title": "FrankenPHP vs Swoole for Laravel Octane | Roshan Kc",
+ "h1": "FrankenPHP vs Swoole: Which Should You Run Laravel On?",
+ "social": "FrankenPHP vs Swoole: Threads vs Coroutines for Laravel Octane",
+ "short": "FrankenPHP vs Swoole for Laravel",
+ "desc": "FrankenPHP vs Swoole for Laravel Octane: threads vs coroutines, HTTPS and WebSockets, extension gotchas, operations, and a clear rule for which to pick.",
+ "keywords": "frankenphp vs swoole, swoole vs frankenphp, laravel octane frankenphp, laravel octane swoole, octane driver comparison, php app server",
+ "citations": [
+  [
+   "FrankenPHP docs: configuration",
+   "https://frankenphp.dev/docs/config/"
+  ],
+  [
+   "FrankenPHP docs: known issues",
+   "https://frankenphp.dev/docs/known-issues/"
+  ],
+  [
+   "FrankenPHP releases",
+   "https://github.com/php/frankenphp/releases"
+  ],
+  [
+   "Swoole releases",
+   "https://github.com/swoole/swoole-src/releases"
+  ],
+  [
+   "Laravel Octane documentation",
+   "https://laravel.com/docs/octane"
+  ]
+ ],
+ "about": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "FrankenPHP",
+   "url": "https://frankenphp.dev/",
+   "applicationCategory": "DeveloperApplication"
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "Swoole",
+   "url": "https://www.swoole.com/",
+   "applicationCategory": "DeveloperApplication"
+  }
+ ],
+ "faq": [
+  [
+   "Is FrankenPHP faster than Swoole?",
+   "There is no universal winner; both remove per-request boot cost in worker mode. Swoole has the edge when requests wait on several slow I/O calls, because coroutines let one worker overlap them. Benchmark your own endpoints."
+  ],
+  [
+   "Does Laravel Octane support FrankenPHP?",
+   "Yes. Octane supports FrankenPHP, Swoole and RoadRunner. Some Octane features, such as concurrent tasks, Octane Cache and Tables, require Swoole."
+  ],
+  [
+   "Can FrankenPHP do WebSockets?",
+   "Not as a native WebSocket server. FrankenPHP ships a built-in Mercure hub for real-time updates over server-sent events. For native WebSockets, Swoole is the usual choice."
+  ],
+  [
+   "Which PHP extensions don't work with FrankenPHP?",
+   "FrankenPHP's known-issues page lists imap, newrelic and pcov as unsupported because they are not thread-safe, and notes instability with datadog profiling and Imagick's OpenMP threading."
+  ]
+ ]
+}
